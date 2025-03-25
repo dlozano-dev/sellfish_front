@@ -6,14 +6,12 @@ import {Home} from "./components/home/Home.jsx";
 
 import './App.css'
 
-
-
 function App() {
     const { globalState } = useContext(GlobalContext);
     const { user } = useContext(UserContext);
 
     return (
-        <div className="App">
+        <div className="w-full h-full">
             {
                 user===null?
                     <Login/>
