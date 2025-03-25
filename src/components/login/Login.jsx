@@ -96,7 +96,7 @@ export const Login = () => {
             </div>
 
             <div onClick={() => action==='Login' ? login() : signup()} className='bg-black text-xl cursor-pointer text-white w-3/10 h-18 flex justify-center items-center rounded-md'>
-                { action==='Login' ? 'Log in' : 'Sing up' }
+                { action==='Login' ? 'Log in' : 'Sign up' }
             </div>
         </div>
     )
