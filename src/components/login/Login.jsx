@@ -74,19 +74,19 @@ export const Login = () => {
         <div className='flex flex-col justify-center items-center'>
             <img src={ String(sf_icon) } alt="Sellfish logo" className='w-96 h-auto'/>
 
-            <div className='flex items-center w-5/10 h-18 m-6 bg-white rounded-md'>
+            <div className='flex items-center w-3/10 h-18 m-6 bg-white rounded-md'>
                 <img src={ String(user_icon) } alt="User icon" className='mx-6'/>
                 <input type="text" placeholder='Name' id='user' className='w-full h-full border-none outline-none text-xl'/>
             </div>
 
             { action==='Login' ? <div></div> :
-                <div className='flex items-center w-5/10 h-18 m-6 bg-white rounded-md'>
+                <div className='flex items-center w-3/10 h-18 m-6 bg-white rounded-md'>
                     <img src={ String(email_icon) } alt="" className='mx-6'/>
                     <input type="email" placeholder='Email' id='email' className='w-full h-full border-none outline-none text-xl'/>
                 </div>
             }
 
-            <div className='flex items-center w-5/10 h-18 m-6 bg-white rounded-md'>
+            <div className='flex items-center w-3/10 h-18 m-6 bg-white rounded-md'>
                 <img src={ String(password_icon) } alt="" className='mx-6'/>
                 <input type="password" placeholder='Password' id='pass' className='w-full h-full border-none outline-none text-xl'/>
             </div>
@@ -95,7 +95,7 @@ export const Login = () => {
                 { action==='Login' ? 'Click here to create an account!' : 'Log in if you already have an account'}
             </div>
 
-            <div onClick={() => action==='Login' ? login() : signup()} className='bg-black text-xl cursor-pointer text-white w-3/10 h-18 flex justify-center items-center rounded-md'>
+            <div onClick={() => action==='Login' ? login() : signup()} className='bg-black text-xl cursor-pointer text-white w-1/10 h-18 flex justify-center items-center rounded-md'>
                 { action==='Login' ? 'Log in' : 'Sign up' }
             </div>
         </div>
