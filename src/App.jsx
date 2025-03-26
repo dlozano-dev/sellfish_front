@@ -4,14 +4,12 @@ import { UserContext } from './Navigation';
 import { Login } from './components/login/Login'
 import {Home} from "./components/home/Home.jsx";
 
-import './App.css'
-
 function App() {
     const { globalState } = useContext(GlobalContext);
     const { user } = useContext(UserContext);
 
     return (
-        <div className="w-full h-full">
+        <div className="w-screen h-screen">
             {
                 user===null?
                     <Login/>

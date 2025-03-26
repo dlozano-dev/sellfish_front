@@ -1,1 +1,1 @@
-export const HOSTNAME = "http://192.168.1.38:8080";
+export const HOSTNAME = "http://192.168.1.36:8080";
