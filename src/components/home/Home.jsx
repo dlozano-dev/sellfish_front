@@ -1,7 +1,5 @@
 import React from 'react'
 import { Header } from "../header/Header";
-import './Home.css';
-import '../../index.css';
 import bg from '../../assets/backgrounds/bg-table.png';
 
 export const Home = () => {
