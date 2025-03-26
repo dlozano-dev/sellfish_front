@@ -1,8 +1,8 @@
 import React, { useContext } from 'react';
 import { GlobalContext } from './Navigation';
 import { UserContext } from './Navigation';
-import { Login } from './components/login/Login'
-import {Home} from "./components/home/Home.jsx";
+import { Login } from './components/login/Login';
+import { Home } from "./components/home/Home.jsx";
 
 function App() {
     const { globalState } = useContext(GlobalContext);
