@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
-import logOut from "../../assets/Icons/logOut.png"
-import userIcon from "../../assets/Icons/user.png"
+import logOut from "../../assets/Icons/logOut.png";
+import userIcon from "../../assets/Icons/user.png";
+import d_menu from "../../assets/Icons/d-menu.svg";
 import { GlobalContext } from '../../Navigation';
 import { UserContext } from '../../Navigation';
 
@@ -15,10 +16,8 @@ export const Header = () => {
     return (
         <div className="flex justify-between items-center pl-4 w-full h-16">
             {/* Menu Icon */}
-            <div className="flex flex-col space-y-1 cursor-pointer opacity-100 hover:opacity-60" onClick={clickNav}>
-                <div className="w-9 h-1 bg-black rounded-md transition duration-300"></div>
-                <div className="w-9 h-1 bg-black rounded-md transition duration-300"></div>
-                <div className="w-9 h-1 bg-black rounded-md transition duration-300"></div>
+            <div className="cursor-pointer opacity-100 hover:opacity-60" onClick={clickNav}>
+                <img src={String(d_menu)} alt="Menu icon" className='w-12 h-12 transition duration-300'/>
             </div>
 
             {/* Icons */}

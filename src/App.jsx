@@ -11,8 +11,8 @@ function App() {
     return (
         <div className="w-screen h-screen">
             {
-                user===null?
-                    <Login/>
+                // user===null?
+                //     <Login/>
                 // :globalState==="Configuration"?
                 //     <Config/>
                 // :globalState==="Publish"?
@@ -25,7 +25,8 @@ function App() {
                 //     <Wishlist/>
                 // :globalState==="Chats"?
                 //     <Chats/>
-                :<Home/>
+                // :
+                <Home/>
             }
         </div>
     )
