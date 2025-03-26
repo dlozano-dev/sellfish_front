@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import logOut from "../../assets/Icons/logOut.png";
 import userIcon from "../../assets/Icons/user.png";
 import d_menu from "../../assets/Icons/d-menu.svg";
+import dagger_icon from "../../assets/Icons/dagger.svg";
 import { GlobalContext } from '../../Navigation';
 import { UserContext } from '../../Navigation';
 
@@ -14,16 +15,17 @@ export const Header = () => {
     }
 
     return (
-        <div className="flex justify-between items-center pl-4 w-full h-16">
+        <div className="flex justify-between items-center pl-4 w-full h-20">
             {/* Menu Icon */}
             <div className="cursor-pointer opacity-100 hover:opacity-60" onClick={clickNav}>
                 <img src={String(d_menu)} alt="Menu icon" className='w-12 h-12 transition duration-300'/>
             </div>
 
             {/* Icons */}
-            <div className="flex space-x-4">
-                <img src={String(userIcon)} alt="User Icon" className="w-8 h-8 rounded-lg p-2 cursor-pointer hover:opacity-60"/>
-                <img src={String(logOut)} onClick={() => setUser(null)} alt="Log Out Icon" className="w-8 h-8 rounded-lg p-2 cursor-pointer hover:opacity-60"/>
+            <div className="flex space-x-4 p-8 items-center">
+                <img src={String(dagger_icon)} alt="Favorite Icon" className="w-14 h-14 cursor-pointer hover:opacity-60"/>
+                <img src={String(userIcon)} alt="User Icon" className="w-8 h-8 cursor-pointer hover:opacity-60"/>
+                {/*<img src={String(logOut)} onClick={() => setUser(null)} alt="Log Out Icon" className="w-8 h-8 rounded-lg p-2 cursor-pointer hover:opacity-60"/>*/}
             </div>
 
             {/* Sidebar Navigation */}
