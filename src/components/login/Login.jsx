@@ -76,19 +76,19 @@ export const Login = () => {
 
             <div className='flex items-center w-3/10 h-18 m-6 bg-white rounded-md'>
                 <img src={ String(user_icon) } alt="User icon" className='mx-6'/>
-                <input type="text" placeholder='Name' id='user' className='w-full h-full border-none outline-none text-xl'/>
+                <input type="text" placeholder='Name' id='user' className='w-full h-full border-none outline-none text-xl autofill:shadow-[inset_0_0_0px_1000px_rgb(255,255,255)]'/>
             </div>
 
             { action==='Login' ? <div></div> :
                 <div className='flex items-center w-3/10 h-18 m-6 bg-white rounded-md'>
                     <img src={ String(email_icon) } alt="" className='mx-6'/>
-                    <input type="email" placeholder='Email' id='email' className='w-full h-full border-none outline-none text-xl'/>
+                    <input type="email" placeholder='Email' id='email' className='w-full h-full border-none outline-none text-xl autofill:shadow-[inset_0_0_0px_1000px_rgb(255,255,255)]'/>
                 </div>
             }
 
             <div className='flex items-center w-3/10 h-18 m-6 bg-white rounded-md'>
                 <img src={ String(password_icon) } alt="" className='mx-6'/>
-                <input type="password" placeholder='Password' id='pass' className='w-full h-full border-none outline-none text-xl'/>
+                <input type="password" placeholder='Password' id='pass' className='w-full h-full border-none outline-none text-xl autofill:shadow-[inset_0_0_0px_1000px_rgb(255,255,255)]'/>
             </div>
 
             <div onClick={()=>{ action==='Login' ? setAction('Sign Up') : setAction('Login')}} className='cursor-pointer mb-8 text-xl'>
