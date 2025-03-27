@@ -1,5 +1,5 @@
 import React from 'react'
-import { Header } from "../header/Header";
+import { Header } from "../header/Header.js";
 import bg from '../../assets/backgrounds/bg-table.png';
 import sf_logo from '../../assets/brand_logos/sf-logo.png';
 

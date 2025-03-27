@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react';
+import {useContext, useState} from 'react';
 import {AnimatePresence, motion} from 'framer-motion';
 import { UserRound } from 'lucide-react';
 import { CircleUserRound  } from 'lucide-react';
@@ -8,14 +8,15 @@ import d_menu from '../../assets/Icons/d-menu.svg';
 import dagger_icon from '../../assets/Icons/dagger.svg';
 import { GlobalContext } from '../../Navigation';
 import { UserContext } from '../../Navigation';
+import {HOME, SETTINGS} from "../../utils/Constants.tsx";
 
 export const Header = () => {
-    const { setGlobalState } = useContext(GlobalContext);
-    const {  setUser } = useContext(UserContext);
+    const { setGlobalState } = useContext(GlobalContext)!;
+    const { setUser } = useContext(UserContext)!;
     const [isOpen, setIsOpen] = useState(false);
 
     function clickNav() {
-        document.getElementById('mySidenav').classList.toggle('-translate-x-full');
+        document.getElementById('mySidenav')?.classList.toggle('-translate-x-full');
     }
 
     return (
@@ -39,7 +40,7 @@ export const Header = () => {
                             </div>
                         </div>
 
-                        <div className='hover:cursor-pointer hover:bg-gray-100 hover:fill-black flex items-center justify-between'>
+                        <div onClick={ () => setGlobalState(SETTINGS) } className='hover:cursor-pointer hover:bg-gray-100 hover:fill-black flex items-center justify-between'>
                             <div className='flex items-center w-full px-4 py-2 hover:text-black transition-transform duration-500 hover:translate-x-[10%]'>
                                 <svg className='w-4 h-4 mr-4 fill-none' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                                     <path className='stroke-gray-600 stroke-[1.5] stroke-round' d="M12 15.5C13.933 15.5 15.5 13.933 15.5 12C15.5 10.067 13.933 8.5 12 8.5C10.067 8.5 8.5 10.067 8.5 12C8.5 13.933 10.067 15.5 12 15.5Z"/>
@@ -51,7 +52,7 @@ export const Header = () => {
 
                         <div onClick={() => setUser(null)} className='hover:cursor-pointer hover:bg-gray-100 hover:fill-black flex items-center justify-between'>
                             <div className='flex items-center w-full px-4 py-2 hover:text-black transition-transform duration-500 hover:translate-x-[10%]'>
-                                <svg className='w-4 h-4 mr-4' xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="0 0 471.2 471.2" xml:space="preserve"><g><g xmlns="http://www.w3.org/2000/svg"><path d="M227.619,444.2h-122.9c-33.4,0-60.5-27.2-60.5-60.5V87.5c0-33.4,27.2-60.5,60.5-60.5h124.9c7.5,0,13.5-6,13.5-13.5    s-6-13.5-13.5-13.5h-124.9c-48.3,0-87.5,39.3-87.5,87.5v296.2c0,48.3,39.3,87.5,87.5,87.5h122.9c7.5,0,13.5-6,13.5-13.5    S235.019,444.2,227.619,444.2z"/><path d="M450.019,226.1l-85.8-85.8c-5.3-5.3-13.8-5.3-19.1,0c-5.3,5.3-5.3,13.8,0,19.1l62.8,62.8h-273.9c-7.5,0-13.5,6-13.5,13.5    s6,13.5,13.5,13.5h273.9l-62.8,62.8c-5.3,5.3-5.3,13.8,0,19.1c2.6,2.6,6.1,4,9.5,4s6.9-1.3,9.5-4l85.8-85.8    C455.319,239.9,455.319,231.3,450.019,226.1z"/></g></g></svg>
+                                <svg className='w-4 h-4 mr-4' xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="0 0 471.2 471.2" xmlSpace="preserve"><g><g xmlns="http://www.w3.org/2000/svg"><path d="M227.619,444.2h-122.9c-33.4,0-60.5-27.2-60.5-60.5V87.5c0-33.4,27.2-60.5,60.5-60.5h124.9c7.5,0,13.5-6,13.5-13.5    s-6-13.5-13.5-13.5h-124.9c-48.3,0-87.5,39.3-87.5,87.5v296.2c0,48.3,39.3,87.5,87.5,87.5h122.9c7.5,0,13.5-6,13.5-13.5    S235.019,444.2,227.619,444.2z"/><path d="M450.019,226.1l-85.8-85.8c-5.3-5.3-13.8-5.3-19.1,0c-5.3,5.3-5.3,13.8,0,19.1l62.8,62.8h-273.9c-7.5,0-13.5,6-13.5,13.5    s6,13.5,13.5,13.5h273.9l-62.8,62.8c-5.3,5.3-5.3,13.8,0,19.1c2.6,2.6,6.1,4,9.5,4s6.9-1.3,9.5-4l85.8-85.8    C455.319,239.9,455.319,231.3,450.019,226.1z"/></g></g></svg>
                                 <span>Log out</span>
                             </div>
                         </div>
@@ -73,29 +74,28 @@ export const Header = () => {
                       className='absolute top-4 right-6 text-3xl cursor-pointer text-black'>&times;</span>
                 <nav className='mt-16 flex flex-col text-xl'>
                     <div className='hover:bg-gray-100'>
-                        <div onClick={() => setGlobalState('Home')}
-                             className='pl-10 py-4 hover:text-black cursor-pointer transition-transform duration-500 hover:translate-x-[10%]'>Home
+                        <div onClick={() => setGlobalState(HOME)} className='pl-10 py-4 hover:text-black cursor-pointer transition-transform duration-500 hover:translate-x-[10%]'>Home
                         </div>
                     </div>
                     <div className='hover:bg-gray-100'>
-                        <div onClick={() => setGlobalState('Shop')}
-                             className='pl-10 py-4 hover:text-black cursor-pointer transition-transform duration-500 hover:translate-x-[10%]'>Shop
+                        <div onClick={() => setGlobalState('Shop')} className='pl-10 py-4 hover:text-black cursor-pointer transition-transform duration-500 hover:translate-x-[10%]'>Shop
                         </div>
                     </div>
                     <div className='hover:bg-gray-100'>
-                        <div onClick={() => setGlobalState('Publish')}
-                             className='pl-10 py-4 hover:text-black cursor-pointer transition-transform duration-500 hover:translate-x-[10%]'>Publish
+                        <div onClick={() => setGlobalState('Publish')} className='pl-10 py-4 hover:text-black cursor-pointer transition-transform duration-500 hover:translate-x-[10%]'>Publish
                             Product
                         </div>
                     </div>
                     <div className='hover:bg-gray-100'>
-                        <div onClick={() => setGlobalState('Wishlist')}
-                             className='pl-10 py-4 hover:text-black cursor-pointer transition-transform duration-500 hover:translate-x-[10%]'>Wishlist
+                        <div onClick={() => setGlobalState('Wishlist')} className='pl-10 py-4 hover:text-black cursor-pointer transition-transform duration-500 hover:translate-x-[10%]'>Wishlist
                         </div>
                     </div>
                     <div className='hover:bg-gray-100'>
-                        <div onClick={() => setGlobalState('Chats')}
-                             className='pl-10 py-4 hover:text-black cursor-pointer transition-transform duration-500 hover:translate-x-[10%]'>Chats
+                        <div onClick={() => setGlobalState('Chats')} className='pl-10 py-4 hover:text-black cursor-pointer transition-transform duration-500 hover:translate-x-[10%]'>Chats
+                        </div>
+                    </div>
+                    <div className='hover:bg-gray-100'>
+                        <div onClick={() => setGlobalState(SETTINGS)} className='pl-10 py-4 hover:text-black cursor-pointer transition-transform duration-500 hover:translate-x-[10%]'>Settings
                         </div>
                     </div>
                 </nav>

@@ -1,8 +1,8 @@
 import React, {useState, useContext} from 'react'
-import * as Constants from '../../utils/Constants.js';
-import { GlobalContext } from '../../Navigation';
-import { UserContext } from '../../Navigation';
-import { UserIdContext } from '../../Navigation';
+import * as Constants from '../../utils/Constants.tsx';
+import { GlobalContext } from '../../Navigation.js';
+import { UserContext } from '../../Navigation.js';
+import { UserIdContext } from '../../Navigation.js';
 
 import user_icon from "../../assets/person.png"
 import email_icon from "../../assets/email.png";
