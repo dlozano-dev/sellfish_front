@@ -1,31 +1,30 @@
-import React, {useState, useContext} from 'react'
-import * as Constants from '../../utils/Constants.tsx';
-import { GlobalContext } from '../../Navigation.js';
-import { UserContext } from '../../Navigation.js';
-import { UserIdContext } from '../../Navigation.js';
-
+import {useState, useContext} from 'react';
+import * as Constants from '../../utils/Constants';
+import { GlobalContext } from '../../Navigation';
+import { UserContext } from '../../Navigation';
+import { UserIdContext } from '../../Navigation';
 import user_icon from "../../assets/person.png"
 import email_icon from "../../assets/email.png";
 import password_icon from "../../assets/password.png";
 import sf_icon from "../../assets/brand_logos/sf-logo.svg"
+import {HOME} from "../../utils/Constants";
 
 export const Login = () => {
     const [action, setAction] = useState("Login") // Login or Sign Up
-    const { setGlobalState } = useContext(GlobalContext);
-    const { setUser } = useContext(UserContext);
-    const { setUserId } = useContext(UserIdContext);
+    const { setGlobalState } = useContext(GlobalContext)!;
+    const { setUser } = useContext(UserContext)!;
+    const { setUserId } = useContext(UserIdContext)!;
+    const [userInput, setUserInput] = useState<string>("");
+    const [emailInput, setEmailInput] = useState<string>("");
+    const [passwordInput, setPasswordInput] = useState<string>("");
+
 
     function signup() {
-        // Ask for user
-        let user = document.getElementById("user").value.trim();
-        let email = document.getElementById("email").value.trim();
-        let pass = document.getElementById("pass").value.trim();
-
         // Create user
-        register(user, email, pass)
+        register(userInput, emailInput, passwordInput)
     }
 
-    function register(user, email, pass) {
+    function register(user: string, email: string, pass: string) {
         let request = `${Constants.HOSTNAME}/userExists/${email}/${user}`
         const xhr = new XMLHttpRequest();
         xhr.open("GET", request);
@@ -52,19 +51,16 @@ export const Login = () => {
     }
 
     function login() {
-        let user = document.getElementById("user").value.trim();
-        let pass = document.getElementById("pass").value.trim();
-        let request = `${Constants.HOSTNAME}/login/${user}/${pass}`
+        const request = `${Constants.HOSTNAME}/login/${userInput}/${passwordInput}`
         const xhr = new XMLHttpRequest();
         xhr.open("GET", request);
         xhr.send();
         xhr.responseType = "json";
         xhr.onload = () => {
-            let data = xhr.response
-            console.log(data)
+            const data = xhr.response
             if (data !== -1) {
-                setGlobalState("Home");
-                setUser(user);
+                setGlobalState(HOME);
+                setUser(userInput);
                 setUserId(data);
             }
         };
@@ -76,22 +72,43 @@ export const Login = () => {
 
             <div className='flex items-center w-3/10 h-18 m-6 bg-white rounded-md'>
                 <img src={ String(user_icon) } alt="User icon" className='mx-6'/>
-                <input type="text" placeholder='Name' id='user' className='w-full h-full border-none outline-none text-xl autofill:shadow-[inset_0_0_0px_1000px_rgb(255,255,255)]'/>
+                <input
+                    value={userInput}
+                    onChange={e => setUserInput(e.target.value.trim())}
+                    type="text"
+                    placeholder='Name'
+                    id='user'
+                    className='w-full h-full border-none outline-none text-xl autofill:shadow-[inset_0_0_0px_1000px_rgb(255,255,255)]'
+                />
             </div>
 
             { action==='Login' ? <div></div> :
                 <div className='flex items-center w-3/10 h-18 m-6 bg-white rounded-md'>
                     <img src={ String(email_icon) } alt="" className='mx-6'/>
-                    <input type="email" placeholder='Email' id='email' className='w-full h-full border-none outline-none text-xl autofill:shadow-[inset_0_0_0px_1000px_rgb(255,255,255)]'/>
+                    <input
+                        value={emailInput}
+                        onChange={e => setEmailInput(e.target.value.trim())}
+                        type="email"
+                        placeholder='Email'
+                        id='email'
+                        className='w-full h-full border-none outline-none text-xl autofill:shadow-[inset_0_0_0px_1000px_rgb(255,255,255)]'
+                    />
                 </div>
             }
 
             <div className='flex items-center w-3/10 h-18 m-6 bg-white rounded-md'>
                 <img src={ String(password_icon) } alt="" className='mx-6'/>
-                <input type="password" placeholder='Password' id='pass' className='w-full h-full border-none outline-none text-xl autofill:shadow-[inset_0_0_0px_1000px_rgb(255,255,255)]'/>
+                <input
+                    value={passwordInput}
+                    onChange={e => setPasswordInput(e.target.value.trim())}
+                    type="password"
+                    placeholder='Password'
+                    id='pass'
+                    className='w-full h-full border-none outline-none text-xl autofill:shadow-[inset_0_0_0px_1000px_rgb(255,255,255)]'
+                />
             </div>
 
-            <div onClick={()=>{ action==='Login' ? setAction('Sign Up') : setAction('Login')}} className='cursor-pointer mb-8 text-xl'>
+            <div onClick={()=> action==='Login' ? setAction('Sign Up') : setAction('Login')} className='cursor-pointer mb-8 text-xl'>
                 { action==='Login' ? 'Click here to create an account!' : 'Log in if you already have an account'}
             </div>
 

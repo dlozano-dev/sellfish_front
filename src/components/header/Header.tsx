@@ -8,7 +8,7 @@ import d_menu from '../../assets/Icons/d-menu.svg';
 import dagger_icon from '../../assets/Icons/dagger.svg';
 import { GlobalContext } from '../../Navigation';
 import { UserContext } from '../../Navigation';
-import {HOME, SETTINGS} from "../../utils/Constants.tsx";
+import {HOME, SETTINGS} from "../../utils/Constants";
 
 export const Header = () => {
     const { setGlobalState } = useContext(GlobalContext)!;
