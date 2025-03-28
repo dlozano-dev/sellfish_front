@@ -8,6 +8,7 @@ import email_icon from "../../assets/email.png";
 import password_icon from "../../assets/password.png";
 import sf_icon from "../../assets/brand_logos/sf-logo.svg"
 import {HOME} from "../../utils/Constants";
+import Snackbar from '@mui/material/Snackbar';
 
 export const Login = () => {
     const [action, setAction] = useState("Login") // Login or Sign Up
@@ -17,33 +18,25 @@ export const Login = () => {
     const [userInput, setUserInput] = useState<string>("");
     const [emailInput, setEmailInput] = useState<string>("");
     const [passwordInput, setPasswordInput] = useState<string>("");
+    const [snackBar, setSnackBar] = useState<string>("");
 
-
-    function signup() {
-        // Create user
-        register(userInput, emailInput, passwordInput)
-    }
-
-    function register(user: string, email: string, pass: string) {
-        let request = `${Constants.HOSTNAME}/userExists/${email}/${user}`
+    function register() {
         const xhr = new XMLHttpRequest();
-        xhr.open("GET", request);
+        xhr.open("GET", `${Constants.HOSTNAME}/userExists/${emailInput}/${userInput}`);
         xhr.send();
         xhr.responseType = "json";
         xhr.onload = () => {
             const data = xhr.response;
-            console.log("User exists? " + data)
+
             if (data) {
-                alert("El email ya está registrado o el usuario ya están registrados")
+                setSnackBar("The email or the user are already registered.");
             } else {
-                request = `${Constants.HOSTNAME}/saveUser/${user}/${email}/${pass}`
                 const xhr = new XMLHttpRequest();
-                xhr.open("GET", request);
+                xhr.open("GET", `${Constants.HOSTNAME}/saveUser/${userInput}/${emailInput}/${passwordInput}`);
                 xhr.send();
                 xhr.responseType = "json";
                 xhr.onload = () => {
-                    alert("El usuario ha sido creado correctamente")
-                    // login
+                    setSnackBar("User created successfully.");
                     login()
                 };
             }
@@ -51,9 +44,8 @@ export const Login = () => {
     }
 
     function login() {
-        const request = `${Constants.HOSTNAME}/login/${userInput}/${passwordInput}`
         const xhr = new XMLHttpRequest();
-        xhr.open("GET", request);
+        xhr.open("GET", `${Constants.HOSTNAME}/login/${userInput}/${passwordInput}`);
         xhr.send();
         xhr.responseType = "json";
         xhr.onload = () => {
@@ -112,9 +104,16 @@ export const Login = () => {
                 { action==='Login' ? 'Click here to create an account!' : 'Log in if you already have an account'}
             </div>
 
-            <div onClick={() => action==='Login' ? login() : signup()} className='bg-black text-xl cursor-pointer text-white w-1/10 h-18 flex justify-center items-center rounded-md'>
+            <div onClick={() => action==='Login' ? login() : register()} className='bg-black text-xl cursor-pointer text-white w-1/10 h-18 flex justify-center items-center rounded-md'>
                 { action==='Login' ? 'Log in' : 'Sign up' }
             </div>
+
+            <Snackbar
+                open={!!open}
+                autoHideDuration={6000}
+                onClose={() => { setSnackBar("") }}
+                message={snackBar}
+            />
         </div>
     )
 }

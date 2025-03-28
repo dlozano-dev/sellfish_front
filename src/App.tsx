@@ -1,19 +1,19 @@
 import { useContext } from 'react';
 import { GlobalContext } from './Navigation';
-// import { UserContext } from './Navigation';
-// import { Login } from './components/login/Login';
+import { UserContext } from './Navigation';
+import { Login } from './components/login/Login';
 import { Settings } from './components/settings/Settings';
 import { Home } from "./components/home/Home.tsx";
 import {HOME, SETTINGS} from "./utils/Constants.tsx";
 
 function App() {
     const { globalState } = useContext(GlobalContext)!;
-    // const { user } = useContext(UserContext)!;
+    const { user } = useContext(UserContext)!;
 
     return (
         <div className="w-screen h-screen">
             {
-                // user === null ? <Login/> :
+                user === null ? <Login/> :
                 // globalState === POST ? <Post/> :
                 // globalState === "Shop" ? <Shop/> :
                 // globalState === "ItemDetails" ? <ItemDetails/> :
