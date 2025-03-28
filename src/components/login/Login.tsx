@@ -3,12 +3,13 @@ import * as Constants from '../../utils/Constants';
 import { GlobalContext } from '../../Navigation';
 import { UserContext } from '../../Navigation';
 import { UserIdContext } from '../../Navigation';
+import { useTranslation } from "react-i18next";
+import Snackbar from '@mui/material/Snackbar';
 import user_icon from "../../assets/person.png"
 import email_icon from "../../assets/email.png";
 import password_icon from "../../assets/password.png";
 import sf_icon from "../../assets/brand_logos/sf-logo.svg"
 import {EMPTY, GET, HOME, JSON, LOGIN, SIGN_UP} from "../../utils/Constants";
-import Snackbar from '@mui/material/Snackbar';
 
 export const Login = () => {
     const [action, setAction] = useState(LOGIN) // Login or Sign Up
@@ -19,6 +20,7 @@ export const Login = () => {
     const [emailInput, setEmailInput] = useState<string>(EMPTY);
     const [passwordInput, setPasswordInput] = useState<string>(EMPTY);
     const [snackBar, setSnackBar] = useState<string>(EMPTY);
+    const { t } = useTranslation();
 
     function register() {
         const xhr = new XMLHttpRequest();
@@ -29,7 +31,7 @@ export const Login = () => {
             const data = xhr.response;
 
             if (data) {
-                setSnackBar("The email or the user are already registered.");
+                setSnackBar(t('error_user_already_registered'));
             } else {
                 const xhr = new XMLHttpRequest();
                 xhr.open(GET, `${Constants.HOSTNAME}/saveUser/${userInput}/${emailInput}/${passwordInput}`);
