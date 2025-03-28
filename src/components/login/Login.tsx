@@ -7,24 +7,24 @@ import user_icon from "../../assets/person.png"
 import email_icon from "../../assets/email.png";
 import password_icon from "../../assets/password.png";
 import sf_icon from "../../assets/brand_logos/sf-logo.svg"
-import {HOME} from "../../utils/Constants";
+import {EMPTY, GET, HOME, JSON, LOGIN, SIGN_UP} from "../../utils/Constants";
 import Snackbar from '@mui/material/Snackbar';
 
 export const Login = () => {
-    const [action, setAction] = useState("Login") // Login or Sign Up
+    const [action, setAction] = useState(LOGIN) // Login or Sign Up
     const { setGlobalState } = useContext(GlobalContext)!;
     const { setUser } = useContext(UserContext)!;
     const { setUserId } = useContext(UserIdContext)!;
-    const [userInput, setUserInput] = useState<string>("");
-    const [emailInput, setEmailInput] = useState<string>("");
-    const [passwordInput, setPasswordInput] = useState<string>("");
-    const [snackBar, setSnackBar] = useState<string>("");
+    const [userInput, setUserInput] = useState<string>(EMPTY);
+    const [emailInput, setEmailInput] = useState<string>(EMPTY);
+    const [passwordInput, setPasswordInput] = useState<string>(EMPTY);
+    const [snackBar, setSnackBar] = useState<string>(EMPTY);
 
     function register() {
         const xhr = new XMLHttpRequest();
-        xhr.open("GET", `${Constants.HOSTNAME}/userExists/${emailInput}/${userInput}`);
+        xhr.open(GET, `${Constants.HOSTNAME}/userExists/${emailInput}/${userInput}`);
         xhr.send();
-        xhr.responseType = "json";
+        xhr.responseType = JSON;
         xhr.onload = () => {
             const data = xhr.response;
 
@@ -32,9 +32,9 @@ export const Login = () => {
                 setSnackBar("The email or the user are already registered.");
             } else {
                 const xhr = new XMLHttpRequest();
-                xhr.open("GET", `${Constants.HOSTNAME}/saveUser/${userInput}/${emailInput}/${passwordInput}`);
+                xhr.open(GET, `${Constants.HOSTNAME}/saveUser/${userInput}/${emailInput}/${passwordInput}`);
                 xhr.send();
-                xhr.responseType = "json";
+                xhr.responseType = JSON;
                 xhr.onload = () => {
                     setSnackBar("User created successfully.");
                     login()
@@ -45,9 +45,9 @@ export const Login = () => {
 
     function login() {
         const xhr = new XMLHttpRequest();
-        xhr.open("GET", `${Constants.HOSTNAME}/login/${userInput}/${passwordInput}`);
+        xhr.open(GET, `${Constants.HOSTNAME}/login/${userInput}/${passwordInput}`);
         xhr.send();
-        xhr.responseType = "json";
+        xhr.responseType = JSON;
         xhr.onload = () => {
             const data = xhr.response
             if (data !== -1) {
@@ -74,9 +74,9 @@ export const Login = () => {
                 />
             </div>
 
-            { action==='Login' ? <div></div> :
+            { action===LOGIN ? <div></div> :
                 <div className='flex items-center w-3/10 h-18 m-6 bg-white rounded-md'>
-                    <img src={ String(email_icon) } alt="" className='mx-6'/>
+                    <img src={ String(email_icon) } alt={EMPTY} className='mx-6'/>
                     <input
                         value={emailInput}
                         onChange={e => setEmailInput(e.target.value.trim())}
@@ -89,7 +89,7 @@ export const Login = () => {
             }
 
             <div className='flex items-center w-3/10 h-18 m-6 bg-white rounded-md'>
-                <img src={ String(password_icon) } alt="" className='mx-6'/>
+                <img src={ String(password_icon) } alt={EMPTY} className='mx-6'/>
                 <input
                     value={passwordInput}
                     onChange={e => setPasswordInput(e.target.value.trim())}
@@ -100,21 +100,20 @@ export const Login = () => {
                 />
             </div>
 
-            <div onClick={()=> action==='Login' ? setAction('Sign Up') : setAction('Login')} className='cursor-pointer mb-8 text-xl'>
-                { action==='Login' ? 'Click here to create an account!' : 'Log in if you already have an account'}
+            <div onClick={()=> action===LOGIN ? setAction(SIGN_UP) : setAction(LOGIN)} className='cursor-pointer mb-8 text-xl'>
+                { action===LOGIN ? 'Click here to create an account!' : 'Log in if you already have an account'}
             </div>
 
-            <div onClick={() => action==='Login' ? login() : register()} className='bg-black text-xl cursor-pointer text-white w-1/10 h-18 flex justify-center items-center rounded-md'>
-                { action==='Login' ? 'Log in' : 'Sign up' }
+            <div onClick={() => action===LOGIN ? login() : register()} className='bg-black text-xl cursor-pointer text-white w-1/10 h-18 flex justify-center items-center rounded-md'>
+                { action===LOGIN ? 'Log in' : 'Sign up' }
             </div>
 
             <Snackbar
-                open={!!open}
+                open={!!snackBar}
                 autoHideDuration={6000}
-                onClose={() => { setSnackBar("") }}
+                onClose={() => { setSnackBar(EMPTY) }}
                 message={snackBar}
             />
         </div>
     )
 }
-
