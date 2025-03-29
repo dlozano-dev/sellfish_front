@@ -7,8 +7,6 @@ import it from './langs/it.json';
 import fr from './langs/fr.json';
 
 const resources = { es, en, de, it, fr };
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-expect-error
 i18n.use(initReactI18next).init({
     lng: 'en',
     resources,
