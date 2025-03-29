@@ -5,6 +5,7 @@ export const HOSTNAME = "http://192.168.1.46:8080";
 export const HOME = 'home';
 export const SETTINGS = 'settings';
 export const POST = 'post'
+export const SHOP = 'shop'
 
 /* HTTP METHODS */
 export const GET = 'get';

@@ -14,6 +14,8 @@ export const Post = () => {
     const [model, setModel] = useState<string>(EMPTY);
     const [category, setCategory] = useState<string>('Others');
     const [price, setPrice] = useState<string>(EMPTY);
+    const [size,] = useState<string>('S'); // TODO
+    const [state] = useState<string>('Brand new'); // TODO
     const [snackBar, setSnackBar] = useState<string>(EMPTY);
 
     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -44,6 +46,8 @@ export const Post = () => {
             price: price?.trim(),
             publisher: userId,
             picture: base64,
+            size: size,
+            state: state,
         }, {
             headers: { 'Content-Type': 'application/json' }
         });

@@ -4,8 +4,9 @@ import { UserContext } from './Navigation';
 import { Login } from './components/login/Login';
 import { Settings } from './components/settings/Settings';
 import { Home } from "./components/home/Home.tsx";
-import {HOME, POST, SETTINGS} from "./utils/Constants.tsx";
+import {HOME, POST, SETTINGS, SHOP} from "./utils/Constants.tsx";
 import {Post} from "./components/post/Post.tsx";
+import {Shop} from "./components/shop/explorer/Shop.tsx";
 
 function App() {
     const { globalState } = useContext(GlobalContext)!;
@@ -16,7 +17,7 @@ function App() {
             {
                 user === null ? <Login/> :
                 globalState === POST ? <Post/> :
-                // globalState === "Shop" ? <Shop/> :
+                globalState === SHOP ? <Shop/> :
                 // globalState === "ItemDetails" ? <ItemDetails/> :
                 // globalState === "Wishlist" ? <Wishlist/> :
                 // globalState === "Chats" ? <Chats/> :

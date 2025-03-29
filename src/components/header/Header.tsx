@@ -8,7 +8,7 @@ import d_menu from '../../assets/Icons/d-menu.svg';
 import dagger_icon from '../../assets/Icons/dagger.svg';
 import { GlobalContext } from '../../Navigation';
 import { UserContext } from '../../Navigation';
-import {HOME, POST, SETTINGS} from "../../utils/Constants";
+import {HOME, POST, SETTINGS, SHOP} from "../../utils/Constants";
 
 export const Header = () => {
     const { setGlobalState } = useContext(GlobalContext)!;
@@ -77,7 +77,7 @@ export const Header = () => {
                         <div onClick={() => setGlobalState(HOME)} className='pl-10 py-4 hover:text-black cursor-pointer transition-transform duration-500 hover:translate-x-[10%]'>Home</div>
                     </div>
                     <div className='hover:bg-gray-100'>
-                        <div onClick={() => setGlobalState('Shop')} className='pl-10 py-4 hover:text-black cursor-pointer transition-transform duration-500 hover:translate-x-[10%]'>Shop</div>
+                        <div onClick={() => setGlobalState(SHOP)} className='pl-10 py-4 hover:text-black cursor-pointer transition-transform duration-500 hover:translate-x-[10%]'>Shop</div>
                     </div>
                     <div className='hover:bg-gray-100'>
                         <div onClick={() => setGlobalState(POST)} className='pl-10 py-4 hover:text-black cursor-pointer transition-transform duration-500 hover:translate-x-[10%]'>Post a Product</div>
