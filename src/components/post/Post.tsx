@@ -1,9 +1,8 @@
 import React, { useState, useContext } from 'react';
-import * as Constants from '../../utils/Constants';
 import Snackbar from '@mui/material/Snackbar';
 import { UserIdContext } from '../../Navigation';
 import { Header } from '../header/Header';
-import { EMPTY } from '../../utils/Constants';
+import {EMPTY, HOSTNAME} from '../../utils/Constants';
 import axios from 'axios';
 
 export const Post = () => {
@@ -39,7 +38,7 @@ export const Post = () => {
             throw Error;
         }
 
-        await axios.post(`${Constants.HOSTNAME}/saveClothe`, {
+        await axios.post(`${HOSTNAME}/saveClothe`, {
             brand: brand?.trim(),
             model: model?.trim(),
             category: category?.trim(),

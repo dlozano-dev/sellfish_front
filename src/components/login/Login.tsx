@@ -1,5 +1,4 @@
 import {useState, useContext} from 'react';
-import * as Constants from '../../utils/Constants';
 import { GlobalContext } from '../../Navigation';
 import { UserContext } from '../../Navigation';
 import { UserIdContext } from '../../Navigation';
@@ -9,7 +8,7 @@ import user_icon from "../../assets/person.png"
 import email_icon from "../../assets/email.png";
 import password_icon from "../../assets/password.png";
 import sf_icon from "../../assets/brand_logos/sf-logo.svg"
-import {EMPTY, GET, HOME, JSON, LOGIN, SIGN_UP} from "../../utils/Constants";
+import {EMPTY, GET, HOME, HOSTNAME, JSON, LOGIN, SIGN_UP} from "../../utils/Constants";
 
 export const Login = () => {
     const [action, setAction] = useState(LOGIN) // Login or Sign Up
@@ -24,7 +23,7 @@ export const Login = () => {
 
     function register() {
         const xhr = new XMLHttpRequest();
-        xhr.open(GET, `${Constants.HOSTNAME}/userExists/${emailInput}/${userInput}`);
+        xhr.open(GET, `${HOSTNAME}/userExists/${emailInput}/${userInput}`);
         xhr.send();
         xhr.responseType = JSON;
         xhr.onload = () => {
@@ -34,7 +33,7 @@ export const Login = () => {
                 setSnackBar(t('error_user_already_registered'));
             } else {
                 const xhr = new XMLHttpRequest();
-                xhr.open(GET, `${Constants.HOSTNAME}/saveUser/${userInput}/${emailInput}/${passwordInput}`);
+                xhr.open(GET, `${HOSTNAME}/saveUser/${userInput}/${emailInput}/${passwordInput}`);
                 xhr.send();
                 xhr.responseType = JSON;
                 xhr.onload = () => {
@@ -47,7 +46,7 @@ export const Login = () => {
 
     function login() {
         const xhr = new XMLHttpRequest();
-        xhr.open(GET, `${Constants.HOSTNAME}/login/${userInput}/${passwordInput}`);
+        xhr.open(GET, `${HOSTNAME}/login/${userInput}/${passwordInput}`);
         xhr.send();
         xhr.responseType = JSON;
         xhr.onload = () => {

@@ -1,8 +1,8 @@
 import { useState, useContext, useEffect } from 'react';
-import * as Constants from '../../../utils/Constants.js';
 import { GlobalContext } from '../../../Navigation.jsx';
 import { ItemContext } from '../../../Navigation.jsx';
 import { Header } from "../../header/Header.jsx";
+import {HOSTNAME, ITEM_DETAILS} from "../../../utils/Constants.tsx";
 
 export const Shop = () => {
     const [clothes, setClothes] = useState([]);
@@ -14,14 +14,14 @@ export const Shop = () => {
     }, []);
 
     async function fetchClothes() {
-        const response = await fetch(`${Constants.HOSTNAME}/clothes`);
+        const response = await fetch(`${HOSTNAME}/clothes`);
         const data = await response.json();
         setClothes(data);
     }
 
     function goItem(item) {
         setItem(item)
-        setGlobalState("ItemDetails")
+        setGlobalState(ITEM_DETAILS)
     }
 
     return (
