@@ -8,7 +8,7 @@ import d_menu from '../../assets/Icons/d-menu.svg';
 import dagger_icon from '../../assets/Icons/dagger.svg';
 import { GlobalContext } from '../../Navigation';
 import { UserContext } from '../../Navigation';
-import {HOME, SETTINGS} from "../../utils/Constants";
+import {HOME, POST, SETTINGS} from "../../utils/Constants";
 
 export const Header = () => {
     const { setGlobalState } = useContext(GlobalContext)!;
@@ -74,29 +74,22 @@ export const Header = () => {
                       className='absolute top-4 right-6 text-3xl cursor-pointer text-black'>&times;</span>
                 <nav className='mt-16 flex flex-col text-xl'>
                     <div className='hover:bg-gray-100'>
-                        <div onClick={() => setGlobalState(HOME)} className='pl-10 py-4 hover:text-black cursor-pointer transition-transform duration-500 hover:translate-x-[10%]'>Home
-                        </div>
+                        <div onClick={() => setGlobalState(HOME)} className='pl-10 py-4 hover:text-black cursor-pointer transition-transform duration-500 hover:translate-x-[10%]'>Home</div>
                     </div>
                     <div className='hover:bg-gray-100'>
-                        <div onClick={() => setGlobalState('Shop')} className='pl-10 py-4 hover:text-black cursor-pointer transition-transform duration-500 hover:translate-x-[10%]'>Shop
-                        </div>
+                        <div onClick={() => setGlobalState('Shop')} className='pl-10 py-4 hover:text-black cursor-pointer transition-transform duration-500 hover:translate-x-[10%]'>Shop</div>
                     </div>
                     <div className='hover:bg-gray-100'>
-                        <div onClick={() => setGlobalState('Publish')} className='pl-10 py-4 hover:text-black cursor-pointer transition-transform duration-500 hover:translate-x-[10%]'>Publish
-                            Product
-                        </div>
+                        <div onClick={() => setGlobalState(POST)} className='pl-10 py-4 hover:text-black cursor-pointer transition-transform duration-500 hover:translate-x-[10%]'>Post a Product</div>
                     </div>
                     <div className='hover:bg-gray-100'>
-                        <div onClick={() => setGlobalState('Wishlist')} className='pl-10 py-4 hover:text-black cursor-pointer transition-transform duration-500 hover:translate-x-[10%]'>Wishlist
-                        </div>
+                        <div onClick={() => setGlobalState('Wishlist')} className='pl-10 py-4 hover:text-black cursor-pointer transition-transform duration-500 hover:translate-x-[10%]'>Wishlist</div>
                     </div>
                     <div className='hover:bg-gray-100'>
-                        <div onClick={() => setGlobalState('Chats')} className='pl-10 py-4 hover:text-black cursor-pointer transition-transform duration-500 hover:translate-x-[10%]'>Chats
-                        </div>
+                        <div onClick={() => setGlobalState('Chats')} className='pl-10 py-4 hover:text-black cursor-pointer transition-transform duration-500 hover:translate-x-[10%]'>Chats</div>
                     </div>
                     <div className='hover:bg-gray-100'>
-                        <div onClick={() => setGlobalState(SETTINGS)} className='pl-10 py-4 hover:text-black cursor-pointer transition-transform duration-500 hover:translate-x-[10%]'>Settings
-                        </div>
+                        <div onClick={() => setGlobalState(SETTINGS)} className='pl-10 py-4 hover:text-black cursor-pointer transition-transform duration-500 hover:translate-x-[10%]'>Settings</div>
                     </div>
                 </nav>
             </div>
