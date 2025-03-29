@@ -1,5 +1,6 @@
 import React, { useState, useContext } from 'react';
 import * as Constants from '../../utils/Constants';
+import Snackbar from '@mui/material/Snackbar';
 import { UserIdContext } from '../../Navigation';
 import { Header } from '../header/Header';
 import { EMPTY } from '../../utils/Constants';
@@ -11,14 +12,16 @@ export const Post = () => {
     const [base64, setBase64] = useState<string | null>(null);
     const [brand, setBrand] = useState<string>(EMPTY);
     const [model, setModel] = useState<string>(EMPTY);
-    const [category, setCategory] = useState<string>(EMPTY);
+    const [category, setCategory] = useState<string>('Others');
     const [price, setPrice] = useState<string>(EMPTY);
+    const [snackBar, setSnackBar] = useState<string>(EMPTY);
 
     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0];
         if (file) {
             setSelectedImage(file);
             const reader = new FileReader();
+
             reader.onloadend = () => {
                 const result = reader.result as string;
                 const base64String = result.split(',')[1];
@@ -31,16 +34,14 @@ export const Post = () => {
     const publish = async () => {
         if (!brand || !model || !category || !price) {
             alert("Please fill in all fields before publishing.");
-            return;
+            throw Error;
         }
 
-        console.log(brand, model, price, category, price, userId);
-
         await axios.post(`${Constants.HOSTNAME}/saveClothe`, {
-            brand: brand,
-            model: model,
-            category: category,
-            price: price,
+            brand: brand?.trim(),
+            model: model?.trim(),
+            category: category?.trim(),
+            price: price?.trim(),
             publisher: userId,
             picture: base64,
         }, {
@@ -49,9 +50,8 @@ export const Post = () => {
     };
 
     return (
-        <div className='containerPublish'>
+        <div>
             <Header />
-            <h1>P U B L I S H</h1>
             <div>
                 {selectedImage && (
                     <div>
@@ -70,7 +70,7 @@ export const Post = () => {
             <div>
                 <input
                     value={brand}
-                    onChange={e => setBrand(e.target.value.trim())}
+                    onChange={e => setBrand(e.target.value)}
                     type="text"
                     placeholder='Brand'
                     id='brand'
@@ -78,7 +78,7 @@ export const Post = () => {
 
                 <input
                     value={model}
-                    onChange={e => setModel(e.target.value.trim())}
+                    onChange={e => setModel(e.target.value)}
                     type="text"
                     placeholder='Model'
                     id='model'
@@ -86,7 +86,7 @@ export const Post = () => {
 
                 <input
                     value={price}
-                    onChange={e => setPrice(e.target.value.trim())}
+                    onChange={e => setPrice(e.target.value)}
                     type="number"
                     placeholder='Price'
                     id='price'
@@ -102,8 +102,23 @@ export const Post = () => {
                     <option value="Accessories">Accessories</option>
                 </select>
 
-                <button onClick={ () => {publish().then(data => console.log(data)).catch(err => console.error(err));}}>Publish</button>
+                <button onClick={ () => {
+                    publish().then(() =>
+                        setSnackBar('Product posted successfully!')
+                    ).catch(() =>
+                        setSnackBar('An error happened trying to post the product.')
+                    );
+                }}>
+                    Publish
+                </button>
             </div>
+
+            <Snackbar
+                open={!!snackBar}
+                autoHideDuration={6000}
+                onClose={() => { setSnackBar(EMPTY) }}
+                message={snackBar}
+            />
         </div>
     );
 };
