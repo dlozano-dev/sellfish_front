@@ -1,6 +1,7 @@
 // src/GlobalState.tsx
 import React, { createContext, useState, ReactNode } from 'react';
-import {LOGIN} from "./utils/Constants.tsx";
+import { LOGIN } from "./utils/Constants.tsx";
+import { Item } from "./components/shop/data/Item.ts";
 
 // Define types for contexts
 interface GlobalContextType {
@@ -14,8 +15,8 @@ interface UserContextType {
 }
 
 interface ItemContextType {
-    item: string | null;
-    setItem: React.Dispatch<React.SetStateAction<string | null>>;
+    item: Item | null;
+    setItem: React.Dispatch<React.SetStateAction<Item | null>>;
 }
 
 interface UserIdContextType {
@@ -42,7 +43,7 @@ interface GlobalProviderProps {
 export const GlobalProvider: React.FC<GlobalProviderProps> = ({ children }) => {
     const [globalState, setGlobalState] = useState<string>(LOGIN);
     const [user, setUser] = useState<string | null>(null);
-    const [item, setItem] = useState<string | null>(null);
+    const [item, setItem] = useState<Item | null>(null);
     const [userId, setUserId] = useState<string | null>(null);
 
     return (
