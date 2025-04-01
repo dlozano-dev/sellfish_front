@@ -2,11 +2,13 @@ import { useState, useContext, useEffect } from 'react';
 import { GlobalContext } from '../../../Navigation.jsx';
 import { ItemContext } from '../../../Navigation.jsx';
 import { Header } from "../../header/Header.jsx";
+import {ProgressSpinner} from "primereact/progressspinner";
 import {CATEGORIES, HOSTNAME, ITEM_DETAILS, ORDER_OPTIONS, PROVINCES} from "../../../utils/Constants.tsx";
 import {Item} from "../data/Item.ts";
 
 export const Shop = () => {
     const [clothes, setClothes] = useState<Item[]>();
+    const [isLoading, setIsLoading] = useState<boolean>(false);
     const { setGlobalState } = useContext(GlobalContext)!;
     const { setItem } = useContext(ItemContext)!;
 
@@ -15,9 +17,11 @@ export const Shop = () => {
     }, []);
 
     async function fetchClothes() {
+        setIsLoading(true);
         const response = await fetch(`${HOSTNAME}/clothes`);
         const data = await response.json();
         setClothes(data);
+        // setIsLoading(false);
     }
 
     function goItem(item: Item) {
@@ -51,7 +55,14 @@ export const Shop = () => {
                     ))}
                 </div>
             ) : (
-                <p className='text-center'>No clothes available.</p>
+                isLoading ? (
+                    <div className="card items-center w-full flex">
+                        <ProgressSpinner style={{width: '50px', height: '50px'}} strokeWidth="8"
+                                         fill="var(--surface-ground)" animationDuration=".5s"/>
+                    </div>
+                ) : (
+                    <p className='text-center'>No clothes available.</p>
+                )
             )}
         </div>
     );
