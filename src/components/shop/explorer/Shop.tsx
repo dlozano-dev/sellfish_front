@@ -63,16 +63,14 @@ import { ArrowDownUp } from 'lucide-react';
 import { SlidersHorizontal } from 'lucide-react';
 import { CircleDollarSign } from 'lucide-react';
 import {AnimatePresence, motion} from "framer-motion";
+import {Slider} from "@mui/material";
 
 export const ShopToolbar = () => {
     const [selectedProvince, setSelectedProvince] = useState("All Spain");
     const [orderBy, setOrderBy] = useState("price_asc");
     const [search, setSearch] = useState("");
-
     // Price Range
-    const [priceRange, setPriceRange] = useState([0, 500]);
     const [showPriceDropdown, setShowPriceDropdown] = useState(false);
-
     // Categories
     const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
     const [showCategoriesDropdown, setShowCategoriesDropdown] = useState(false);
@@ -81,6 +79,22 @@ export const ShopToolbar = () => {
         setSelectedCategories((prev) =>
             prev.includes(category) ? prev.filter((c) => c !== category) : [...prev, category]
         );
+    };
+    const minDistance = 1;
+    const [value2, setValue2] = useState<number[]>([0, 500]);
+
+    const handleChange2 = (_event: Event, newValue: number[], activeThumb: number) => {
+        if (newValue[1] - newValue[0] < minDistance) {
+            if (activeThumb === 0) {
+                const clamped = Math.min(newValue[0], 100 - minDistance);
+                setValue2([clamped, clamped + minDistance]);
+            } else {
+                const clamped = Math.max(newValue[1], minDistance);
+                setValue2([clamped - minDistance, clamped]);
+            }
+        } else {
+            setValue2(newValue);
+        }
     };
 
     return (
@@ -104,20 +118,23 @@ export const ShopToolbar = () => {
                 </div>
 
                 {/* Order By Dropdown */}
-                <div className='flex items-center'>
-                    <ArrowDownUp />
-                    <select
-                        value={orderBy}
-                        onChange={(e) => setOrderBy(e.target.value)}
-                        className='hover:cursor-pointer'
-                    >
-                        {ORDER_OPTIONS.map((option) => (
-                            <option key={option.value} value={option.value}>
-                                {option.label}
-                            </option>
-                        ))}
-                    </select>
-                </div>
+                <AnimatePresence>
+                        <ArrowDownUp />
+                        <motion.select
+                            initial={{opacity: 0, y: -10}} animate={{opacity: 1, y: 0}} exit={{opacity: 0, y: -10}}
+                            value={orderBy}
+                            onChange={(e) => setOrderBy(e.target.value)}
+                            className='hover:cursor-pointer'
+                        >
+                            {ORDER_OPTIONS.map((option) => (
+                                <motion.option
+                                    initial={{opacity: 0, y: -10}} animate={{opacity: 1, y: 0}} exit={{opacity: 0, y: -10}}
+                                    key={option.value} value={option.value}>
+                                    {option.label}
+                                </motion.option>
+                            ))}
+                        </motion.select>
+                </AnimatePresence>
 
                 {/* Search Bar */}
                 <div className="flex items-center max-w-180">
@@ -144,33 +161,17 @@ export const ShopToolbar = () => {
                     </button>
                     <AnimatePresence>
                         {showPriceDropdown && (
-                            <motion.div initial={{opacity: 0, y: -10}} animate={{opacity: 1, y: 0}} exit={{opacity: 0, y: -10}} className="flex items-center justify-between absolute w-120 right-0 top-14 shadow-2xl rounded-md bg-white p-2 space-x-4">
-                                <div className="">
-                                    <label className="block text-sm">Min Price: {priceRange[0]}€</label>
-                                    <input
-                                        type="range"
-                                        min="0"
-                                        max="500"
-                                        value={priceRange[0]}
-                                        onChange={(e) => setPriceRange([+e.target.value, priceRange[1]])}
-                                        className="w-45 hover:cursor-pointer accent-stone-900"
-                                    />
-                                </div>
-                                <div className="">
-                                    <label className="block text-sm">Max Price: {priceRange[1]}€</label>
-                                    <input
-                                        type="range"
-                                        min="0"
-                                        max="500"
-                                        value={priceRange[1]}
-                                        onChange={(e) => setPriceRange([priceRange[0], +e.target.value])}
-                                        className="w-45 hover:cursor-pointer accent-stone-900"
-                                    />
-                                </div>
-                                <button
-                                    onClick={() => setShowPriceDropdown(false)}
-                                    className="text-black px-3 hover:cursor-pointer hover:opacity-70"
-                                >
+                            <motion.div initial={{opacity: 0, y: -10}} animate={{opacity: 1, y: 0}} exit={{opacity: 0, y: -10}} className="flex items-center justify-between absolute w-70 right-0 top-14 shadow-2xl rounded-md bg-white p-2 space-x-4">
+                                <Slider
+                                    getAriaLabel={() => 'Minimum distance shift'}
+                                    value={value2}
+                                    onChange={handleChange2}
+                                    valueLabelDisplay="auto"
+                                    disableSwap
+                                    className='ml-3'
+                                    color='secondary'
+                                />
+                                <button onClick={() => setShowPriceDropdown(false)} className="text-black px-3 hover:cursor-pointer hover:opacity-70">
                                     Apply
                                 </button>
                             </motion.div>
@@ -187,27 +188,26 @@ export const ShopToolbar = () => {
                         <SlidersHorizontal />
                         <span className='ms-2'>Categories</span>
                     </button>
-                    {showCategoriesDropdown && (
-                        <div className="absolute bg-white border shadow-md p-4 mt-2 w-48 rounded-md">
-                            {CATEGORIES.map((category) => (
-                                <label key={category} className="block text-sm">
-                                    <input
-                                        type="checkbox"
-                                        checked={selectedCategories.includes(category)}
-                                        onChange={() => handleCategoryChange(category)}
-                                        className="mr-1"
-                                    />
-                                    {category}
-                                </label>
-                            ))}
-                            <button
-                                onClick={() => setShowCategoriesDropdown(false)}
-                                className="mt-3 bg-blue-500 text-white px-3 py-1 rounded"
-                            >
-                                Apply
-                            </button>
-                        </div>
-                    )}
+                    <AnimatePresence>
+                        {showCategoriesDropdown && (
+                            <motion.div initial={{opacity: 0, y: -10}} animate={{opacity: 1, y: 0}} exit={{opacity: 0, y: -10}} className="absolute bg-white border shadow-md p-4 mt-2 w-48 rounded-md">
+                                {CATEGORIES.map((category) => (
+                                    <label key={category} className="block text-sm">
+                                        <input
+                                            type="checkbox"
+                                            checked={selectedCategories.includes(category)}
+                                            onChange={() => handleCategoryChange(category)}
+                                            className="mr-1"
+                                        />
+                                        {category}
+                                    </label>
+                                ))}
+                                <button onClick={() => setShowCategoriesDropdown(false)} className="mt-3 bg-blue-500 text-white px-3 py-1 rounded">
+                                    Apply
+                                </button>
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
                 </div>
             </div>
         </div>
