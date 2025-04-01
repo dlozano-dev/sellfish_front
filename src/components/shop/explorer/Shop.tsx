@@ -57,7 +57,6 @@ export const Shop = () => {
     );
 };
 
-import {MapPin} from 'lucide-react';
 import {Search} from 'lucide-react';
 import {CircleDollarSign} from 'lucide-react';
 import {AnimatePresence, motion} from "framer-motion";
@@ -66,8 +65,8 @@ import {MultiSelect} from 'primereact/multiselect';
 import {Dropdown} from "primereact/dropdown";
 
 export const ShopToolbar = () => {
-    const [selectedProvince, setSelectedProvince] = useState("All Spain");
-    const [orderBy, setOrderBy] = useState<{ name: string; code: string }>(ORDER_OPTIONS[0]);
+    const [selectedProvince, setSelectedProvince] = useState(PROVINCES[0].value);
+    const [orderBy, setOrderBy] = useState(ORDER_OPTIONS[0].value);
     const [search, setSearch] = useState("");
     // Price Range
     const [showPriceDropdown, setShowPriceDropdown] = useState(false);
@@ -96,32 +95,53 @@ export const ShopToolbar = () => {
             <div className="flex flex-wrap items-center justify-between px-2 py-1 gap-6">
                 {/* Location Dropdown */}
                 <div className='flex items-center'>
-                    <MapPin/>
-                    <select
+                    <Dropdown
                         value={selectedProvince}
-                        onChange={(e) => setSelectedProvince(e.target.value)}
-                        className='hover:cursor-pointer'
-                    >
-                        {PROVINCES.map((province) => (
-                            <option key={province} value={province}>
-                                {province}
-                            </option>
-                        ))}
-                    </select>
+                        onChange={(e) => setSelectedProvince(e.value)} options={PROVINCES}
+                        optionLabel="name"
+                        checkmark={true}
+                        placeholder="Location"
+                        className="w-full h-12 md:w-14rem"
+                    />
                 </div>
 
                 {/* Order By Dropdown */}
                 <div className="card flex justify-content-center">
                     <Dropdown
-                        value={orderBy.name}
+                        value={orderBy}
                         onChange={(e) => setOrderBy(e.value)} options={ORDER_OPTIONS}
                         optionLabel="name"
-                        showClear
                         checkmark={true}
                         placeholder="Order by"
-                        className="w-full md:w-14rem"
+                        className="w-full h-12 md:w-14rem"
                     />
                 </div>
+
+                {/* Search Bar */}
+                <div className="flex items-center">
+                    <Search/>
+                    <input
+                        type="text"
+                        placeholder="Search..."
+                        value={search}
+                        onChange={(e) => setSearch(e.target.value)}
+                        className="focus:outline-none ms-2.5 h-12"
+                    />
+                </div>
+            </div>
+
+            {/* Categories Dropdown */}
+            <div className="card flex justify-center items-center">
+                <MultiSelect
+                    value={selectedCategories}
+                    onChange={(e) => setSelectedCategories(e.value)}
+                    options={CATEGORIES}
+                    optionLabel="name"
+                    display="chip"
+                    placeholder="Select Categories"
+                    maxSelectedLabels={3}
+                    className=" w-max-40 md:w-20rem h-12 items-center"
+                />
 
                 {/* Price Range Dropdown */}
                 <div className="relative">
@@ -164,32 +184,6 @@ export const ShopToolbar = () => {
                         )}
                     </AnimatePresence>
                 </div>
-
-                {/* Search Bar */}
-                <div className="flex items-center">
-                    <Search/>
-                    <input
-                        type="text"
-                        placeholder="Search..."
-                        value={search}
-                        onChange={(e) => setSearch(e.target.value)}
-                        className="focus:outline-none ms-2.5"
-                    />
-                </div>
-            </div>
-
-            {/* Categories Dropdown */}
-            <div className="card flex justify-content-center">
-                <MultiSelect
-                    value={selectedCategories}
-                    onChange={(e) => setSelectedCategories(e.value)}
-                    options={CATEGORIES}
-                    optionLabel="name"
-                    display="chip"
-                    placeholder="Select Categories"
-                    maxSelectedLabels={3}
-                    className=" w-max-40 md:w-20rem h-12 items-center"
-                />
             </div>
         </div>
     );

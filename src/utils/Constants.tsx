@@ -23,26 +23,43 @@ export const SIGN_UP = 'signup'
 
 /* SHOP */
 export const PROVINCES = [
-    "All Spain", "Madrid", "Barcelona", "Valencia", "Seville", "Zaragoza", "Málaga",
-    "Murcia", "Palma", "Bilbao", "Alicante", "Córdoba", "Valladolid", "Vigo",
-    "Gijón", "Granada", "Elche", "Oviedo", "Badalona", "Cartagena"
+    { name: "All Spain", value: "All Spain" },
+    { name: "Madrid", value: "Madrid" },
+    { name: "Barcelona", value: "Barcelona" },
+    { name: "Valencia", value: "Valencia" },
+    { name: "Seville", value: "Seville" },
+    { name: "Zaragoza", value: "Zaragoza" },
+    { name: "Málaga", value: "Málaga" },
+    { name: "Murcia", value: "Murcia" },
+    { name: "Palma", value: "Palma" },
+    { name: "Bilbao", value: "Bilbao" },
+    { name: "Alicante", value: "Alicante" },
+    { name: "Córdoba", value: "Córdoba" },
+    { name: "Valladolid", value: "Valladolid" },
+    { name: "Vigo", value: "Vigo" },
+    { name: "Gijón", value: "Gijón" },
+    { name: "Granada", value: "Granada" },
+    { name: "Elche", value: "Elche" },
+    { name: "Oviedo", value: "Oviedo" },
+    { name: "Badalona", value: "Badalona" },
+    { name: "Cartagena", value: "Cartagena" }
 ];
 
 export const ORDER_OPTIONS = [
-    { name: "Price: Low to High", code: "price_asc" },
-    { name: "Price: High to Low", code: "price_desc" },
-    { name: "Newest First", code: "newest" },
-    { name: "Oldest First", code: "oldest" },
-    { name: "Most Popular", code: "popular" },
-    { name: "Least Popular", code: "less_popular" }
+    { name: "Price: Low to High", value: "price_asc" },
+    { name: "Price: High to Low", value: "price_desc" },
+    { name: "Newest First", value: "newest" },
+    { name: "Oldest First", value: "oldest" },
+    { name: "Most Popular", value: "popular" },
+    { name: "Least Popular", value: "less_popular" }
 ];
 
 export const CATEGORIES = [
-    { name: 'Others', code: 'Others' },
-    { name: 'Shoes', code: 'Shoes' },
-    { name: 'Shirts', code: 'Shirts' },
-    { name: 'Jackets', code: 'Jackets' },
-    { name: 'Hoodies', code: 'Hoodies' },
-    { name: 'Pants', code: 'Pants' },
-    { name: 'Accessories', code: 'Accessories' }
+    { name: 'Others', value: 'Others' },
+    { name: 'Shoes', value: 'Shoes' },
+    { name: 'Shirts', value: 'Shirts' },
+    { name: 'Jackets', value: 'Jackets' },
+    { name: 'Hoodies', value: 'Hoodies' },
+    { name: 'Pants', value: 'Pants' },
+    { name: 'Accessories', value: 'Accessories' }
 ]
