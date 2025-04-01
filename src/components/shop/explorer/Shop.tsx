@@ -2,7 +2,7 @@ import { useState, useContext, useEffect } from 'react';
 import { GlobalContext } from '../../../Navigation.jsx';
 import { ItemContext } from '../../../Navigation.jsx';
 import { Header } from "../../header/Header.jsx";
-import {HOSTNAME, ITEM_DETAILS} from "../../../utils/Constants.tsx";
+import {CATEGORIES, HOSTNAME, ITEM_DETAILS, ORDER_OPTIONS, PROVINCES} from "../../../utils/Constants.tsx";
 import {Item} from "../data/Item.ts";
 
 export const Shop = () => {
@@ -60,23 +60,8 @@ export const Shop = () => {
 
 import { MapPin } from 'lucide-react';
 import { Search } from 'lucide-react';
-
-const provinces = [
-    "All Spain", "Madrid", "Barcelona", "Valencia", "Seville", "Zaragoza", "Málaga",
-    "Murcia", "Palma", "Bilbao", "Alicante", "Córdoba", "Valladolid", "Vigo",
-    "Gijón", "Granada", "Elche", "Oviedo", "Badalona", "Cartagena"
-];
-
-const orderOptions = [
-    { value: "price_asc", label: "Price: Low to High" },
-    { value: "price_desc", label: "Price: High to Low" },
-    { value: "newest", label: "Newest First" },
-    { value: "oldest", label: "Oldest First" },
-    { value: "popular", label: "Most Popular" },
-    { value: "less_popular", label: "Least Popular" }
-];
-
-const categories = ["Clothing", "Shoes", "Accessories", "Sportswear", "Casual", "Formal"];
+import { ArrowDownUp } from 'lucide-react';
+import { SlidersHorizontal } from 'lucide-react';
 
 export const ShopToolbar = () => {
     const [selectedProvince, setSelectedProvince] = useState("All Spain");
@@ -98,44 +83,49 @@ export const ShopToolbar = () => {
     };
 
     return (
-        <div className="bg-white w-full h-auto flex flex-wrap items-center justify-between px-4 py-2 shadow-md gap-2 mb-5 shadow-xl">
+        <div
+            className="bg-white w-[95vw] max-w-6xl h-auto flex flex-wrap items-center justify-between px-4 py-2 gap-2 mb-5 shadow-xl mx-auto rounded-md">
 
-            {/* Location Dropdown */}
-            <div className="flex flex-wrap items-center justify-between px-2 py-1">
-                <MapPin/>
-                <select
-                    value={selectedProvince}
-                    onChange={(e) => setSelectedProvince(e.target.value)}
-                >
-                    {provinces.map((province) => (
-                        <option key={province} value={province}>
-                            {province}
-                        </option>
-                    ))}
-                </select>
+            <div className="flex flex-wrap items-center justify-between px-2 py-1 gap-6">
+                {/* Location Dropdown */}
+                <div className='flex items-center'>
+                    <MapPin/>
+                    <select
+                        value={selectedProvince}
+                        onChange={(e) => setSelectedProvince(e.target.value)}
+                    >
+                        {PROVINCES.map((province) => (
+                            <option key={province} value={province}>
+                                {province}
+                            </option>
+                        ))}
+                    </select>
+                </div>
 
                 {/* Order By Dropdown */}
-                <select
-                    value={orderBy}
-                    onChange={(e) => setOrderBy(e.target.value)}
-                    className="border rounded px-2 py-1"
-                >
-                    {orderOptions.map((option) => (
-                        <option key={option.value} value={option.value}>
-                            {option.label}
-                        </option>
-                    ))}
-                </select>
+                <div className='flex items-center'>
+                    <ArrowDownUp />
+                    <select
+                        value={orderBy}
+                        onChange={(e) => setOrderBy(e.target.value)}
+                    >
+                        {ORDER_OPTIONS.map((option) => (
+                            <option key={option.value} value={option.value}>
+                                {option.label}
+                            </option>
+                        ))}
+                    </select>
+                </div>
 
                 {/* Search Bar */}
-                <div className="flex items-center  px-3 py-1 w-48">
+                <div className="flex items-center max-w-180">
                     <Search/>
                     <input
                         type="text"
                         placeholder="Search..."
                         value={search}
                         onChange={(e) => setSearch(e.target.value)}
-                        className="focus:outline-none"
+                        className="focus:outline-none ms-2.5"
                     />
                 </div>
             </div>
@@ -183,13 +173,14 @@ export const ShopToolbar = () => {
                 <div className="relative">
                     <button
                         onClick={() => setShowCategoriesDropdown(!showCategoriesDropdown)}
-                        className="border rounded px-3 py-1"
+                        className="flex px-3"
                     >
-                        Categories
+                        <SlidersHorizontal />
+                        <span className='ms-2'>Categories</span>
                     </button>
                     {showCategoriesDropdown && (
                         <div className="absolute bg-white border shadow-md p-4 mt-2 w-48 rounded-md">
-                            {categories.map((category) => (
+                            {CATEGORIES.map((category) => (
                                 <label key={category} className="block text-sm">
                                     <input
                                         type="checkbox"
