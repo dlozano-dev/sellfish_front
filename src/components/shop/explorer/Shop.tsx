@@ -51,9 +51,8 @@ export const Shop = () => {
                     ))}
                 </div>
             ) : (
-                <p>No clothes available.</p>
+                <p className='text-center'>No clothes available.</p>
             )}
-
         </div>
     );
 };
@@ -62,6 +61,8 @@ import { MapPin } from 'lucide-react';
 import { Search } from 'lucide-react';
 import { ArrowDownUp } from 'lucide-react';
 import { SlidersHorizontal } from 'lucide-react';
+import { CircleDollarSign } from 'lucide-react';
+import {AnimatePresence, motion} from "framer-motion";
 
 export const ShopToolbar = () => {
     const [selectedProvince, setSelectedProvince] = useState("All Spain");
@@ -83,8 +84,7 @@ export const ShopToolbar = () => {
     };
 
     return (
-        <div
-            className="bg-white w-[95vw] max-w-6xl h-auto flex flex-wrap items-center justify-between px-4 py-2 gap-2 mb-5 shadow-xl mx-auto rounded-md">
+        <div className="bg-white w-[95vw] max-w-6xl h-auto flex flex-wrap items-center justify-between px-4 py-3 gap-2 mb-5 shadow-xl mx-auto rounded-md">
 
             <div className="flex flex-wrap items-center justify-between px-2 py-1 gap-6">
                 {/* Location Dropdown */}
@@ -93,6 +93,7 @@ export const ShopToolbar = () => {
                     <select
                         value={selectedProvince}
                         onChange={(e) => setSelectedProvince(e.target.value)}
+                        className='hover:cursor-pointer'
                     >
                         {PROVINCES.map((province) => (
                             <option key={province} value={province}>
@@ -108,6 +109,7 @@ export const ShopToolbar = () => {
                     <select
                         value={orderBy}
                         onChange={(e) => setOrderBy(e.target.value)}
+                        className='hover:cursor-pointer'
                     >
                         {ORDER_OPTIONS.map((option) => (
                             <option key={option.value} value={option.value}>
@@ -135,45 +137,52 @@ export const ShopToolbar = () => {
                 <div className="relative">
                     <button
                         onClick={() => setShowPriceDropdown(!showPriceDropdown)}
-                        className="border rounded px-3 py-1"
+                        className="flex px-3 hover:cursor-pointer"
                     >
-                        Price
+                        <CircleDollarSign/>
+                        <span className="ms-2">Price</span>
                     </button>
-                    {showPriceDropdown && (
-                        <div className="absolute bg-white border shadow-md p-4 mt-2 w-48 rounded-md">
-                            <label className="block text-sm">Min Price: ${priceRange[0]}</label>
-                            <input
-                                type="range"
-                                min="0"
-                                max="500"
-                                value={priceRange[0]}
-                                onChange={(e) => setPriceRange([+e.target.value, priceRange[1]])}
-                                className="w-full"
-                            />
-                            <label className="block text-sm mt-2">Max Price: ${priceRange[1]}</label>
-                            <input
-                                type="range"
-                                min="0"
-                                max="500"
-                                value={priceRange[1]}
-                                onChange={(e) => setPriceRange([priceRange[0], +e.target.value])}
-                                className="w-full"
-                            />
-                            <button
-                                onClick={() => setShowPriceDropdown(false)}
-                                className="mt-3 bg-blue-500 text-white px-3 py-1 rounded"
-                            >
-                                Apply
-                            </button>
-                        </div>
-                    )}
+                    <AnimatePresence>
+                        {showPriceDropdown && (
+                            <motion.div initial={{opacity: 0, y: -10}} animate={{opacity: 1, y: 0}} exit={{opacity: 0, y: -10}} className="flex items-center justify-between absolute w-120 right-0 top-14 shadow-2xl rounded-md bg-white p-2 space-x-4">
+                                <div className="">
+                                    <label className="block text-sm">Min Price: {priceRange[0]}€</label>
+                                    <input
+                                        type="range"
+                                        min="0"
+                                        max="500"
+                                        value={priceRange[0]}
+                                        onChange={(e) => setPriceRange([+e.target.value, priceRange[1]])}
+                                        className="w-45 hover:cursor-pointer accent-stone-900"
+                                    />
+                                </div>
+                                <div className="">
+                                    <label className="block text-sm">Max Price: {priceRange[1]}€</label>
+                                    <input
+                                        type="range"
+                                        min="0"
+                                        max="500"
+                                        value={priceRange[1]}
+                                        onChange={(e) => setPriceRange([priceRange[0], +e.target.value])}
+                                        className="w-45 hover:cursor-pointer accent-stone-900"
+                                    />
+                                </div>
+                                <button
+                                    onClick={() => setShowPriceDropdown(false)}
+                                    className="text-black px-3 hover:cursor-pointer hover:opacity-70"
+                                >
+                                    Apply
+                                </button>
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
                 </div>
 
                 {/* Categories Dropdown */}
                 <div className="relative">
                     <button
                         onClick={() => setShowCategoriesDropdown(!showCategoriesDropdown)}
-                        className="flex px-3"
+                        className="flex px-3 hover:cursor-pointer"
                     >
                         <SlidersHorizontal />
                         <span className='ms-2'>Categories</span>
