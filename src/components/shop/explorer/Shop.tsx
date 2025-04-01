@@ -21,7 +21,7 @@ export const Shop = () => {
         const response = await fetch(`${HOSTNAME}/clothes`);
         const data = await response.json();
         setClothes(data);
-        // setIsLoading(false);
+        setIsLoading(false);
     }
 
     function goItem(item: Item) {
