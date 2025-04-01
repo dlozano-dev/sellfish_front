@@ -2,6 +2,8 @@
 import React, { createContext, useState, ReactNode } from 'react';
 import { LOGIN } from "./utils/Constants.tsx";
 import { Item } from "./components/shop/data/Item.ts";
+import { PrimeReactProvider } from 'primereact/api';
+
 
 // Define types for contexts
 interface GlobalContextType {
@@ -47,14 +49,16 @@ export const GlobalProvider: React.FC<GlobalProviderProps> = ({ children }) => {
     const [userId, setUserId] = useState<string | null>(null);
 
     return (
-        <GlobalContext.Provider value={{ globalState, setGlobalState }}>
-            <UserContext.Provider value={{ user, setUser }}>
-                <ItemContext.Provider value={{ item, setItem }}>
-                    <UserIdContext.Provider value={{ userId, setUserId }}>
-                        {children}
-                    </UserIdContext.Provider>
-                </ItemContext.Provider>
-            </UserContext.Provider>
-        </GlobalContext.Provider>
+        <PrimeReactProvider>
+            <GlobalContext.Provider value={{ globalState, setGlobalState }}>
+                <UserContext.Provider value={{ user, setUser }}>
+                    <ItemContext.Provider value={{ item, setItem }}>
+                        <UserIdContext.Provider value={{ userId, setUserId }}>
+                            {children}
+                        </UserIdContext.Provider>
+                    </ItemContext.Provider>
+                </UserContext.Provider>
+            </GlobalContext.Provider>
+        </PrimeReactProvider>
     );
 };

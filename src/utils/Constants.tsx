@@ -29,20 +29,20 @@ export const PROVINCES = [
 ];
 
 export const ORDER_OPTIONS = [
-    { value: "price_asc", label: "Price: Low to High" },
-    { value: "price_desc", label: "Price: High to Low" },
-    { value: "newest", label: "Newest First" },
-    { value: "oldest", label: "Oldest First" },
-    { value: "popular", label: "Most Popular" },
-    { value: "less_popular", label: "Least Popular" }
+    { name: "Price: Low to High", code: "price_asc" },
+    { name: "Price: High to Low", code: "price_desc" },
+    { name: "Newest First", code: "newest" },
+    { name: "Oldest First", code: "oldest" },
+    { name: "Most Popular", code: "popular" },
+    { name: "Least Popular", code: "less_popular" }
 ];
 
 export const CATEGORIES = [
-    "Others",
-    "Shoes",
-    "Shirts",
-    "Jackets",
-    "Hoodies",
-    "Pants",
-    "Accessories"
+    { name: 'Others', code: 'Others' },
+    { name: 'Shoes', code: 'Shoes' },
+    { name: 'Shirts', code: 'Shirts' },
+    { name: 'Jackets', code: 'Jackets' },
+    { name: 'Hoodies', code: 'Hoodies' },
+    { name: 'Pants', code: 'Pants' },
+    { name: 'Accessories', code: 'Accessories' }
 ]
