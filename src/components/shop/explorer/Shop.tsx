@@ -56,7 +56,7 @@ export const Shop = () => {
                 </div>
             ) : (
                 isLoading ? (
-                    <div className="card items-center w-full flex">
+                    <div className="card items-center w-full flex pt-10">
                         <ProgressSpinner
                             style={{width: '50px', height: '50px'}}
                             strokeWidth="6"
