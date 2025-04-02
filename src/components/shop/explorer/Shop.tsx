@@ -3,7 +3,7 @@ import { GlobalContext } from '../../../Navigation.jsx';
 import { ItemContext } from '../../../Navigation.jsx';
 import { Header } from "../../header/Header.jsx";
 import {ProgressSpinner} from "primereact/progressspinner";
-import {CATEGORIES, HOSTNAME, ITEM_DETAILS, ORDER_OPTIONS, PROVINCES} from "../../../utils/Constants.tsx";
+import {CATEGORIES, EMPTY, HOSTNAME, ITEM_DETAILS, ORDER_OPTIONS, PROVINCES} from "../../../utils/Constants.tsx";
 import {Item} from "../data/Item.ts";
 
 export const Shop = () => {
@@ -57,8 +57,12 @@ export const Shop = () => {
             ) : (
                 isLoading ? (
                     <div className="card items-center w-full flex">
-                        <ProgressSpinner style={{width: '50px', height: '50px'}} strokeWidth="8"
-                                         fill="var(--surface-ground)" animationDuration=".5s"/>
+                        <ProgressSpinner
+                            style={{width: '50px', height: '50px'}}
+                            strokeWidth="6"
+                            aria-label="Loading"
+                            animationDuration=".8s"
+                            className='p-progress-spinner-color'/>
                     </div>
                 ) : (
                     <p className='text-center'>No clothes available.</p>
@@ -68,17 +72,19 @@ export const Shop = () => {
     );
 };
 
-import {Search} from 'lucide-react';
 import {CircleDollarSign} from 'lucide-react';
 import {AnimatePresence, motion} from "framer-motion";
 import {Slider} from "@mui/material";
 import {MultiSelect} from 'primereact/multiselect';
 import {Dropdown} from "primereact/dropdown";
+import {InputText} from "primereact/inputtext";
+import {IconField} from "primereact/iconfield";
+import {InputIcon} from "primereact/inputicon";
 
 export const ShopToolbar = () => {
     const [selectedProvince, setSelectedProvince] = useState(PROVINCES[0].value);
     const [orderBy, setOrderBy] = useState(ORDER_OPTIONS[0].value);
-    const [search, setSearch] = useState("");
+    const [search, setSearch] = useState(EMPTY);
     // Price Range
     const [showPriceDropdown, setShowPriceDropdown] = useState(false);
     // Categories
@@ -129,16 +135,14 @@ export const ShopToolbar = () => {
                 </div>
 
                 {/* Search Bar */}
-                <div className="flex items-center">
-                    <Search/>
-                    <input
-                        type="text"
-                        placeholder="Search..."
+                <IconField iconPosition="left">
+                    <InputIcon className="pi pi-search"> </InputIcon>
+                    <InputText
                         value={search}
                         onChange={(e) => setSearch(e.target.value)}
-                        className="focus:outline-none ms-2.5 h-12"
+                        placeholder="Search"
                     />
-                </div>
+                </IconField>
             </div>
 
             {/* Categories Dropdown */}
