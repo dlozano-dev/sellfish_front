@@ -1,5 +1,5 @@
 @import "tailwindcss";
-@import "primereact/resources/themes/lara-light-blue/theme.css";
+@import "primereact/resources/themes/mira/theme.css";
 @import "primereact/resources/primereact.min.css";
 @import "primeicons/primeicons.css";
 @import 'primeicons/primeicons.css';
@@ -12,23 +12,9 @@ html, body {
     overflow-x: hidden;
 }
 
-@keyframes p-progress-spinner-color {
-    100%,
-    0% {
-        stroke: #555555;
-    }
-    40% {
-        stroke: #7e7e7e;
-    }
-    66% {
-        stroke: #c1c1c1;
-    }
-    80%,
-    90% {
-        stroke: #d6d6d6;
-    }
-}
-
 .p-progress-spinner-circle {
     stroke: #44403c !important;
 }
+
+/* Hex: #81a1c1 */
+/* RGB: rgb(129,161,193) */
