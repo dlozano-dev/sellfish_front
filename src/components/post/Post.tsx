@@ -67,15 +67,20 @@ export const Post = () => {
             <Header />
 
             <div className='flex flex-col justify-center items-center gap-10'>
-                    <FileUpload
-                        name="demo[]"
-                        url={'/api/upload'}
-                        multiple
-                        accept="image/*"
-                        maxFileSize={1000000}
-                        emptyTemplate={<p className="m-0">Drag and drop files to here to upload.</p>}
-                        className='items-center'
-                    />
+                <FileUpload
+                    name="demo[]"
+                    multiple
+                    accept="image/*"
+                    maxFileSize={1000000}
+                    emptyTemplate={
+                        <div className="w-full flex flex-col justify-center items-center gap-5">
+                            <i className="pi pi-images" style={{fontSize: '2rem'}}></i>
+                            <p>
+                                Drag and drop files to here to upload.
+                            </p>
+                        </div>
+                    }
+                />
 
                 <div className='flex justify-center gap-5 w-150'>
                     <FloatLabel>
