@@ -9,20 +9,18 @@ import dagger_icon from '../../assets/Icons/dagger.svg';
 import { GlobalContext } from '../../Navigation';
 import { UserContext } from '../../Navigation';
 import {HOME, POST, SETTINGS, SHOP} from "../../utils/Constants";
+import {Sidebar} from "primereact/sidebar";
 
 export const Header = () => {
     const { setGlobalState } = useContext(GlobalContext)!;
     const { setUser } = useContext(UserContext)!;
     const [isOpen, setIsOpen] = useState(false);
-
-    function clickNav() {
-        document.getElementById('mySidenav')?.classList.toggle('-translate-x-full');
-    }
+    const [showSideBar, setShowSideBar] = useState(false);
 
     return (
         <div className='flex justify-between items-center pl-4 w-full h-20'>
             {/* Menu Icon */}
-            <div className='cursor-pointer opacity-100 hover:opacity-60' onClick={clickNav}>
+            <div className='cursor-pointer opacity-100 hover:opacity-60' onClick={() => setShowSideBar(true)}>
                 <img src={String(d_menu)} alt='Menu icon' className='w-12 h-12 transition duration-300'/>
             </div>
             <AnimatePresence>
@@ -68,31 +66,30 @@ export const Header = () => {
             </div>
 
             {/* Sidebar Navigation */}
-            <div id='mySidenav'
-                 className='fixed top-0 left-0 h-full w-88 bg-white text-gray-600 transition-transform duration-500 -translate-x-full'>
-                <span onClick={clickNav}
-                      className='absolute top-4 right-6 text-3xl cursor-pointer text-black'>&times;</span>
-                <nav className='mt-16 flex flex-col text-xl'>
-                    <div className='hover:bg-gray-100'>
+            {/*<div id='mySidenav'*/}
+            {/*     className='fixed top-0 left-0 h-full w-88 bg-white text-gray-600 transition-transform duration-500 -translate-x-full'>*/}
+            <Sidebar visible={showSideBar} onHide={() => setShowSideBar(false)} className='p-0 m-0 min-h-0 sidebar'>
+                {/*<nav className='mt-16 flex flex-col text-xl'>*/}
+                    <div className='hover:bg-gray-100 p-0 overflow-x-hidden'>
                         <div onClick={() => setGlobalState(HOME)} className='pl-10 py-4 hover:text-black cursor-pointer transition-transform duration-500 hover:translate-x-[10%]'>Home</div>
                     </div>
-                    <div className='hover:bg-gray-100'>
+                    <div className='hover:bg-gray-100 overflow-x-hidden'>
                         <div onClick={() => setGlobalState(SHOP)} className='pl-10 py-4 hover:text-black cursor-pointer transition-transform duration-500 hover:translate-x-[10%]'>Shop</div>
                     </div>
-                    <div className='hover:bg-gray-100'>
+                    <div className='hover:bg-gray-100 overflow-x-hidden'>
                         <div onClick={() => setGlobalState(POST)} className='pl-10 py-4 hover:text-black cursor-pointer transition-transform duration-500 hover:translate-x-[10%]'>Post a Product</div>
                     </div>
-                    <div className='hover:bg-gray-100'>
+                    <div className='hover:bg-gray-100 overflow-x-hidden'>
                         <div onClick={() => setGlobalState('Wishlist')} className='pl-10 py-4 hover:text-black cursor-pointer transition-transform duration-500 hover:translate-x-[10%]'>Wishlist</div>
                     </div>
-                    <div className='hover:bg-gray-100'>
+                    <div className='hover:bg-gray-100 overflow-x-hidden'>
                         <div onClick={() => setGlobalState('Chats')} className='pl-10 py-4 hover:text-black cursor-pointer transition-transform duration-500 hover:translate-x-[10%]'>Chats</div>
                     </div>
-                    <div className='hover:bg-gray-100'>
+                    <div className='hover:bg-gray-100 overflow-x-hidden'>
                         <div onClick={() => setGlobalState(SETTINGS)} className='pl-10 py-4 hover:text-black cursor-pointer transition-transform duration-500 hover:translate-x-[10%]'>Settings</div>
                     </div>
-                </nav>
-            </div>
+                {/*</nav>*/}
+            </Sidebar>
         </div>
     );
 }
