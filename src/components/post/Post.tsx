@@ -9,6 +9,7 @@ import {InputNumber} from "primereact/inputnumber";
 import {Dropdown} from "primereact/dropdown";
 import {Button} from "primereact/button";
 import { FloatLabel } from 'primereact/floatlabel';
+import {FileUpload} from "primereact/fileupload";
 
 export const Post = () => {
     const { userId } = useContext(UserIdContext)!;
@@ -66,7 +67,17 @@ export const Post = () => {
             <Header />
 
             <div className='flex flex-col justify-center items-center gap-10'>
-                <div className='flex gap-5'>
+                    <FileUpload
+                        name="demo[]"
+                        url={'/api/upload'}
+                        multiple
+                        accept="image/*"
+                        maxFileSize={1000000}
+                        emptyTemplate={<p className="m-0">Drag and drop files to here to upload.</p>}
+                        className='items-center'
+                    />
+
+                <div className='flex justify-center gap-5 w-150'>
                     <FloatLabel>
                         <InputText
                             id='brand'
@@ -88,7 +99,7 @@ export const Post = () => {
                     </FloatLabel>
                 </div>
 
-                <div className='flex gap-5'>
+                <div className='flex justify-center gap-5 w-150'>
                     <FloatLabel>
                         <InputNumber
                             id='price'
@@ -112,7 +123,7 @@ export const Post = () => {
                     </FloatLabel>
                 </div>
 
-                <div className='flex gap-5'>
+                <div className='flex justify-center gap-5 w-150'>
                     <FloatLabel>
                         <Dropdown
                             id='size'
