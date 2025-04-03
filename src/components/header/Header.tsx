@@ -66,29 +66,25 @@ export const Header = () => {
             </div>
 
             {/* Sidebar Navigation */}
-            {/*<div id='mySidenav'*/}
-            {/*     className='fixed top-0 left-0 h-full w-88 bg-white text-gray-600 transition-transform duration-500 -translate-x-full'>*/}
             <Sidebar visible={showSideBar} onHide={() => setShowSideBar(false)} className='p-0 m-0 min-h-0 sidebar'>
-                {/*<nav className='mt-16 flex flex-col text-xl'>*/}
-                    <div className='hover:bg-gray-100 p-0 overflow-x-hidden'>
-                        <div onClick={() => setGlobalState(HOME)} className='pl-10 py-4 hover:text-black cursor-pointer transition-transform duration-500 hover:translate-x-[10%]'>Home</div>
-                    </div>
-                    <div className='hover:bg-gray-100 overflow-x-hidden'>
-                        <div onClick={() => setGlobalState(SHOP)} className='pl-10 py-4 hover:text-black cursor-pointer transition-transform duration-500 hover:translate-x-[10%]'>Shop</div>
-                    </div>
-                    <div className='hover:bg-gray-100 overflow-x-hidden'>
-                        <div onClick={() => setGlobalState(POST)} className='pl-10 py-4 hover:text-black cursor-pointer transition-transform duration-500 hover:translate-x-[10%]'>Post a Product</div>
-                    </div>
-                    <div className='hover:bg-gray-100 overflow-x-hidden'>
-                        <div onClick={() => setGlobalState('Wishlist')} className='pl-10 py-4 hover:text-black cursor-pointer transition-transform duration-500 hover:translate-x-[10%]'>Wishlist</div>
-                    </div>
-                    <div className='hover:bg-gray-100 overflow-x-hidden'>
-                        <div onClick={() => setGlobalState('Chats')} className='pl-10 py-4 hover:text-black cursor-pointer transition-transform duration-500 hover:translate-x-[10%]'>Chats</div>
-                    </div>
-                    <div className='hover:bg-gray-100 overflow-x-hidden'>
-                        <div onClick={() => setGlobalState(SETTINGS)} className='pl-10 py-4 hover:text-black cursor-pointer transition-transform duration-500 hover:translate-x-[10%]'>Settings</div>
-                    </div>
-                {/*</nav>*/}
+                <div className='hover:bg-gray-100 p-0 overflow-x-hidden'>
+                    <div onClick={() => setGlobalState(HOME)} className='pl-10 py-4 hover:text-black cursor-pointer transition-transform duration-500 hover:translate-x-[10%]'>Home</div>
+                </div>
+                <div className='hover:bg-gray-100 overflow-x-hidden'>
+                    <div onClick={() => setGlobalState(SHOP)} className='pl-10 py-4 hover:text-black cursor-pointer transition-transform duration-500 hover:translate-x-[10%]'>Shop</div>
+                </div>
+                <div className='hover:bg-gray-100 overflow-x-hidden'>
+                    <div onClick={() => setGlobalState(POST)} className='pl-10 py-4 hover:text-black cursor-pointer transition-transform duration-500 hover:translate-x-[10%]'>Post a Product</div>
+                </div>
+                <div className='hover:bg-gray-100 overflow-x-hidden'>
+                    <div onClick={() => setGlobalState('Wishlist')} className='pl-10 py-4 hover:text-black cursor-pointer transition-transform duration-500 hover:translate-x-[10%]'>Wishlist</div>
+                </div>
+                <div className='hover:bg-gray-100 overflow-x-hidden'>
+                    <div onClick={() => setGlobalState('Chats')} className='pl-10 py-4 hover:text-black cursor-pointer transition-transform duration-500 hover:translate-x-[10%]'>Chats</div>
+                </div>
+                <div className='hover:bg-gray-100 overflow-x-hidden'>
+                    <div onClick={() => setGlobalState(SETTINGS)} className='pl-10 py-4 hover:text-black cursor-pointer transition-transform duration-500 hover:translate-x-[10%]'>Settings</div>
+                </div>
             </Sidebar>
         </div>
     );
