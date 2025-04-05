@@ -1,16 +1,15 @@
-import { useState, useContext, useEffect } from 'react';
-import { GlobalContext } from '../../../Navigation.jsx';
-import { ItemContext } from '../../../Navigation.jsx';
+import { useState, useEffect } from 'react';
 import { Header } from "../../header/Header.jsx";
-import {ProgressSpinner} from "primereact/progressspinner";
-import {CATEGORIES, EMPTY, HOSTNAME, ITEM_DETAILS, ORDER_OPTIONS, PROVINCES} from "../../../utils/Constants.tsx";
-import {Item} from "../data/Item.ts";
+import { ItemDetails } from "../itemDetails/ItemDetails.tsx";
+import { Dialog } from "primereact/dialog";
+import { Item } from "../data/Item.ts";
+import { ProgressSpinner } from "primereact/progressspinner";
+import { CATEGORIES, EMPTY, HOSTNAME, ORDER_OPTIONS, PROVINCES } from "../../../utils/Constants.tsx";
 
 export const Shop = () => {
     const [clothes, setClothes] = useState<Item[]>();
-    const [isLoading, setIsLoading] = useState<boolean>(false);
-    const { setGlobalState } = useContext(GlobalContext)!;
-    const { setItem } = useContext(ItemContext)!;
+    const [isLoading, setIsLoading] = useState(false);
+    const [item, setItem] = useState<Item | undefined>(undefined);
 
     useEffect(() => {
         fetchClothes().then();
@@ -24,35 +23,44 @@ export const Shop = () => {
         setIsLoading(false);
     }
 
-    function goItem(item: Item) {
-        setItem(item)
-        setGlobalState(ITEM_DETAILS)
-    }
-
     return (
         <div>
             <Header/>
+
             {/* Search and filters bar */}
             <ShopToolbar/>
+
             {/* Render clothes list or any other UI components */}
             {clothes?.length ? (
                 <div className="flex flex-wrap justify-center gap-4">
-                    {clothes.map((item, index) => (
+                    {clothes.map((i, index) => (
                         <div
-                            onClick={() => goItem(item)}
+                            onClick={() => setItem(i)}
                             key={index}
-                            className="w-80 h-90 overflow-hidden rounded-md flex flex-col justify-end hover:cursor-pointer "
+                            className="w-80 h-90 overflow-hidden rounded-md flex flex-col justify-end hover:cursor-pointer"
                         >
                             <img
-                                src={`data:image/png;base64,${item.picture}`}
-                                alt={item.brand}
+                                src={`data:image/png;base64,${i.picture}`}
+                                alt={i.brand}
                                 className="w-full h-full object-cover rounded-md"
                             />
                             <p className="py-2 text-gray-800 font-semibold items-start">
-                                {`${item.price} €`}
+                                {`${i.price} €`}
                             </p>
                         </div>
                     ))}
+
+                    {/* Single Dialog outside the map */}
+                    <Dialog
+                        header="Item Details"
+                        visible={!!item} // Only visible if item is defined
+                        style={{ width: '50vw' }}
+                        onHide={() => setItem(undefined)}
+                        dismissableMask
+                        modal
+                    >
+                        {item && <ItemDetails item={item} />}
+                    </Dialog>
                 </div>
             ) : (
                 isLoading ? (
@@ -118,7 +126,7 @@ export const ShopToolbar = () => {
                         optionLabel="name"
                         checkmark={true}
                         placeholder="Location"
-                        className="w-full h-12 md:w-14rem"
+                        className="w-full h-12 md:w-14rem items-center"
                     />
                 </div>
 
@@ -130,7 +138,7 @@ export const ShopToolbar = () => {
                         optionLabel="name"
                         checkmark={true}
                         placeholder="Order by"
-                        className="w-full h-12 md:w-14rem"
+                        className="w-full h-12 md:w-14rem items-center"
                     />
                 </div>
 

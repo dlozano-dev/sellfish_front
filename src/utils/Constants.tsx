@@ -6,7 +6,6 @@ export const HOME = 'home';
 export const SETTINGS = 'settings';
 export const POST = 'post'
 export const SHOP = 'shop'
-export const ITEM_DETAILS = 'itemDetails';
 
 /* HTTP METHODS */
 export const GET = 'get';
