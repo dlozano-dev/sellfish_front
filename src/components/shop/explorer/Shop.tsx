@@ -1,4 +1,4 @@
-import { useState, useEffect, SetStateAction} from 'react';
+import {useState, useEffect, SetStateAction, useContext} from 'react';
 import {Header} from "../../header/Header.jsx";
 import {ItemDetails} from "../itemDetails/ItemDetails.tsx";
 import {Dialog} from "primereact/dialog";
@@ -11,14 +11,14 @@ import {
     EMPTY, FIFTY,
     HOSTNAME,
     ORDER_OPTIONS,
-    PROVINCES, SEVENTY_FIVE,
+    PROVINCES, SEVENTY_FIVE, SIZES,
     TWENTY_FIVE,
     ZERO
 } from "../../../utils/Constants.tsx";
 
 export const Shop = () => {
     const [clothes, setClothes] = useState<Item[]>();
-    const [isLoading, setIsLoading] = useState(false);
+    const {isLoading, setIsLoading} = useContext(LoadingContext)!;
     const [item, setItem] = useState<Item | undefined>(undefined);
 
     // Pagination states
@@ -122,8 +122,11 @@ import {Dropdown} from "primereact/dropdown";
 import {InputText} from "primereact/inputtext";
 import {IconField} from "primereact/iconfield";
 import {InputIcon} from "primereact/inputicon";
+import {Button} from "primereact/button";
+import {LoadingContext} from "../../../Navigation.tsx";
 
 export const ShopToolbar = () => {
+    const {isLoading} = useContext(LoadingContext)!;
     const [selectedProvince, setSelectedProvince] = useState(PROVINCES[0].value);
     const [orderBy, setOrderBy] = useState(ORDER_OPTIONS[0].value);
     const [search, setSearch] = useState(EMPTY);
@@ -131,6 +134,7 @@ export const ShopToolbar = () => {
     const [showPriceDropdown, setShowPriceDropdown] = useState(false);
     // Categories
     const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+    const [selectedSizes, setSelectedSizes] = useState<string[]>([]);
 
     const minDistance = 1;
     const [value2, setValue2] = useState<number[]>([0, 500]);
@@ -176,30 +180,6 @@ export const ShopToolbar = () => {
                     />
                 </div>
 
-                {/* Search Bar */}
-                <IconField iconPosition="left">
-                    <InputIcon className="pi pi-search"> </InputIcon>
-                    <InputText
-                        value={search}
-                        onChange={(e) => setSearch(e.target.value)}
-                        placeholder="Search"
-                    />
-                </IconField>
-            </div>
-
-            {/* Categories Dropdown */}
-            <div className="card flex justify-center items-center">
-                <MultiSelect
-                    value={selectedCategories}
-                    onChange={(e) => setSelectedCategories(e.value)}
-                    options={CATEGORIES}
-                    optionLabel="name"
-                    display="chip"
-                    placeholder="Select Categories"
-                    maxSelectedLabels={3}
-                    className=" w-max-40 md:w-20rem h-12 items-center"
-                />
-
                 {/* Price Range Dropdown */}
                 <div className="relative">
                     <button onClick={() => setShowPriceDropdown(!showPriceDropdown)}
@@ -241,6 +221,43 @@ export const ShopToolbar = () => {
                         )}
                     </AnimatePresence>
                 </div>
+
+                {/* Search Bar */}
+                <IconField iconPosition="left">
+                    <InputIcon className="pi pi-search"> </InputIcon>
+                    <InputText
+                        value={search}
+                        onChange={(e) => setSearch(e.target.value)}
+                        placeholder="Search"
+                    />
+                </IconField>
+            </div>
+
+            {/* Categories Dropdown */}
+            <div className="card flex justify-center items-center space-x-4">
+                <MultiSelect
+                    value={selectedCategories}
+                    onChange={(e) => setSelectedCategories(e.value)}
+                    options={CATEGORIES}
+                    optionLabel="name"
+                    display="chip"
+                    placeholder="Select Categories"
+                    maxSelectedLabels={3}
+                    className=" w-max-40 md:w-20rem h-12 items-center"
+                />
+
+                <MultiSelect
+                    value={selectedSizes}
+                    onChange={(e) => setSelectedSizes(e.value)}
+                    options={SIZES}
+                    optionLabel="name"
+                    display="chip"
+                    placeholder="Select Sizes"
+                    maxSelectedLabels={3}
+                    className=" w-max-40 md:w-20rem h-12 items-center"
+                />
+
+                <Button label="Submit" icon="pi pi-check" loading={isLoading} onClick={() => {}} />
             </div>
         </div>
     );
