@@ -1,14 +1,13 @@
 import { useContext } from 'react';
 import { GlobalContext } from '../../../Navigation'
 import { UserIdContext } from '../../../Navigation'
-import { Image } from 'primereact/image';
 import { GET, HOSTNAME, JSON } from "../../../utils/Constants.js";
 import {Item} from "../data/Item.ts";
+import GalleriaComponent from "../../core/Carrousel.tsx";
 
 export const ItemDetails = ({ item }: { item: Item }) => {
     const {setGlobalState} = useContext(GlobalContext)!;
     const {userId} = useContext(UserIdContext)!;
-    const icon = (<i className="pi pi-search"></i>)
 
     // function setAsFavorite() {
     //     const xhr = new XMLHttpRequest();
@@ -69,17 +68,7 @@ export const ItemDetails = ({ item }: { item: Item }) => {
             <div className="flex flex-col lg:flex-row gap-10 w-full">
                 {/* Image section */}
                 <div className="flex flex-col items-center">
-                    <Image src={`data:image/png;base64,${item!.picture}`} indicatorIcon={icon} alt="Image" preview width="250"/>
-                    <div className="flex space-x-2 mt-2">
-                        {[1, 2, 3, 4, 5].map((num) => (
-                            <div
-                                key={num}
-                                className="w-6 h-6 bg-black text-white flex items-center justify-center text-sm font-bold rounded"
-                            >
-                                {num}
-                            </div>
-                        ))}
-                    </div>
+                    <GalleriaComponent pictures={[item!.picture!, item!.picture!]}/>
                 </div>
 
                 {/* Info section */}
