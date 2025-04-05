@@ -1,27 +1,41 @@
-import { useState, useEffect } from 'react';
-import { Header } from "../../header/Header.jsx";
-import { ItemDetails } from "../itemDetails/ItemDetails.tsx";
-import { Dialog } from "primereact/dialog";
-import { Item } from "../data/Item.ts";
-import { ProgressSpinner } from "primereact/progressspinner";
-import { CATEGORIES, EMPTY, HOSTNAME, ORDER_OPTIONS, PROVINCES } from "../../../utils/Constants.tsx";
+import { useState, useEffect, SetStateAction} from 'react';
+import {Header} from "../../header/Header.jsx";
+import {ItemDetails} from "../itemDetails/ItemDetails.tsx";
+import {Dialog} from "primereact/dialog";
+import {Item} from "../data/Item.ts";
+import {ProgressSpinner} from "primereact/progressspinner";
+import {Paginator} from 'primereact/paginator'; // Import Paginator
+import {CATEGORIES, EMPTY, HOSTNAME, ORDER_OPTIONS, PROVINCES} from "../../../utils/Constants.tsx";
 
 export const Shop = () => {
     const [clothes, setClothes] = useState<Item[]>();
     const [isLoading, setIsLoading] = useState(false);
     const [item, setItem] = useState<Item | undefined>(undefined);
 
-    useEffect(() => {
-        fetchClothes().then();
-    }, []);
+    // Pagination states
+    const [first, setFirst] = useState(0); // First element of the current page
+    const [rows, setRows] = useState(10); // Number of items per page
+    const [totalRecords, setTotalRecords] = useState(0); // Total number of records
 
-    async function fetchClothes() {
+    useEffect(() => {
+        fetchClothes(first, rows).then();
+    }, [first, rows]); // Re-fetch when 'first' or 'rows' change
+
+    // Fetch paginated clothes data from the backend
+    async function fetchClothes(first: number, rows: number) {
         setIsLoading(true);
-        const response = await fetch(`${HOSTNAME}/clothes`);
+        const response = await fetch(`${HOSTNAME}/clothes?page=${first / rows}&size=${rows}`);
         const data = await response.json();
-        setClothes(data);
+        setClothes(data.content);
+        setTotalRecords(data.totalElements); // Set total records from the response
         setIsLoading(false);
     }
+
+    // Handle page change event from the Paginator
+    const onPageChange = (e: { first: SetStateAction<number>; rows: SetStateAction<number>; }) => {
+        setFirst(e.first); // First item of the new page
+        setRows(e.rows); // Number of items per page
+    };
 
     return (
         <div>
@@ -32,35 +46,46 @@ export const Shop = () => {
 
             {/* Render clothes list or any other UI components */}
             {clothes?.length ? (
-                <div className="flex flex-wrap justify-center gap-4">
-                    {clothes.map((i, index) => (
-                        <div
-                            onClick={() => setItem(i)}
-                            key={index}
-                            className="w-80 h-90 overflow-hidden rounded-md flex flex-col justify-end hover:cursor-pointer"
-                        >
-                            <img
-                                src={`data:image/png;base64,${i.picture}`}
-                                alt={i.brand}
-                                className="w-full h-full object-cover rounded-md"
-                            />
-                            <p className="py-2 text-gray-800 font-semibold items-start">
-                                {`${i.price} €`}
-                            </p>
-                        </div>
-                    ))}
+                <div className="flex flex-col justify-center items-center gap-10">
+                    <div className="flex flex-wrap justify-center gap-4">
+                        {clothes.map((i, index) => (
+                            <div
+                                onClick={() => setItem(i)}
+                                key={index}
+                                className="w-80 h-90 overflow-hidden rounded-md flex flex-col justify-end hover:cursor-pointer"
+                            >
+                                <img
+                                    src={`data:image/png;base64,${i.picture}`}
+                                    alt={i.brand}
+                                    className="w-full h-full object-cover rounded-md"
+                                />
+                                <p className="py-2 text-gray-800 font-semibold items-start">
+                                    {`${i.price} €`}
+                                </p>
+                            </div>
+                        ))}
 
-                    {/* Single Dialog outside the map */}
-                    <Dialog
-                        header="Item Details"
-                        visible={!!item} // Only visible if item is defined
-                        style={{ width: '50vw' }}
-                        onHide={() => setItem(undefined)}
-                        dismissableMask
-                        modal
-                    >
-                        {item && <ItemDetails item={item} />}
-                    </Dialog>
+                        {/* Single Dialog outside the map */}
+                        <Dialog
+                            header="Item Details"
+                            visible={!!item} // Only visible if item is defined
+                            style={{ width: '50vw' }}
+                            onHide={() => setItem(undefined)}
+                            dismissableMask
+                            modal
+                        >
+                            {item && <ItemDetails item={item} />}
+                        </Dialog>
+                    </div>
+
+                    {/* Pagination controls */}
+                    <Paginator
+                        first={first}
+                        rows={rows}
+                        totalRecords={totalRecords} // Total records from the backend
+                        rowsPerPageOptions={[10, 20, 30]} // Options for how many rows per page
+                        onPageChange={onPageChange} // Trigger when the page changes
+                    />
                 </div>
             ) : (
                 isLoading ? (
