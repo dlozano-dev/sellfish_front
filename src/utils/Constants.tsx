@@ -62,3 +62,11 @@ export const CATEGORIES = [
     { name: 'Pants', value: 'Pants' },
     { name: 'Accessories', value: 'Accessories' }
 ]
+
+/* PAGINATOR */
+export const ZERO = 0;
+export const TWENTY_FIVE = 25;
+export const FIFTY = 50;
+export const SEVENTY_FIVE = 75;
+
+export const DEFAULT_ITEMS = FIFTY;

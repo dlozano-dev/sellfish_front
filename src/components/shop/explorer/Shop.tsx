@@ -5,7 +5,16 @@ import {Dialog} from "primereact/dialog";
 import {Item} from "../data/Item.ts";
 import {ProgressSpinner} from "primereact/progressspinner";
 import {Paginator} from 'primereact/paginator'; // Import Paginator
-import {CATEGORIES, EMPTY, HOSTNAME, ORDER_OPTIONS, PROVINCES} from "../../../utils/Constants.tsx";
+import {
+    CATEGORIES,
+    DEFAULT_ITEMS,
+    EMPTY, FIFTY,
+    HOSTNAME,
+    ORDER_OPTIONS,
+    PROVINCES, SEVENTY_FIVE,
+    TWENTY_FIVE,
+    ZERO
+} from "../../../utils/Constants.tsx";
 
 export const Shop = () => {
     const [clothes, setClothes] = useState<Item[]>();
@@ -13,9 +22,9 @@ export const Shop = () => {
     const [item, setItem] = useState<Item | undefined>(undefined);
 
     // Pagination states
-    const [first, setFirst] = useState(0); // First element of the current page
-    const [rows, setRows] = useState(10); // Number of items per page
-    const [totalRecords, setTotalRecords] = useState(0); // Total number of records
+    const [first, setFirst] = useState(ZERO); // First element of the current page
+    const [rows, setRows] = useState(DEFAULT_ITEMS); // Number of items per page
+    const [totalRecords, setTotalRecords] = useState(ZERO); // Total number of records
 
     useEffect(() => {
         fetchClothes(first, rows).then();
@@ -46,7 +55,7 @@ export const Shop = () => {
 
             {/* Render clothes list or any other UI components */}
             {clothes?.length ? (
-                <div className="flex flex-col justify-center items-center gap-10">
+                <div className="flex flex-col justify-center items-center gap-10 pb-20">
                     <div className="flex flex-wrap justify-center gap-4">
                         {clothes.map((i, index) => (
                             <div
@@ -83,7 +92,7 @@ export const Shop = () => {
                         first={first}
                         rows={rows}
                         totalRecords={totalRecords} // Total records from the backend
-                        rowsPerPageOptions={[10, 20, 30]} // Options for how many rows per page
+                        rowsPerPageOptions={[TWENTY_FIVE, FIFTY, SEVENTY_FIVE]} // Options for how many rows per page
                         onPageChange={onPageChange} // Trigger when the page changes
                     />
                 </div>
