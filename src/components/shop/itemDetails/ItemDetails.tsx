@@ -54,7 +54,7 @@ export const ItemDetails = ({ item }: { item: Item }) => {
 
     return (
         <div className="p-6 flex flex-col items-center">
-            {/* Top Bar (if needed) */}
+            {/* Top Bar */}
             <div className="w-full flex justify-between items-center mb-4 title">
                 <div className="text-2xl font-semibold tracking-wide text-gray-800">
                     {item!.brand + " " + item!.model}
@@ -78,7 +78,7 @@ export const ItemDetails = ({ item }: { item: Item }) => {
                         <p>Category: {item!.category}</p>
                         <p>State: {item!.state}</p>
                     </div>
-                    <p className="pt-5">Seller: {item!.publisher}</p>
+                    <p className="mt-30">Seller: {item!.publisher}</p>
                     <p>Uploaded: {new Date(Number(item.postDate)).toLocaleDateString('en-GB')}</p>
 
                     {/* Contact Button */}
