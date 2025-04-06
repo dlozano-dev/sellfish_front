@@ -7,7 +7,7 @@ import { UserContext } from '../../Navigation';
 import { HOME, POST, SETTINGS, SHOP } from "../../utils/Constants";
 import { Sidebar } from "primereact/sidebar";
 import { OverlayPanel } from "primereact/overlaypanel";
-import { Button } from "primereact/button";
+import {Avatar} from "primereact/avatar";
 
 export const Header = () => {
     const { setGlobalState } = useContext(GlobalContext)!;
@@ -26,7 +26,12 @@ export const Header = () => {
             <div className='flex space-x-4 p-8 items-center'>
                 <img src={String(dagger_icon)} alt='Favorite Icon' className='w-14 h-14 cursor-pointer hover:opacity-60'/>
                 <div className="card flex justify-end">
-                    <Button type="button" icon="pi pi-image" label="Image" onClick={(e) => op.current.toggle(e)}/>
+                    <Avatar
+                        icon="pi pi-user"
+                        size="large"
+                        onClick={(e) => op.current.toggle(e)}
+                        style={{ backgroundColor: '#ffffff', color: '#5e5e5e' }}
+                    />
 
                     <OverlayPanel ref={op} className='w-48 bg-white rounded-lg shadow-lg text-gray-600 fill-gray-600'>
                         <div className='flex justify-between items-center px-4 py-2 border-b'>
