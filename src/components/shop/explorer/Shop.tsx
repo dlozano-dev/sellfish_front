@@ -19,6 +19,7 @@ import {
 import {ShopToolbar} from "./ShopToolbar.tsx";
 import {LoadingContext} from "../../../Navigation.tsx";
 import {AutoCompleteCompleteEvent} from "primereact/autocomplete";
+import {Suggestion} from "../../core/Suggestion.ts";
 
 export const Shop = () => {
     const [clothes, setClothes] = useState<Item[]>();
@@ -40,16 +41,21 @@ export const Shop = () => {
     const [submitTrigger, setSubmitTrigger] = useState(false);
 
     // Autocomplete
-    const [suggestions, setSuggestions] = useState<string[]>([]);
+    const [suggestions, setSuggestions] = useState<Suggestion[]>();
+    const [filteredSuggestions, setFilteredSuggestions] = useState<string[]>([]);
 
     const autocomplete = (event: AutoCompleteCompleteEvent) => {
         const query = event.query.toLowerCase();
-        const filteredItems = clothes?.filter(item =>
-            item.brand!.toLowerCase().includes(query) || item.model!.toLowerCase().includes(query)
-        ) || [];
+
+        // Filter all suggestions
+        const filteredItems = suggestions!.filter(item =>
+            (item.brand + " " + item.model).toLowerCase().includes(query) ||
+            item.brand!.toLowerCase().includes(query) ||
+            item.model!.toLowerCase().includes(query)
+        )
 
         // Update suggestions
-        setSuggestions(filteredItems.map(item => `${item.brand} ${item.model}`));
+        setFilteredSuggestions(filteredItems.map(item => `${item.brand} ${item.model}`));
     }
 
     useEffect(() => {
@@ -86,6 +92,17 @@ export const Shop = () => {
         setRows(e.rows); // Number of items per page
     };
 
+    useEffect(() => {
+        fetchSuggestions().then();
+    }, [])
+
+    async function fetchSuggestions() {
+        const response = await fetch(`${HOSTNAME}/suggestions`);
+        const data = await response.json();
+        setSuggestions(data);
+        setFilteredSuggestions(data);
+    }
+
     return (
         <div>
             <Header/>
@@ -104,7 +121,7 @@ export const Shop = () => {
                 orderBy={orderBy}
                 setOrderBy={setOrderBy}
                 setPriceRange={setPriceRange}
-                suggestions={suggestions}
+                suggestions={filteredSuggestions}
                 setSuggestions={autocomplete}
                 onSubmit={() => {
                     // go start
