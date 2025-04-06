@@ -18,6 +18,7 @@ import {
 } from "../../../utils/Constants.tsx";
 import {ShopToolbar} from "./ShopToolbar.tsx";
 import {LoadingContext} from "../../../Navigation.tsx";
+import {AutoCompleteCompleteEvent} from "primereact/autocomplete";
 
 export const Shop = () => {
     const [clothes, setClothes] = useState<Item[]>();
@@ -37,6 +38,19 @@ export const Shop = () => {
     const [search, setSearch] = useState(EMPTY);
     const [priceRange, setPriceRange] = useState<number[]>([0, 500]);
     const [submitTrigger, setSubmitTrigger] = useState(false);
+
+    // Autocomplete
+    const [suggestions, setSuggestions] = useState<string[]>([]);
+
+    const autocomplete = (event: AutoCompleteCompleteEvent) => {
+        const query = event.query.toLowerCase();
+        const filteredItems = clothes?.filter(item =>
+            item.brand!.toLowerCase().includes(query) || item.model!.toLowerCase().includes(query)
+        ) || [];
+
+        // Update suggestions
+        setSuggestions(filteredItems.map(item => `${item.brand} ${item.model}`));
+    }
 
     useEffect(() => {
         fetchClothes(first, rows).then();
@@ -90,6 +104,8 @@ export const Shop = () => {
                 orderBy={orderBy}
                 setOrderBy={setOrderBy}
                 setPriceRange={setPriceRange}
+                suggestions={suggestions}
+                setSuggestions={autocomplete}
                 onSubmit={() => {
                     // go start
                     setFirst(0);

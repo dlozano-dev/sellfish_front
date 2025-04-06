@@ -1,15 +1,13 @@
-import {CircleDollarSign} from 'lucide-react';
-import {AnimatePresence, motion} from "framer-motion";
-import {Slider} from "@mui/material";
-import {MultiSelect} from 'primereact/multiselect';
-import {Dropdown} from "primereact/dropdown";
-import {InputText} from "primereact/inputtext";
-import {IconField} from "primereact/iconfield";
-import {InputIcon} from "primereact/inputicon";
-import {Button} from "primereact/button";
-import {LoadingContext} from "../../../Navigation.tsx";
-import {useContext, useState} from "react";
-import {CATEGORIES, ORDER_OPTIONS, PROVINCES, SIZES} from "../../../utils/Constants.tsx";
+import React, { useContext, useState } from "react";
+import { CircleDollarSign } from 'lucide-react';
+import { AnimatePresence, motion } from "framer-motion";
+import { Slider } from "@mui/material";
+import { MultiSelect } from 'primereact/multiselect';
+import { Dropdown } from "primereact/dropdown";
+import {AutoComplete, AutoCompleteCompleteEvent} from 'primereact/autocomplete';
+import { Button } from "primereact/button";
+import { LoadingContext } from "../../../Navigation.tsx";
+import { CATEGORIES, ORDER_OPTIONS, PROVINCES, SIZES } from "../../../utils/Constants.tsx";
 
 export const ShopToolbar = ({
     selectedProvince, setSelectedProvince,
@@ -18,15 +16,24 @@ export const ShopToolbar = ({
     setSearch, search,
     priceRange, setPriceRange,
     orderBy, setOrderBy,
+    suggestions, setSuggestions,
     onSubmit
 }: {
-    selectedProvince: string, setSelectedProvince: any,
-    selectedCategories: string[], setSelectedCategories: any,
-    selectedSizes: string[], setSelectedSizes: any,
-    search: string, setSearch: any,
-    orderBy: string, setOrderBy: any,
-    priceRange: number[], setPriceRange: any,
-    onSubmit: () => void
+    selectedProvince: string; // The selected province
+    setSelectedProvince: React.Dispatch<React.SetStateAction<string>>; // Setter for selectedProvince
+    selectedCategories: string[]; // Array of selected categories
+    setSelectedCategories: React.Dispatch<React.SetStateAction<string[]>>; // Setter for selectedCategories
+    selectedSizes: string[]; // Array of selected sizes
+    setSelectedSizes: React.Dispatch<React.SetStateAction<string[]>>; // Setter for selectedSizes
+    search: string; // Current search query
+    setSearch: React.Dispatch<React.SetStateAction<string>>; // Setter for search query
+    orderBy: string; // Selected sorting option
+    setOrderBy: React.Dispatch<React.SetStateAction<string>>; // Setter for orderBy
+    priceRange: number[]; // Array of price range [minPrice, maxPrice]
+    setPriceRange: React.Dispatch<React.SetStateAction<number[]>>; // Setter for priceRange
+    suggestions: string[]; // Suggestions for the autocomplete
+    setSuggestions: React.Dispatch<AutoCompleteCompleteEvent>; // Setter for suggestions
+    onSubmit: () => void; // Function to handle the submit action
 }) => {
     const {isLoading} = useContext(LoadingContext)!;
 
@@ -118,14 +125,13 @@ export const ShopToolbar = ({
                 </div>
 
                 {/* Search Bar */}
-                <IconField iconPosition="left">
-                    <InputIcon className="pi pi-search"> </InputIcon>
-                    <InputText
-                        value={search}
-                        onChange={(e) => setSearch(e.target.value)}
-                        placeholder="Search"
-                    />
-                </IconField>
+                <AutoComplete
+                    value={search}
+                    placeholder="Search"
+                    suggestions={suggestions}
+                    completeMethod={setSuggestions}
+                    onChange={(e) => setSearch(e.value)}
+                />
             </div>
 
             {/* Categories Dropdown */}
