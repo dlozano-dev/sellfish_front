@@ -55,10 +55,9 @@ export const Shop = () => {
         if (selectedProvince && selectedProvince !== 'All Spain') params.append('location', selectedProvince);
         if (selectedCategories.length) selectedCategories.forEach(c => params.append('categories', c));
         if (selectedSizes.length) selectedSizes.forEach(s => params.append('sizes', s));
+        if (orderBy) params.append('sort', orderBy);
         if (priceRange[0] > 0) params.append('minPrice', priceRange[0].toString());
         if (priceRange[1] < 500) params.append('maxPrice', priceRange[1].toString());
-
-        console.log(`${HOSTNAME}/clothes?${params.toString()}`)
 
         const response = await fetch(`${HOSTNAME}/clothes?${params.toString()}`);
         const data = await response.json();
@@ -91,7 +90,12 @@ export const Shop = () => {
                 orderBy={orderBy}
                 setOrderBy={setOrderBy}
                 setPriceRange={setPriceRange}
-                onSubmit={() => setSubmitTrigger(prev => !prev)} // trigger useEffect
+                onSubmit={() => {
+                    // go start
+                    setFirst(0);
+                    // recharge trigger
+                    setSubmitTrigger(prev => !prev);
+                }}
             />
 
             {/* Render clothes list or any other UI components */}
