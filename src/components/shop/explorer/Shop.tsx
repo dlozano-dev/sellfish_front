@@ -4,17 +4,20 @@ import {ItemDetails} from "../itemDetails/ItemDetails.tsx";
 import {Dialog} from "primereact/dialog";
 import {Item} from "../data/Item.ts";
 import {ProgressSpinner} from "primereact/progressspinner";
-import {Paginator} from 'primereact/paginator'; // Import Paginator
+import {Paginator} from 'primereact/paginator';
 import {
-    CATEGORIES,
     DEFAULT_ITEMS,
-    EMPTY, FIFTY,
+    EMPTY,
+    FIFTY,
     HOSTNAME,
     ORDER_OPTIONS,
-    PROVINCES, SEVENTY_FIVE, SIZES,
+    PROVINCES,
+    SEVENTY_FIVE,
     TWENTY_FIVE,
     ZERO
 } from "../../../utils/Constants.tsx";
+import {ShopToolbar} from "./ShopToolbar.tsx";
+import {LoadingContext} from "../../../Navigation.tsx";
 
 export const Shop = () => {
     const [clothes, setClothes] = useState<Item[]>();
@@ -26,17 +29,41 @@ export const Shop = () => {
     const [rows, setRows] = useState(DEFAULT_ITEMS); // Number of items per page
     const [totalRecords, setTotalRecords] = useState(ZERO); // Total number of records
 
+    // Filter states
+    const [selectedProvince, setSelectedProvince] = useState(PROVINCES[0].value);
+    const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+    const [selectedSizes, setSelectedSizes] = useState<string[]>([]);
+    const [orderBy, setOrderBy] = useState(ORDER_OPTIONS[0].value);
+    const [search, setSearch] = useState(EMPTY);
+    const [priceRange, setPriceRange] = useState<number[]>([0, 500]);
+    const [submitTrigger, setSubmitTrigger] = useState(false);
+
     useEffect(() => {
         fetchClothes(first, rows).then();
-    }, [first, rows]); // Re-fetch when 'first' or 'rows' change
+    }, [first, rows, submitTrigger]); // Re-fetch when 'first' or 'rows' change
 
     // Fetch paginated clothes data from the backend
     async function fetchClothes(first: number, rows: number) {
         setIsLoading(true);
-        const response = await fetch(`${HOSTNAME}/clothes?page=${first / rows}&size=${rows}`);
+
+        const params = new URLSearchParams({
+            page: (first / rows).toString(),
+            size: rows.toString(),
+        });
+
+        if (search) params.append('search', search);
+        if (selectedProvince && selectedProvince !== 'All Spain') params.append('location', selectedProvince);
+        if (selectedCategories.length) selectedCategories.forEach(c => params.append('categories', c));
+        if (selectedSizes.length) selectedSizes.forEach(s => params.append('sizes', s));
+        if (priceRange[0] > 0) params.append('minPrice', priceRange[0].toString());
+        if (priceRange[1] < 500) params.append('maxPrice', priceRange[1].toString());
+
+        console.log(`${HOSTNAME}/clothes?${params.toString()}`)
+
+        const response = await fetch(`${HOSTNAME}/clothes?${params.toString()}`);
         const data = await response.json();
         setClothes(data.content);
-        setTotalRecords(data.totalElements); // Set total records from the response
+        setTotalRecords(data.totalElements);
         setIsLoading(false);
     }
 
@@ -51,7 +78,21 @@ export const Shop = () => {
             <Header/>
 
             {/* Search and filters bar */}
-            <ShopToolbar/>
+            <ShopToolbar
+                selectedProvince={selectedProvince}
+                setSelectedProvince={setSelectedProvince}
+                selectedCategories={selectedCategories}
+                setSelectedCategories={setSelectedCategories}
+                selectedSizes={selectedSizes}
+                setSelectedSizes={setSelectedSizes}
+                search={search}
+                setSearch={setSearch}
+                priceRange={priceRange}
+                orderBy={orderBy}
+                setOrderBy={setOrderBy}
+                setPriceRange={setPriceRange}
+                onSubmit={() => setSubmitTrigger(prev => !prev)} // trigger useEffect
+            />
 
             {/* Render clothes list or any other UI components */}
             {clothes?.length ? (
@@ -110,155 +151,6 @@ export const Shop = () => {
                     <p className='text-center'>No clothes available.</p>
                 )
             )}
-        </div>
-    );
-};
-
-import {CircleDollarSign} from 'lucide-react';
-import {AnimatePresence, motion} from "framer-motion";
-import {Slider} from "@mui/material";
-import {MultiSelect} from 'primereact/multiselect';
-import {Dropdown} from "primereact/dropdown";
-import {InputText} from "primereact/inputtext";
-import {IconField} from "primereact/iconfield";
-import {InputIcon} from "primereact/inputicon";
-import {Button} from "primereact/button";
-import {LoadingContext} from "../../../Navigation.tsx";
-
-export const ShopToolbar = () => {
-    const {isLoading} = useContext(LoadingContext)!;
-    const [selectedProvince, setSelectedProvince] = useState(PROVINCES[0].value);
-    const [orderBy, setOrderBy] = useState(ORDER_OPTIONS[0].value);
-    const [search, setSearch] = useState(EMPTY);
-    // Price Range
-    const [showPriceDropdown, setShowPriceDropdown] = useState(false);
-    // Categories
-    const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
-    const [selectedSizes, setSelectedSizes] = useState<string[]>([]);
-
-    const minDistance = 1;
-    const [value2, setValue2] = useState<number[]>([0, 500]);
-
-    const handleChange2 = (_event: Event, newValue: number[], activeThumb: number) => {
-        if (newValue[1] - newValue[0] < minDistance) {
-            if (activeThumb === 0) {
-                const clamped = Math.min(newValue[0], 100 - minDistance);
-                setValue2([clamped, clamped + minDistance]);
-            } else {
-                const clamped = Math.max(newValue[1], minDistance);
-                setValue2([clamped - minDistance, clamped]);
-            }
-        } else {
-            setValue2(newValue);
-        }
-    };
-
-    return (
-        <div className="bg-white w-[90vw] h-auto flex flex-wrap items-center justify-between px-4 py-3 gap-2 mb-5 shadow-xl mx-auto rounded-md">
-            <div className="flex flex-wrap items-center justify-between px-2 py-1 gap-6">
-                {/* Location Dropdown */}
-                <div className='flex items-center'>
-                    <Dropdown
-                        value={selectedProvince}
-                        onChange={(e) => setSelectedProvince(e.value)} options={PROVINCES}
-                        optionLabel="name"
-                        checkmark={true}
-                        placeholder="Location"
-                        className="w-full h-12 md:w-14rem items-center"
-                    />
-                </div>
-
-                {/* Order By Dropdown */}
-                <div className="card flex justify-content-center">
-                    <Dropdown
-                        value={orderBy}
-                        onChange={(e) => setOrderBy(e.value)} options={ORDER_OPTIONS}
-                        optionLabel="name"
-                        checkmark={true}
-                        placeholder="Order by"
-                        className="w-full h-12 md:w-14rem items-center"
-                    />
-                </div>
-
-                {/* Price Range Dropdown */}
-                <div className="relative">
-                    <button onClick={() => setShowPriceDropdown(!showPriceDropdown)}
-                            className="flex px-3 hover:cursor-pointer">
-                        <CircleDollarSign/>
-                        <span className="ms-2">Price</span>
-                    </button>
-
-                    <AnimatePresence>
-                        {showPriceDropdown && (
-                            <motion.div initial={{opacity: 0, y: -10}} animate={{opacity: 1, y: 0}}
-                                        exit={{opacity: 0, y: -10}}
-                                        className="flex items-center justify-between absolute w-70 right-0 top-14 shadow-2xl rounded-md bg-white p-2 space-x-4">
-                                <Slider
-                                    getAriaLabel={() => 'Minimum distance shift'}
-                                    value={value2}
-                                    onChange={handleChange2}
-                                    valueLabelDisplay="auto"
-                                    disableSwap
-                                    className='ml-3'
-                                    sx={{
-                                        color: 'black', // Change the track and thumb color to black
-                                        '& .MuiSlider-thumb': {
-                                            backgroundColor: 'black', // Thumb color
-                                        },
-                                        '& .MuiSlider-track': {
-                                            backgroundColor: 'black', // Track color
-                                        },
-                                        '& .MuiSlider-rail': {
-                                            backgroundColor: 'gray', // Rail color (adjust if needed)
-                                        },
-                                    }}
-                                />
-                                <button onClick={() => setShowPriceDropdown(false)}
-                                        className="bg-black rounded p-3 py-1 text-white hover:cursor-pointer hover:opacity-70">
-                                    Apply
-                                </button>
-                            </motion.div>
-                        )}
-                    </AnimatePresence>
-                </div>
-
-                {/* Search Bar */}
-                <IconField iconPosition="left">
-                    <InputIcon className="pi pi-search"> </InputIcon>
-                    <InputText
-                        value={search}
-                        onChange={(e) => setSearch(e.target.value)}
-                        placeholder="Search"
-                    />
-                </IconField>
-            </div>
-
-            {/* Categories Dropdown */}
-            <div className="card flex justify-center items-center space-x-4">
-                <MultiSelect
-                    value={selectedCategories}
-                    onChange={(e) => setSelectedCategories(e.value)}
-                    options={CATEGORIES}
-                    optionLabel="name"
-                    display="chip"
-                    placeholder="Select Categories"
-                    maxSelectedLabels={3}
-                    className=" w-max-40 md:w-20rem h-12 items-center"
-                />
-
-                <MultiSelect
-                    value={selectedSizes}
-                    onChange={(e) => setSelectedSizes(e.value)}
-                    options={SIZES}
-                    optionLabel="name"
-                    display="chip"
-                    placeholder="Select Sizes"
-                    maxSelectedLabels={3}
-                    className=" w-max-40 md:w-20rem h-12 items-center"
-                />
-
-                <Button label="Submit" icon="pi pi-check" loading={isLoading} onClick={() => {}} />
-            </div>
         </div>
     );
 };
