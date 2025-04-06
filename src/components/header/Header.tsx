@@ -1,21 +1,19 @@
-import {useContext, useState} from 'react';
-import {AnimatePresence, motion} from 'framer-motion';
+import { useContext, useRef, useState } from 'react';
 import { UserRound } from 'lucide-react';
-import { CircleUserRound  } from 'lucide-react';
-import { X as CloseIcon } from 'lucide-react';
-// import { Swords  } from 'lucide-react';
 import d_menu from '../../assets/Icons/d-menu.svg';
 import dagger_icon from '../../assets/Icons/dagger.svg';
 import { GlobalContext } from '../../Navigation';
 import { UserContext } from '../../Navigation';
-import {HOME, POST, SETTINGS, SHOP} from "../../utils/Constants";
-import {Sidebar} from "primereact/sidebar";
+import { HOME, POST, SETTINGS, SHOP } from "../../utils/Constants";
+import { Sidebar } from "primereact/sidebar";
+import { OverlayPanel } from "primereact/overlaypanel";
+import { Button } from "primereact/button";
 
 export const Header = () => {
     const { setGlobalState } = useContext(GlobalContext)!;
     const { setUser } = useContext(UserContext)!;
-    const [isOpen, setIsOpen] = useState(false);
     const [showSideBar, setShowSideBar] = useState(false);
+    const op = useRef(null);
 
     return (
         <div className='flex justify-between items-center pl-4 w-full h-20'>
@@ -23,12 +21,16 @@ export const Header = () => {
             <div className='cursor-pointer opacity-100 hover:opacity-60' onClick={() => setShowSideBar(true)}>
                 <img src={String(d_menu)} alt='Menu icon' className='w-12 h-12 transition duration-300'/>
             </div>
-            <AnimatePresence>
-                {isOpen && (
-                    <motion.div initial={{opacity: 0, y: -10}} animate={{opacity: 1, y: 0}} exit={{opacity: 0, y: -10}} className='absolute right-10 top-15 mt-2 w-48 bg-white rounded-lg shadow-lg text-gray-600 fill-gray-600'>
+
+            {/* Icons */}
+            <div className='flex space-x-4 p-8 items-center'>
+                <img src={String(dagger_icon)} alt='Favorite Icon' className='w-14 h-14 cursor-pointer hover:opacity-60'/>
+                <div className="card flex justify-end">
+                    <Button type="button" icon="pi pi-image" label="Image" onClick={(e) => op.current.toggle(e)}/>
+
+                    <OverlayPanel ref={op} className='w-48 bg-white rounded-lg shadow-lg text-gray-600 fill-gray-600'>
                         <div className='flex justify-between items-center px-4 py-2 border-b'>
                             <span className='text-gray-700 font-semibold'>Menu</span>
-                            <CloseIcon className='w-5 h-5 cursor-pointer hover:text-black' onClick={() => setIsOpen(false)}/>
                         </div>
 
                         <div className='hover:cursor-pointer hover:bg-gray-100 hover:fill-black flex items-center justify-between'>
@@ -54,15 +56,8 @@ export const Header = () => {
                                 <span>Log out</span>
                             </div>
                         </div>
-                    </motion.div>
-                )}
-            </AnimatePresence>
-
-            {/* Icons */}
-            <div className='flex space-x-4 p-8 items-center'>
-                <img src={String(dagger_icon)} alt='Favorite Icon' className='w-14 h-14 cursor-pointer hover:opacity-60'/>
-                {/*<Swords className='w-11 h-11 cursor-pointer hover:opacity-70 text-zinc-800'/>*/}
-                <CircleUserRound className='w-11 h-11 cursor-pointer hover:opacity-70 text-zinc-800' onClick={() => setIsOpen(!isOpen)}/>
+                    </OverlayPanel>
+                </div>
             </div>
 
             {/* Sidebar Navigation */}

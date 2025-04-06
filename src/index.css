@@ -20,5 +20,9 @@ html, body {
     padding: 0 !important;
 }
 
+.p-overlaypanel, .p-overlaypanel-content{
+    padding: 0 !important;
+}
+
 /* Hex: #81a1c1 */
 /* RGB: rgb(129,161,193) */
