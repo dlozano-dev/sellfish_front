@@ -23,6 +23,11 @@ interface UserIdContextType {
     setUserId: React.Dispatch<React.SetStateAction<string | null>>;
 }
 
+interface ProfilePictureContextType {
+    profilePicture: string | null;
+    setProfilePicture: React.Dispatch<React.SetStateAction<string | null>>;
+}
+
 // Create Contexts
 // eslint-disable-next-line react-refresh/only-export-components
 export const GlobalContext = createContext<GlobalContextType | undefined>(undefined);
@@ -32,6 +37,8 @@ export const LoadingContext = createContext<LoadingContextType | undefined>(unde
 export const UserContext = createContext<UserContextType | undefined>(undefined);
 // eslint-disable-next-line react-refresh/only-export-components
 export const UserIdContext = createContext<UserIdContextType | undefined>(undefined);
+// eslint-disable-next-line react-refresh/only-export-components
+export const ProfilePictureContext = createContext<ProfilePictureContextType | undefined>(undefined);
 
 // Define Provider props type
 interface GlobalProviderProps {
@@ -44,6 +51,7 @@ export const GlobalProvider: React.FC<GlobalProviderProps> = ({ children }) => {
     const [user, setUser] = useState<string | null>(null);
     const [userId, setUserId] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState(false);
+    const [profilePicture, setProfilePicture] = useState<string | null>(null);
 
     return (
         <PrimeReactProvider>
@@ -51,7 +59,9 @@ export const GlobalProvider: React.FC<GlobalProviderProps> = ({ children }) => {
                 <LoadingContext.Provider value={{ isLoading, setIsLoading }}>
                     <UserContext.Provider value={{ user, setUser }}>
                         <UserIdContext.Provider value={{ userId, setUserId }}>
-                            {children}
+                            <ProfilePictureContext.Provider value={{ profilePicture, setProfilePicture }}>
+                                {children}
+                            </ProfilePictureContext.Provider>
                         </UserIdContext.Provider>
                     </UserContext.Provider>
                 </LoadingContext.Provider>

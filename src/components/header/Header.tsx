@@ -2,7 +2,7 @@ import { useContext, useRef, useState } from 'react';
 import { UserRound } from 'lucide-react';
 import d_menu from '../../assets/Icons/d-menu.svg';
 import dagger_icon from '../../assets/Icons/dagger.svg';
-import { GlobalContext } from '../../Navigation';
+import {GlobalContext, ProfilePictureContext} from '../../Navigation';
 import { UserContext } from '../../Navigation';
 import { HOME, POST, SETTINGS, SHOP } from "../../utils/Constants";
 import { Sidebar } from "primereact/sidebar";
@@ -12,6 +12,7 @@ import {Avatar} from "primereact/avatar";
 export const Header = () => {
     const { setGlobalState } = useContext(GlobalContext)!;
     const { setUser } = useContext(UserContext)!;
+    const { profilePicture } = useContext(ProfilePictureContext)!;
     const [showSideBar, setShowSideBar] = useState(false);
     const op = useRef(null);
 
@@ -26,12 +27,20 @@ export const Header = () => {
             <div className='flex space-x-4 p-8 items-center'>
                 <img src={String(dagger_icon)} alt='Favorite Icon' className='w-14 h-14 cursor-pointer hover:opacity-60'/>
                 <div className="card flex justify-end">
-                    <Avatar
-                        icon="pi pi-user"
-                        size="large"
-                        onClick={(e) => op.current.toggle(e)}
-                        style={{ backgroundColor: '#ffffff', color: '#5e5e5e' }}
-                    />
+                    { profilePicture != null ?
+                        <Avatar
+                            image={`data:image/png;base64,${profilePicture}`}
+                            size="large"
+                            onClick={(e) => op.current.toggle(e)}
+                        />
+                    :
+                        <Avatar
+                            icon="pi pi-user"
+                            size="large"
+                            onClick={(e) => op.current.toggle(e)}
+                            style={{ backgroundColor: '#ffffff', color: '#5e5e5e' }}
+                        />
+                    }
 
                     <OverlayPanel ref={op} className='w-48 bg-white rounded-lg shadow-lg text-gray-600 fill-gray-600'>
                         <div className='flex justify-between items-center px-4 py-2 border-b'>
