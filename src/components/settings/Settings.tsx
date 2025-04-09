@@ -43,7 +43,7 @@ export const Settings = () => {
             // Set the new profile picture in state
             setProfilePicture(data);
         } catch (error) {
-            console.error('Error uploading picture:', error);
+            console.error('Error uploading picture:', error); // TODO replace for error snackbar
         } finally {
             setIsLoading(false);
         }
@@ -69,7 +69,6 @@ export const Settings = () => {
 
                 <Button label="Submit" icon="pi pi-check" loading={loading} onClick={uploadPicture} />
             </div>
-
         </div>
     )
 }

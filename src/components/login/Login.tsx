@@ -1,5 +1,5 @@
 import {useState, useContext} from 'react';
-import { GlobalContext } from '../../Navigation';
+import {GlobalContext, ProfilePictureContext} from '../../Navigation';
 import { UserContext } from '../../Navigation';
 import { UserIdContext } from '../../Navigation';
 import { useTranslation } from "react-i18next";
@@ -9,11 +9,13 @@ import email_icon from "../../assets/email.png";
 import password_icon from "../../assets/password.png";
 import sf_icon from "../../assets/brand_logos/sf-logo.svg"
 import {EMPTY, GET, HOME, HOSTNAME, JSON, LOGIN, SIGN_UP} from "../../utils/Constants";
+import axios from "axios";
 
 export const Login = () => {
     const [action, setAction] = useState(LOGIN) // Login or Sign Up
     const { setGlobalState } = useContext(GlobalContext)!;
     const { setUser } = useContext(UserContext)!;
+    const { setProfilePicture } = useContext(ProfilePictureContext)!;
     const { setUserId } = useContext(UserIdContext)!;
     const [userInput, setUserInput] = useState<string>(EMPTY);
     const [emailInput, setEmailInput] = useState<string>(EMPTY);
@@ -55,8 +57,20 @@ export const Login = () => {
                 setGlobalState(HOME);
                 setUser(userInput);
                 setUserId(data);
+                getProfilePicture(data).then();
             }
         };
+    }
+
+    async function getProfilePicture(userId: string) {
+        try {
+            const response = await axios.get<string>(`${HOSTNAME}/profilePicture/${userId}`);
+
+            // Set the new profile picture in state
+            setProfilePicture(response.data);
+        } catch (error) {
+            console.error('Error fetching profile picture:', error);
+        }
     }
 
     return (
