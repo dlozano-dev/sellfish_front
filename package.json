@@ -12,7 +12,8 @@
   "dependencies": {
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
-    "@mui/material": "^7.0.0",
+    "@mui/icons-material": "^7.0.2",
+    "@mui/material": "^7.0.2",
     "@tailwindcss/vite": "^4.0.15",
     "axios": "^1.8.4",
     "framer-motion": "^12.6.2",
@@ -22,6 +23,8 @@
     "primereact": "^10.9.4",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-dropzone": "^14.3.8",
+    "react-easy-crop": "^5.4.1",
     "react-i18next": "^15.4.1",
     "react-transition-group": "^4.4.5"
   },
