@@ -1,5 +1,7 @@
 @import "tailwindcss";
 @import "primereact/resources/themes/mira/theme.css";
+/*@import "primereact/resources/themes/lara-light-blue/theme.css";*/
+/*@import "primereact/resources/themes/lara-light-indigo/theme.css";*/
 @import "primereact/resources/primereact.min.css";
 @import "primeicons/primeicons.css";
 @import 'primeicons/primeicons.css';
@@ -22,6 +24,17 @@ html, body {
 
 .p-overlaypanel, .p-overlaypanel-content{
     padding: 0 !important;
+}
+
+.p-toast .p-toast-message.p-toast-message-warn {
+    background: rgba(255, 242, 226, 1) !important;
+    border: solid #cc8925 !important;
+    border-width: 0 0 0 6px !important;
+    color: #cc8925 !important;
+}
+
+.p-toast .p-toast-message.p-toast-message-warn .p-toast-message-icon, .p-toast .p-toast-message.p-toast-message-warn .p-toast-icon-close {
+    color: #cc8925 !important;
 }
 
 /* Hex: #81a1c1 */

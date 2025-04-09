@@ -6,6 +6,7 @@ export const HOME = 'home';
 export const SETTINGS = 'settings';
 export const POST = 'post'
 export const SHOP = 'shop'
+export const CHATS = 'chats'
 
 /* HTTP METHODS */
 export const GET = 'get';
@@ -19,6 +20,9 @@ export const EMPTY = '';
 /* LOGIN */
 export const LOGIN = 'login';
 export const SIGN_UP = 'signup'
+
+/* KEYS */
+export const ENTER = 'Enter'
 
 /* SHOP */
 export const PROVINCES = [
@@ -103,5 +107,4 @@ export const ZERO = 0;
 export const TWENTY_FIVE = 25;
 export const FIFTY = 50;
 export const SEVENTY_FIVE = 75;
-
 export const DEFAULT_ITEMS = FIFTY;

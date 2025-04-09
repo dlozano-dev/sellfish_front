@@ -69,6 +69,7 @@ export const Login = () => {
             // Set the new profile picture in state
             setProfilePicture(response.data);
         } catch (error) {
+            setProfilePicture(null);
             console.error('Error fetching profile picture:', error);
         }
     }

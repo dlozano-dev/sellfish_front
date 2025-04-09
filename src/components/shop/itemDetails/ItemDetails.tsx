@@ -1,14 +1,21 @@
-import { useContext } from 'react';
+import {useContext, useRef} from 'react';
 import { GlobalContext } from '../../../Navigation'
 import { UserIdContext } from '../../../Navigation'
 import { GET, HOSTNAME, JSON } from "../../../utils/Constants.js";
 import {Item} from "../data/Item.ts";
 import GalleriaComponent from "../../core/Carrousel.tsx";
+import {Button} from "primereact/button";
+import {Toast} from "primereact/toast";
 
 export const ItemDetails = ({ item }: { item: Item }) => {
     const {setGlobalState} = useContext(GlobalContext)!;
     const {userId} = useContext(UserIdContext)!;
+    const toast = useRef<Toast>(null);
 
+    const showWarn = () => {
+        toast.current?.clear()
+        toast.current?.show({severity:'warn', summary: 'Warning', detail:"You can't contact yourself!", life: 3000});
+    }
     // function setAsFavorite() {
     //     const xhr = new XMLHttpRequest();
     //     xhr.open(GET, `${HOSTNAME}/liked/${userId}/${item!.id}`);
@@ -32,14 +39,17 @@ export const ItemDetails = ({ item }: { item: Item }) => {
     // checkFav()
 
     function testChat() {
+        if (item.publisher === userId) {
+            showWarn()
+            return;
+        }
+
         const message = prompt('Chat to the seller')
         const request = `${HOSTNAME}/postMessage/${userId}/${item!.publisher}/${item!.id}/${message}/${Date.now()}/${userId}`
 
         const xhr = new XMLHttpRequest()
         xhr.open(GET, request, true)
-
         xhr.responseType = JSON
-        console.log(request)
         xhr.send()
 
         xhr.onload = function() {
@@ -56,6 +66,8 @@ export const ItemDetails = ({ item }: { item: Item }) => {
         <div className="p-6 flex flex-col items-center">
             {/* Top Bar */}
             <div className="w-full flex justify-between items-center mb-4 title">
+                <Toast ref={toast} />
+
                 <div className="text-2xl font-semibold tracking-wide text-gray-800">
                     {item!.brand + " " + item!.model}
                 </div>
@@ -82,12 +94,11 @@ export const ItemDetails = ({ item }: { item: Item }) => {
                     <p>Uploaded: {new Date(Number(item.postDate)).toLocaleDateString('en-GB')}</p>
 
                     {/* Contact Button */}
-                    <button
+                    <Button
+                        label="Contact to seller"
                         onClick={() => testChat()}
                         className="mt-4 px-6 py-2 bg-white border rounded hover:cursor-pointer hover:bg-black hover:text-white transition"
-                    >
-                        Contact to seller
-                    </button>
+                    />
                 </div>
             </div>
 

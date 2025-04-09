@@ -4,7 +4,7 @@ import d_menu from '../../assets/Icons/d-menu.svg';
 import dagger_icon from '../../assets/Icons/dagger.svg';
 import {GlobalContext, ProfilePictureContext} from '../../Navigation';
 import { UserContext } from '../../Navigation';
-import { HOME, POST, SETTINGS, SHOP } from "../../utils/Constants";
+import {CHATS, HOME, POST, SETTINGS, SHOP} from "../../utils/Constants";
 import { Sidebar } from "primereact/sidebar";
 import { OverlayPanel } from "primereact/overlaypanel";
 import {Avatar} from "primereact/avatar";
@@ -89,7 +89,7 @@ export const Header = () => {
                     <div onClick={() => setGlobalState('Wishlist')} className='pl-10 py-4 hover:text-black cursor-pointer transition-transform duration-500 hover:translate-x-[10%]'>Wishlist</div>
                 </div>
                 <div className='hover:bg-gray-100 overflow-x-hidden'>
-                    <div onClick={() => setGlobalState('Chats')} className='pl-10 py-4 hover:text-black cursor-pointer transition-transform duration-500 hover:translate-x-[10%]'>Chats</div>
+                    <div onClick={() => setGlobalState(CHATS)} className='pl-10 py-4 hover:text-black cursor-pointer transition-transform duration-500 hover:translate-x-[10%]'>Chats</div>
                 </div>
                 <div className='hover:bg-gray-100 overflow-x-hidden'>
                     <div onClick={() => setGlobalState(SETTINGS)} className='pl-10 py-4 hover:text-black cursor-pointer transition-transform duration-500 hover:translate-x-[10%]'>Settings</div>
