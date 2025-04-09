@@ -14,7 +14,7 @@ export const Header = () => {
     const { setUser } = useContext(UserContext)!;
     const { profilePicture } = useContext(ProfilePictureContext)!;
     const [showSideBar, setShowSideBar] = useState(false);
-    const op = useRef(null);
+    const op = useRef<OverlayPanel>(null);
 
     return (
         <div className='flex justify-between items-center pl-4 w-full h-20'>
@@ -31,13 +31,13 @@ export const Header = () => {
                         <Avatar
                             image={`data:image/png;base64,${profilePicture}`}
                             size="large"
-                            onClick={(e) => op.current.toggle(e)}
+                            onClick={(e) => op.current?.toggle(e)}
                         />
                     :
                         <Avatar
                             icon="pi pi-user"
                             size="large"
-                            onClick={(e) => op.current.toggle(e)}
+                            onClick={(e) => op.current?.toggle(e)}
                             style={{ backgroundColor: '#ffffff', color: '#5e5e5e' }}
                         />
                     }
