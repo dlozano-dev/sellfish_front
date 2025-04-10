@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react'
+import React, {useState, useContext, useEffect, useRef} from 'react'
 import { UserIdContext } from '../../Navigation'
 import {EMPTY, ENTER, GET, HOSTNAME, JSON} from "../../utils/Constants.tsx";
 import { Header } from "../header/Header.tsx";
@@ -21,10 +21,12 @@ export const Chats = () => {
     const { userId } = useContext(UserIdContext)!
     // Clothes that have chat
     const [ chats, setChats ] = useState<Item[]>([])
-    //Messages of a single chat
+    // Messages of the selected chat
     const [ chat, setChat ] = useState<Message[]>([])
     // A single chat item
     const [ item, setItem ] = useState<Item>()
+    // Last message of the selected chat
+    const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
     useEffect(() => {
         fetchChats()
@@ -61,8 +63,6 @@ export const Chats = () => {
             const receiver = userId === item!.publisher ? chat[0].buyer : item!.publisher
             const request = `${HOSTNAME}/postMessage/${sender}/${receiver}/${item!.id}/${message.value}/${Date.now()}/${chat[0].buyer}`
 
-            console.log(request)
-
             const xhr = new XMLHttpRequest()
             xhr.open(GET, request, true)
             xhr.responseType = JSON
@@ -78,14 +78,20 @@ export const Chats = () => {
         }
     }
 
+    // Scroll to the bottom when chat messages change
+    useEffect(() => {
+        if (messagesEndRef.current) {
+            messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+        }
+    }, [chat]);
+
     return (
         <div>
             <Header />
-            <div className="flex flex-col justify-center items-center w-full text-black pb-20">
-                <h1 className="text-3xl font-semibold">C H A T S</h1>
+            <div className="flex justify-center items-center w-full text-black pt-10">
                 <div className="w-full flex px-5">
                     {chats.length > 0 ? (
-                        <div className="text-left pr-5">
+                        <div className="w-1/4 text-center">
                             {chats.map((item, index) => (
                                 <div key={index} className="py-2">
                                     <p className="cursor-pointer" onClick={() => {
@@ -100,28 +106,35 @@ export const Chats = () => {
                     )}
 
                     {chat.length > 0 ? (
-                        <div className="w-4/5">
-                            <div className="flex flex-col space-y-2">
-                                {chat.map((item, index) => (
-                                    <div
-                                        key={index}
-                                        className={ item.sender === userId ?
-                                            'self-end bg-black text-white rounded-lg p-2'
-                                        :
-                                            'self-start bg-gray-300'
-                                        }
-                                    >
-                                        <p>{item.message}</p>
-                                    </div>
-                                ))}
+                        <div className="flex flex-col max-h-[calc(80vh)] w-5/7 bg-white rounded-lg p-6 space-y-2 shadow">
+                            {/* Scrollable chat container */}
+                            <div className="flex-1 overflow-y-auto p-6 space-y-2">
+                                <div className="flex flex-col space-y-2">
+                                    {chat.map((item, index) => (
+                                        <div
+                                            key={index}
+                                            className={
+                                                item.sender === userId
+                                                    ? "self-end message-own text-white rounded-lg p-2"
+                                                    : "self-start bg-gray-300 text-black rounded-lg p-2"
+                                            }
+                                        >
+                                            <p>{item.message}</p>
+                                        </div>
+                                    ))}
+                                    {/* Dummy element to auto-scroll into view */}
+                                    <div ref={messagesEndRef}/>
+                                </div>
                             </div>
 
-                            <div>
+                            {/* Input at the bottom */}
+                            <div className="mt-2">
                                 <input
                                     type="text"
                                     id="input2"
                                     className="w-full p-2 border border-gray-300 rounded-md"
                                     onKeyDown={handleKeyDown}
+                                    placeholder="Type a message..."
                                 />
                             </div>
                         </div>

@@ -37,5 +37,9 @@ html, body {
     color: #cc8925 !important;
 }
 
+.message-own {
+    background-color: #5e81ac;
+}
+
 /* Hex: #81a1c1 */
 /* RGB: rgb(129,161,193) */
