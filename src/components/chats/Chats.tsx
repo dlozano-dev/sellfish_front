@@ -35,7 +35,7 @@ export const Chats = () => {
                 // TODO snackbar
                 console.error('Error fetching chats:', e)
             );
-    })
+    }, [])
 
     async function fetchChats() {
         const response = await fetch(`${HOSTNAME}/chats/${userId}`)
@@ -91,13 +91,26 @@ export const Chats = () => {
             <div className="flex justify-center items-center w-full text-black pt-10">
                 <div className="w-full flex px-5">
                     {chats.length > 0 ? (
-                        <div className="w-1/4 text-center">
+                        <div className="w-1/4 max-h-[80vh] text-start bg-white rounded-lg shadow mr-5">
                             {chats.map((item, index) => (
-                                <div key={index} className="py-2">
-                                    <p className="cursor-pointer" onClick={() => {
+                                <div
+                                    key={index}
+                                    onClick={() => {
                                         getChat(item!.id!)
                                         setItem(item)
-                                    }}>{item.brand + " " + item.model}</p>
+                                    }}
+                                    className="flex py-2 cursor-pointer hover:opacity-80"
+                                >
+                                    <img
+                                        src={`data:image/png;base64,${item.picture}`}
+                                        alt={item.brand}
+                                        className="w-20 20 object-cover rounded-md mx-4"
+                                    />
+                                    <div className="flex flex-col">
+                                        <span>{item.brand + " " + item.model}</span>
+                                        <span className='text-stone-600'>{item.price + " €"}</span>
+                                        <span className='text-stone-800'>{item.publisherName}</span>
+                                    </div>
                                 </div>
                             ))}
                         </div>
@@ -106,7 +119,7 @@ export const Chats = () => {
                     )}
 
                     {chat.length > 0 ? (
-                        <div className="flex flex-col max-h-[calc(80vh)] w-5/7 bg-white rounded-lg p-6 space-y-2 shadow">
+                        <div className="flex flex-col h-[80vh] w-5/7 bg-white rounded-lg shadow p-6 space-y-2">
                             {/* Scrollable chat container */}
                             <div className="flex-1 overflow-y-auto p-6 space-y-2">
                                 <div className="flex flex-col space-y-2">
@@ -139,7 +152,10 @@ export const Chats = () => {
                             </div>
                         </div>
                     ) : (
-                        <div></div>
+                        <div className='h-[80vh] w-5/7 bg-white rounded-lg shadow p-6 flex flex-col items-center justify-center'>
+                            <i className="pi pi-inbox text-stone-600" style={{fontSize: '1.5rem'}}/>
+                            <span className="text-stone-600 text-lg">{'No chats opened'}</span>
+                        </div>
                     )}
                 </div>
             </div>

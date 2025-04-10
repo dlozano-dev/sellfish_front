@@ -6,6 +6,7 @@ export class Item {
     category:  string | undefined;
     price:  string | undefined;
     publisher:  string | undefined;
+    publisherName:  string | undefined;
     picture:  string | undefined;
     postDate:  string | undefined;
     size:  string | undefined;
