@@ -3,6 +3,8 @@ import { UserIdContext } from '../../Navigation'
 import {EMPTY, ENTER, GET, HOSTNAME, JSON} from "../../utils/Constants.tsx";
 import { Header } from "../header/Header.tsx";
 import { Item } from "../shop/data/Item.ts";
+import axios from "axios";
+import {Avatar} from "primereact/avatar";
 
 // Define the Message type based on the database schema
 type Message = {
@@ -27,6 +29,8 @@ export const Chats = () => {
     const [ item, setItem ] = useState<Item>()
     // Last message of the selected chat
     const messagesEndRef = useRef<HTMLDivElement | null>(null);
+    const [ chatterPfp, setChatterPfp ] = useState<string | null>()
+    const [ chatterName, setChatterName ] = useState<string | null>()
 
     useEffect(() => {
         fetchChats()
@@ -46,14 +50,21 @@ export const Chats = () => {
         setChats(data)  // Set the fetched chats
     }
 
-    function getChat(id: string) {
+    function getChat(id: string, publisher: string) {
         const request = `${HOSTNAME}/message/user/${userId}/product/${id}`
         const xhr = new XMLHttpRequest()
         xhr.open(GET, request, true)
         xhr.responseType = JSON
         xhr.send()
-        // Set the chat messages
-        xhr.onload = () => { setChat(xhr.response) }
+        xhr.onload = () => {
+            const contactUser = userId === publisher ? xhr.response[0].buyer : publisher
+            console.log(contactUser)
+            // Set the chat messages
+            setChat(xhr.response)
+            // If user isn't the seller, get the buyer picture instead
+            getProfilePicture(contactUser).then()
+            getUsername(contactUser).then()
+        }
     }
 
     const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -70,7 +81,7 @@ export const Chats = () => {
 
             xhr.onload = function () {
                 if (xhr.status === 200) {
-                    getChat(item!.id!)
+                    getChat(item!.id!, item!.publisher!)
                     // Clear the input after sending the message
                     message.value = EMPTY
                 }
@@ -85,6 +96,31 @@ export const Chats = () => {
         }
     }, [chat]);
 
+    async function getProfilePicture(userId: string) {
+        try {
+            const response = await axios.get<string>(`${HOSTNAME}/profilePicture/${userId}`);
+
+            // Set the new profile picture in state
+            setChatterPfp(response.data);
+        } catch (error) {
+            console.error(error);
+            // Do nothing (user doesn't have profile picture)
+            setChatterPfp(null);
+        }
+    }
+
+    async function getUsername(userId: string) {
+        try {
+            const response = await axios.get<string>(`${HOSTNAME}/getUsername/${userId}`);
+
+            // Set the new contact username in state
+            setChatterName(response.data);
+        } catch (error) {
+            setChatterName('Unknown user');
+            console.error('Error fetching profile picture:', error);
+        }
+    }
+
     return (
         <div>
             <Header />
@@ -92,24 +128,31 @@ export const Chats = () => {
                 <div className="w-full flex px-5">
                     {chats.length > 0 ? (
                         <div className="w-1/4 max-h-[80vh] text-start bg-white rounded-lg shadow mr-5">
-                            {chats.map((item, index) => (
+                            <div className="p-4 border-b-2 text-gray-800 flex items-center">
+                                <i className="pi pi-inbox text-stone-800 mr-2" style={{fontSize: '1.2rem'}}/>
+                                <span className='text-lg'>Chats</span>
+                            </div>
+                            {chats.map((i, index) => (
                                 <div
                                     key={index}
                                     onClick={() => {
-                                        getChat(item!.id!)
-                                        setItem(item)
+                                        setItem(i)
+                                        getChat(i!.id!, i!.publisher!)
                                     }}
-                                    className="flex py-2 cursor-pointer hover:opacity-80"
+                                    className={ i!.id === item?.id
+                                        ? "flex py-2 cursor-pointer hover:opacity-80 bg-gray-100"
+                                        : "flex py-2 cursor-pointer hover:opacity-80"
+                                    }
                                 >
                                     <img
-                                        src={`data:image/png;base64,${item.picture}`}
-                                        alt={item.brand}
-                                        className="w-20 20 object-cover rounded-md mx-4"
+                                        src={`data:image/png;base64,${i.picture}`}
+                                        alt={i.brand}
+                                        className="w-20 h-20 object-cover rounded-md mx-4"
                                     />
                                     <div className="flex flex-col">
-                                        <span>{item.brand + " " + item.model}</span>
-                                        <span className='text-stone-600'>{item.price + " €"}</span>
-                                        <span className='text-stone-800'>{item.publisherName}</span>
+                                        <span>{i.brand + " " + i.model}</span>
+                                        <span className='text-stone-600'>{i.price + " €"}</span>
+                                        <span className='text-stone-800'>{i.publisherName}</span>
                                     </div>
                                 </div>
                             ))}
@@ -120,6 +163,27 @@ export const Chats = () => {
 
                     {chat.length > 0 ? (
                         <div className="flex flex-col h-[80vh] w-5/7 bg-white rounded-lg shadow p-6 space-y-2">
+                            <div className="w-full flex px-5 pb-2 border-b-2 border-stone-800">
+                                {chatterPfp != null ?
+                                    <Avatar
+                                        image={`data:image/png;base64,${chatterPfp}`}
+                                        size="large"
+                                        className='shadow-md rounded-md mx-3'
+                                    />
+                                    :
+                                    <Avatar
+                                        icon="pi pi-user"
+                                        size="large"
+                                        className='shadow-md rounded-md mx-3'
+                                        style={{backgroundColor: '#ffffff', color: '#5e5e5e'}}
+                                    />
+                                }
+                                <div>
+                                    <p className='text-stone-800'>{chatterName}</p>
+                                    <p className='text-stone-950'>{item?.brand + " " + item?.model}</p>
+                                </div>
+                            </div>
+
                             {/* Scrollable chat container */}
                             <div className="flex-1 overflow-y-auto p-6 space-y-2">
                                 <div className="flex flex-col space-y-2">
