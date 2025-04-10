@@ -41,6 +41,16 @@ export const Chats = () => {
             );
     }, [])
 
+    useEffect(() => {
+        if (!item) return;
+
+        const interval = setInterval(() => {
+            getChat(item.id!, item.publisher!);
+        }, 3000);
+
+        return () => clearInterval(interval);
+    }, [item]);
+
     async function fetchChats() {
         const response = await fetch(`${HOSTNAME}/chats/${userId}`)
         if (!response.ok) {
