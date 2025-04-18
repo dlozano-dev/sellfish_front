@@ -1,15 +1,18 @@
-import {useContext, useRef} from 'react';
+import {useContext, useRef, useState} from 'react';
 import { GlobalContext } from '../../../Navigation'
 import { UserIdContext } from '../../../Navigation'
-import { GET, HOSTNAME, JSON } from "../../../utils/Constants.js";
+import {GET, HOSTNAME, JSON as json, PUT, SALE_STATES} from "../../../utils/Constants.js";
 import {Item} from "../data/Item.ts";
 import GalleriaComponent from "../../core/Carrousel.tsx";
 import {Button} from "primereact/button";
 import {Toast} from "primereact/toast";
+import {Dropdown} from "primereact/dropdown";
 
 export const ItemDetails = ({ item }: { item: Item }) => {
     const {setGlobalState} = useContext(GlobalContext)!;
     const {userId} = useContext(UserIdContext)!;
+    const [saleState, setSaleState] = useState(item.saleState);
+    const [existsChanges, setExistsChanges] = useState(false);
     const toast = useRef<Toast>(null);
 
     const showWarn = () => {
@@ -49,7 +52,7 @@ export const ItemDetails = ({ item }: { item: Item }) => {
 
         const xhr = new XMLHttpRequest()
         xhr.open(GET, request, true)
-        xhr.responseType = JSON
+        xhr.responseType = json
         xhr.send()
 
         xhr.onload = function() {
@@ -60,6 +63,42 @@ export const ItemDetails = ({ item }: { item: Item }) => {
                 console.error("Error:", xhr.statusText)
             }
         }
+    }
+
+    function setChanges(action: () => void) {
+        action();
+        setExistsChanges(true);
+    }
+
+    function saveChanges() {
+        fetch(`${HOSTNAME}/clothes/${item.id}`, {
+            method: PUT,
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                brand: item.brand,
+                model: item.model,
+                category: item.category,
+                price: item.price,
+                publisher: item.publisher,
+                picture: item.picture,
+                size: item.size,
+                state: item.state,
+                location: item.location,
+                saleState: saleState, // Updated value
+            })
+        }).then(res => {
+            if (!res.ok) throw new Error("Update failed");
+            return res.json();
+        }).then(() => {
+            setExistsChanges(false);
+            toast.current?.show(
+                {severity: 'success', summary: 'Success', detail: 'Changes saved successfully!', life: 3000}
+            );
+        }).catch(() => {
+            toast.current?.show(
+                {severity: 'error', summary: 'Error', detail: 'Failed to save changes.', life: 3000}
+            );
+        });
     }
 
     return (
@@ -94,11 +133,38 @@ export const ItemDetails = ({ item }: { item: Item }) => {
                     <p>Uploaded: {new Date(Number(item.postDate)).toLocaleDateString('en-GB')}</p>
 
                     {/* Contact Button */}
-                    <Button
-                        label="Contact to seller"
-                        onClick={() => testChat()}
-                        className="mt-4 px-6 py-2 bg-white border rounded hover:cursor-pointer hover:bg-black hover:text-white transition"
-                    />
+                    <div className='flex'>
+                        <Button
+                            label="Contact to seller"
+                            onClick={() => testChat()}
+                        />
+                        { item!.publisher === userId ?
+                            <div>
+                                {/*SALE_STATES*/}
+                                <Dropdown
+                                    value={saleState}
+                                    onChange={(e) => setChanges(() => setSaleState(e.value))} options={SALE_STATES}
+                                    optionLabel="name"
+                                    checkmark={true}
+                                    placeholder="Sale state"
+                                    className="w-full h-12 items-center mx-2"
+                                />
+                            </div>
+                        :
+                            <div></div>
+                        }
+                        { existsChanges ?
+                            <div>
+                                {/*SALE_STATES*/}
+                                <Button
+                                    label="Save changes"
+                                    onClick={() => saveChanges()}
+                                />
+                            </div>
+                            :
+                            <div></div>
+                        }
+                    </div>
                 </div>
             </div>
 

@@ -11,4 +11,6 @@ export class Item {
     postDate:  string | undefined;
     size:  string | undefined;
     state:  string | undefined;
+    location:  string | undefined;
+    saleState:  string | undefined;
 }

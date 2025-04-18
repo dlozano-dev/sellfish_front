@@ -1,5 +1,5 @@
 /* HOST */
-export const HOSTNAME = "http://192.168.1.38:8080";
+export const HOSTNAME = "http://192.168.1.36:8080";
 
 /* ROUTES */
 export const HOME = 'home';
@@ -10,6 +10,7 @@ export const CHATS = 'chats'
 
 /* HTTP METHODS */
 export const GET = 'get';
+export const PUT = 'put';
 
 /* EXTENSION FILES */
 export const JSON = 'json';
@@ -23,6 +24,20 @@ export const SIGN_UP = 'signup'
 
 /* KEYS */
 export const ENTER = 'Enter'
+
+/* PAGINATOR */
+export const ZERO = 0;
+export const TWENTY_FIVE = 25;
+export const FIFTY = 50;
+export const SEVENTY_FIVE = 75;
+export const DEFAULT_ITEMS = FIFTY;
+
+/* SALE STATES */
+export const SALE_STATES = [
+    { name: "FOR SALE", value: "FOR_SALE" },
+    { name: "RESERVED", value: "RESERVED" },
+    { name: "SOLD", value: "SOLD" },
+]
 
 /* SHOP */
 export const PROVINCES = [
@@ -101,10 +116,3 @@ export const SIZES = [
     { "name": "Pants 50", "value": "Pants 50" },
     { "name": "Pants 52", "value": "Pants 52" }
 ]
-
-/* PAGINATOR */
-export const ZERO = 0;
-export const TWENTY_FIVE = 25;
-export const FIFTY = 50;
-export const SEVENTY_FIVE = 75;
-export const DEFAULT_ITEMS = FIFTY;
