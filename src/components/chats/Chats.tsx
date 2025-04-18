@@ -214,41 +214,59 @@ export const Chats = () => {
                             {/* Scrollable chat container */}
                             <div className="flex-1 overflow-y-auto p-6 space-y-2">
                                 <div className="flex flex-col space-y-2">
-                                    {chat.map((item, index) => (
-                                        <div
-                                            key={index}
-                                            className={
-                                                item.sender === userId
-                                                    ? "self-end flex flex-col items-end w-full"
-                                                    : "self-start flex flex-col items-start w-full"
-                                            }
-                                        >
-                                            {/* Date and time */}
-                                            <span className={
-                                                item.sender === userId
-                                                    ? "text-xs text-stone-400 block self-end"
-                                                    : "text-xs text-stone-400 block self-start"
-                                            }>
-                                                {new Date(item!.time!).toLocaleString('es-ES', {
-                                                    day: '2-digit',
-                                                    month: '2-digit',
-                                                    year: 'numeric',
-                                                    hour: '2-digit',
-                                                    minute: '2-digit'
-                                                })}
-                                            </span>
+                                    {chat.map((item, index) => {
+                                        // Get the current message's timestamp
+                                        const currentTime = new Date(item!.time!);
 
-                                            {/* Message */}
-                                            <p className={
-                                                item.sender === userId
-                                                    ? "message-own text-white rounded-lg p-2"
-                                                    : "bg-gray-300 text-black rounded-lg p-2"
-                                            }>
-                                                {item.message}
-                                            </p>
-                                        </div>
+                                        // Check if the current message is in the same minute as the previous one
+                                        const showDate = index === 0 ||
+                                            new Date(chat[index - 1].time!).getMinutes() !== currentTime.getMinutes() ||
+                                            new Date(chat[index - 1].time!).getHours() !== currentTime.getHours() ||
+                                            new Date(chat[index - 1].time!).getDate() !== currentTime.getDate() ||
+                                            new Date(chat[index - 1].time!).getMonth() !== currentTime.getMonth() ||
+                                            new Date(chat[index - 1].time!).getFullYear() !== currentTime.getFullYear();
 
-                                    ))}
+                                        return (
+                                            <div
+                                                key={index}
+                                                className={
+                                                    item.sender === userId
+                                                        ? "self-end flex flex-col items-end w-full"
+                                                        : "self-start flex flex-col items-start w-full"
+                                                }
+                                            >
+                                                {/* Date and time, only show for first message of the minute */}
+                                                {showDate && (
+                                                    <span
+                                                        className={
+                                                            item.sender === userId
+                                                                ? "text-xs text-stone-400 block self-end"
+                                                                : "text-xs text-stone-400 block self-start"
+                                                        }
+                                                    >
+                                                        {currentTime.toLocaleString('es-ES', {
+                                                            day: '2-digit',
+                                                            month: '2-digit',
+                                                            year: 'numeric',
+                                                            hour: '2-digit',
+                                                            minute: '2-digit'
+                                                        })}
+                                                    </span>
+                                                )}
+
+                                                {/* Message */}
+                                                <p
+                                                    className={
+                                                        item.sender === userId
+                                                            ? "message-own text-white rounded-lg p-2"
+                                                            : "bg-gray-300 text-black rounded-lg p-2"
+                                                    }
+                                                >
+                                                    {item.message}
+                                                </p>
+                                            </div>
+                                        );
+                                    })}
                                     {/* Dummy element to auto-scroll into view */}
                                     <div ref={messagesEndRef}/>
                                 </div>
