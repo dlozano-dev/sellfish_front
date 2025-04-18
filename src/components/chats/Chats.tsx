@@ -219,12 +219,35 @@ export const Chats = () => {
                                             key={index}
                                             className={
                                                 item.sender === userId
-                                                    ? "self-end message-own text-white rounded-lg p-2"
-                                                    : "self-start bg-gray-300 text-black rounded-lg p-2"
+                                                    ? "self-end flex flex-col items-end w-full"
+                                                    : "self-start flex flex-col items-start w-full"
                                             }
                                         >
-                                            <p>{item.message}</p>
+                                            {/* Date and time */}
+                                            <span className={
+                                                item.sender === userId
+                                                    ? "text-xs text-stone-400 block self-end"
+                                                    : "text-xs text-stone-400 block self-start"
+                                            }>
+                                                {new Date(item!.time!).toLocaleString('es-ES', {
+                                                    day: '2-digit',
+                                                    month: '2-digit',
+                                                    year: 'numeric',
+                                                    hour: '2-digit',
+                                                    minute: '2-digit'
+                                                })}
+                                            </span>
+
+                                            {/* Message */}
+                                            <p className={
+                                                item.sender === userId
+                                                    ? "message-own text-white rounded-lg p-2"
+                                                    : "bg-gray-300 text-black rounded-lg p-2"
+                                            }>
+                                                {item.message}
+                                            </p>
                                         </div>
+
                                     ))}
                                     {/* Dummy element to auto-scroll into view */}
                                     <div ref={messagesEndRef}/>
@@ -243,7 +266,8 @@ export const Chats = () => {
                             </div>
                         </div>
                     ) : (
-                        <div className='h-[80vh] w-5/7 bg-white rounded-lg shadow p-6 flex flex-col items-center justify-center'>
+                        <div
+                            className='h-[80vh] w-5/7 bg-white rounded-lg shadow p-6 flex flex-col items-center justify-center'>
                             <i className="pi pi-inbox text-stone-600" style={{fontSize: '1.5rem'}}/>
                             <span className="text-stone-600 text-lg">{'No chats opened'}</span>
                         </div>
