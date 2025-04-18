@@ -5,106 +5,87 @@ import { Header } from "../header/Header.tsx";
 import { Item } from "../shop/data/Item.ts";
 import axios from "axios";
 import {Avatar} from "primereact/avatar";
+import {Toast} from "primereact/toast";
 
-// Define the Message type based on the database schema
 type Message = {
     id: number;                 // Unique identifier for the message
-    product: number | null;     // The associated product (nullable)
-    sender: number | null;      // The sender's user ID (nullable)
-    receiver: number | null;    // The receiver's user ID (nullable)
-    message: string | null;     // The content of the message (nullable)
-    time: number | null;        // Timestamp when the message was sent (nullable)
-    buyer: number | null;       // The buyer's user ID (nullable)
-    brand: string | null;
-    model: string | null;
+    sender: number | null;      // The sender's user ID
+    receiver: number | null;    // The receiver's user ID
+    buyer: number | null;       // The buyer's user ID
+    message: string | null;     // The content of the message
+    time: number | null;        // Timestamp when the message was sent
+    product: number | null;     // The id of the associated product
+    brand: string | null;       // The brand of the associated product
+    model: string | null;       // The model of the associated product
 };
 
 export const Chats = () => {
-    const { userId } = useContext(UserIdContext)!
+    const { userId } = useContext(UserIdContext)!;
     // Clothes that have chat
-    const [ chats, setChats ] = useState<Item[]>([])
+    const [ chats, setChats ] = useState<Item[]>([]);
     // Messages of the selected chat
-    const [ chat, setChat ] = useState<Message[]>([])
+    const [ chat, setChat ] = useState<Message[]>([]);
     // A single chat item
-    const [ item, setItem ] = useState<Item>()
+    const [ item, setItem ] = useState<Item>();
     // Last message of the selected chat
     const messagesEndRef = useRef<HTMLDivElement | null>(null);
-    const [ chatterPfp, setChatterPfp ] = useState<string | null>()
-    const [ chatterName, setChatterName ] = useState<string | null>()
+    const [ chatterPfp, setChatterPfp ] = useState<string | null>();
+    const [ chatterName, setChatterName ] = useState<string | null>();
+    const prevChatRef = useRef<Message[]>([]);
+    const toast = useRef<Toast>(null);
 
-    useEffect(() => {
-        fetchChats()
-            .then()
-            .catch(e =>
-                // TODO snackbar
-                console.error('Error fetching chats:', e)
-            );
-    }, [])
-
-    useEffect(() => {
-        if (!item) return;
-
-        const interval = setInterval(() => {
-            getChat(item.id!, item.publisher!);
-        }, 3000);
-
-        return () => clearInterval(interval);
-    }, [item]);
-
-    async function fetchChats() {
-        const response = await fetch(`${HOSTNAME}/chats/${userId}`)
-        if (!response.ok) {
-            throw new Error('Network response was not ok')
-        }
-        const data = await response.json()
-        setChats(data)  // Set the fetched chats
-    }
-
-    function getChat(id: string, publisher: string) {
-        const request = `${HOSTNAME}/message/user/${userId}/product/${id}`
-        const xhr = new XMLHttpRequest()
-        xhr.open(GET, request, true)
-        xhr.responseType = JSON
-        xhr.send()
-        xhr.onload = () => {
-            const contactUser = userId === publisher ? xhr.response[0].buyer : publisher
-            console.log(contactUser)
-            // Set the chat messages
-            setChat(xhr.response)
-            // If user isn't the seller, get the buyer picture instead
-            getProfilePicture(contactUser).then()
-            getUsername(contactUser).then()
-        }
+    const showWarn = (message: string) => {
+        toast.current?.clear()
+        toast.current?.show({severity:'error', summary: 'Error', detail:message, life: 3000});
     }
 
     const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
         if (event.key === ENTER) {
-            const message = document.getElementById("input2") as HTMLInputElement
-            const sender = userId === item!.publisher ? item!.publisher : chat[0].buyer
-            const receiver = userId === item!.publisher ? chat[0].buyer : item!.publisher
-            const request = `${HOSTNAME}/postMessage/${sender}/${receiver}/${item!.id}/${message.value}/${Date.now()}/${chat[0].buyer}`
+            const message = document.getElementById("input2") as HTMLInputElement;
+            const sender = userId === item!.publisher ? item!.publisher : chat[0].buyer;
+            const receiver = userId === item!.publisher ? chat[0].buyer : item!.publisher;
+            const request = `${HOSTNAME}/postMessage/${sender}/${receiver}/${item!.id}/${message.value}/${Date.now()}/${chat[0].buyer}`;
 
-            const xhr = new XMLHttpRequest()
-            xhr.open(GET, request, true)
-            xhr.responseType = JSON
-            xhr.send()
+            const xhr = new XMLHttpRequest();
+            xhr.open(GET, request, true);
+            xhr.responseType = JSON;
+            xhr.send();
 
             xhr.onload = function () {
                 if (xhr.status === 200) {
-                    getChat(item!.id!, item!.publisher!)
+                    getChat(item!.id!, item!.publisher!);
                     // Clear the input after sending the message
-                    message.value = EMPTY
+                    message.value = EMPTY;
                 }
             }
         }
     }
 
-    // Scroll to the bottom when chat messages change
-    useEffect(() => {
-        if (messagesEndRef.current) {
-            messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+    async function fetchChats() {
+        const response = await fetch(`${HOSTNAME}/chats/${userId}`);
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
         }
-    }, [chat]);
+        const data = await response.json();
+        setChats(data);  // Set the fetched chats
+    }
+
+    function getChat(id: string, publisher: string) {
+        const request = `${HOSTNAME}/message/user/${userId}/product/${id}`;
+        const xhr = new XMLHttpRequest();
+        xhr.open(GET, request, true);
+        xhr.responseType = JSON;
+        xhr.send();
+        xhr.onload = () => {
+            const contactUser = userId === publisher ? xhr.response[0].buyer : publisher;
+            // Set the chat messages
+            setChat(xhr.response);
+
+            // If user isn't the seller, get the buyer picture instead
+            getProfilePicture(contactUser).then();
+            getUsername(contactUser).then();
+        }
+    }
 
     async function getProfilePicture(userId: string) {
         try {
@@ -112,8 +93,7 @@ export const Chats = () => {
 
             // Set the new profile picture in state
             setChatterPfp(response.data);
-        } catch (error) {
-            console.error(error);
+        } catch {
             // Do nothing (user doesn't have profile picture)
             setChatterPfp(null);
         }
@@ -131,10 +111,47 @@ export const Chats = () => {
         }
     }
 
+    useEffect(() => {
+        if (!item) return;
+
+        const interval = setInterval(() => {
+            getChat(item.id!, item.publisher!);
+        }, 3000);
+
+        return () => clearInterval(interval);
+    }, [item]);
+
+    useEffect(() => {
+        fetchChats()
+            .then()
+            .catch(() => {
+                showWarn('Error fetching chats');
+            });
+    }, [])
+
+    // Scroll to the bottom when chat messages change
+    useEffect(() => {
+        const prevChat = prevChatRef.current;
+        const newMessages = chat;
+
+        // Check between old and new messages
+        const isDifferent = prevChat.length !== newMessages.length ||
+            !prevChat.every((msg, index) => msg.id === newMessages[index].id);
+
+        if (isDifferent && messagesEndRef.current) {
+            messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+        }
+
+        // Replace previous list for the new one
+        prevChatRef.current = newMessages;
+    }, [chat]);
+
     return (
         <div>
             <Header />
-            <div className="flex justify-center items-center w-full text-black pt-10">
+            <div className="flex justify-center items-center w-full text-black pt-10">\
+                <Toast ref={toast} />
+
                 <div className="w-full flex px-5">
                     {chats.length > 0 ? (
                         <div className="w-1/4 max-h-[80vh] text-start bg-white rounded-lg shadow mr-5">
