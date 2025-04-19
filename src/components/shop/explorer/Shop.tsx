@@ -2,7 +2,7 @@ import {useState, useEffect, SetStateAction, useContext} from 'react';
 import {Header} from "../../header/Header.jsx";
 import {ItemDetails} from "../itemDetails/ItemDetails.tsx";
 import {Dialog} from "primereact/dialog";
-import {Item} from "../data/Item.ts";
+import {Clothe} from "../data/Clothe.ts";
 import {ProgressSpinner} from "primereact/progressspinner";
 import {Paginator} from 'primereact/paginator';
 import {
@@ -19,12 +19,12 @@ import {
 import {ShopToolbar} from "./ShopToolbar.tsx";
 import {LoadingContext} from "../../../Navigation.tsx";
 import {AutoCompleteCompleteEvent} from "primereact/autocomplete";
-import {Suggestion} from "../../core/Suggestion.ts";
+import {Suggestion} from "../../core/data/Suggestion.ts";
 
 export const Shop = () => {
-    const [clothes, setClothes] = useState<Item[]>();
+    const [clothes, setClothes] = useState<Clothe[]>();
     const {isLoading, setIsLoading} = useContext(LoadingContext)!;
-    const [item, setItem] = useState<Item | undefined>(undefined);
+    const [item, setItem] = useState<Clothe | undefined>(undefined);
 
     // Pagination states
     const [first, setFirst] = useState(ZERO); // First element of the current page

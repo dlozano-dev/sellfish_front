@@ -1,5 +1,5 @@
 
-export class Item {
+export class Clothe {
     id:  string | undefined;
     brand:  string | undefined;
     model:  string | undefined;

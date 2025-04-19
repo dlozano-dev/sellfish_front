@@ -4,10 +4,11 @@ import { UserContext } from './Navigation';
 import { Login } from './components/login/Login';
 import { Settings } from './components/settings/Settings';
 import { Home } from "./components/home/Home.tsx";
-import {CHATS, HOME, POST, SETTINGS, SHOP} from "./utils/Constants.tsx";
+import {CHATS, HOME, POST, PROFILE, SETTINGS, SHOP} from "./utils/Constants.tsx";
 import {Post} from "./components/post/Post.tsx";
 import {Shop} from "./components/shop/explorer/Shop.tsx";
 import {Chats} from "./components/chats/Chats.tsx";
+import {Profile} from "./components/Profile.tsx";
 
 function App() {
     const { globalState } = useContext(GlobalContext)!;
@@ -19,6 +20,7 @@ function App() {
                 user === null ? <Login/> :
                 globalState === POST ? <Post/> :
                 globalState === SHOP ? <Shop/> :
+                globalState === PROFILE ? <Profile/> :
                 // globalState === "Wishlist" ? <Wishlist/> :
                 globalState === CHATS ? <Chats/> :
                 globalState === SETTINGS ? <Settings/> :

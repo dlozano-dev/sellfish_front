@@ -2,16 +2,18 @@ import { useContext, useRef, useState } from 'react';
 import { UserRound } from 'lucide-react';
 import d_menu from '../../assets/Icons/d-menu.svg';
 import dagger_icon from '../../assets/Icons/dagger.svg';
-import {GlobalContext, ProfilePictureContext} from '../../Navigation';
+import {GlobalContext, ProfileIdContext, ProfilePictureContext, UserIdContext} from '../../Navigation';
 import { UserContext } from '../../Navigation';
-import {CHATS, HOME, POST, SETTINGS, SHOP} from "../../utils/Constants";
+import {CHATS, HOME, POST, PROFILE, SETTINGS, SHOP} from "../../utils/Constants";
 import { Sidebar } from "primereact/sidebar";
 import { OverlayPanel } from "primereact/overlaypanel";
 import {Avatar} from "primereact/avatar";
 
 export const Header = () => {
     const { setGlobalState } = useContext(GlobalContext)!;
+    const { userId } = useContext(UserIdContext)!;
     const { setUser } = useContext(UserContext)!;
+    const { setProfileId } = useContext(ProfileIdContext)!;
     const { profilePicture } = useContext(ProfilePictureContext)!;
     const [showSideBar, setShowSideBar] = useState(false);
     const op = useRef<OverlayPanel>(null);
@@ -47,7 +49,12 @@ export const Header = () => {
                             <span className='text-gray-700 font-semibold'>Menu</span>
                         </div>
 
-                        <div className='hover:cursor-pointer hover:bg-gray-100 hover:fill-black flex items-center justify-between'>
+                        <div className='hover:cursor-pointer hover:bg-gray-100 hover:fill-black flex items-center justify-between'
+                            onClick={ () => {
+                                setProfileId(userId)
+                                setGlobalState(PROFILE)
+                            }}
+                        >
                             <div className='flex items-center w-full px-4 py-2 hover:text-black transition-transform duration-500 hover:translate-x-[10%]'>
                                 <UserRound className='w-4 h-4 mr-4'/>
                                 <span>Profile</span>

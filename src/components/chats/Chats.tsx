@@ -2,7 +2,7 @@ import React, {useState, useContext, useEffect, useRef} from 'react'
 import { UserIdContext } from '../../Navigation'
 import {EMPTY, ENTER, GET, HOSTNAME, JSON} from "../../utils/Constants.tsx";
 import { Header } from "../header/Header.tsx";
-import { Item } from "../shop/data/Item.ts";
+import { Clothe } from "../shop/data/Clothe.ts";
 import axios from "axios";
 import {Avatar} from "primereact/avatar";
 import {Toast} from "primereact/toast";
@@ -22,11 +22,11 @@ type Message = {
 export const Chats = () => {
     const { userId } = useContext(UserIdContext)!;
     // Clothes that have chat
-    const [ chats, setChats ] = useState<Item[]>([]);
+    const [ chats, setChats ] = useState<Clothe[]>([]);
     // Messages of the selected chat
     const [ chat, setChat ] = useState<Message[]>([]);
     // A single chat item
-    const [ item, setItem ] = useState<Item>();
+    const [ item, setItem ] = useState<Clothe>();
     // Last message of the selected chat
     const messagesEndRef = useRef<HTMLDivElement | null>(null);
     const [ chatterPfp, setChatterPfp ] = useState<string | null>();

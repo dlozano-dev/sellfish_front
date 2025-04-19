@@ -2,7 +2,7 @@ import {useContext, useRef, useState} from 'react';
 import {GlobalContext, UserContext} from '../../../Navigation'
 import { UserIdContext } from '../../../Navigation'
 import {EMPTY, GET, HOSTNAME, JSON as json, PUT, SALE_STATES} from "../../../utils/Constants.js";
-import {Item} from "../data/Item.ts";
+import {Clothe} from "../data/Clothe.ts";
 import GalleriaComponent from "../../core/Carrousel.tsx";
 import {Button} from "primereact/button";
 import {Toast} from "primereact/toast";
@@ -14,7 +14,7 @@ import axios from "axios";
 export const ItemDetails = ({
     item, fetchClothes
 }:{
-    item: Item;
+    item: Clothe;
     fetchClothes: () => void;
 }) => {
     const {setGlobalState} = useContext(GlobalContext)!;
