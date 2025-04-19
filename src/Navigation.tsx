@@ -18,6 +18,11 @@ interface UserContextType {
     setUser: React.Dispatch<React.SetStateAction<string | null>>;
 }
 
+interface EmailContextType {
+    email: string | null;
+    setEmail: React.Dispatch<React.SetStateAction<string | null>>;
+}
+
 interface UserIdContextType {
     userId: string | null;
     setUserId: React.Dispatch<React.SetStateAction<string | null>>;
@@ -36,6 +41,8 @@ export const LoadingContext = createContext<LoadingContextType | undefined>(unde
 // eslint-disable-next-line react-refresh/only-export-components
 export const UserContext = createContext<UserContextType | undefined>(undefined);
 // eslint-disable-next-line react-refresh/only-export-components
+export const EmailContext = createContext<EmailContextType | undefined>(undefined);
+// eslint-disable-next-line react-refresh/only-export-components
 export const UserIdContext = createContext<UserIdContextType | undefined>(undefined);
 // eslint-disable-next-line react-refresh/only-export-components
 export const ProfilePictureContext = createContext<ProfilePictureContextType | undefined>(undefined);
@@ -49,6 +56,7 @@ interface GlobalProviderProps {
 export const GlobalProvider: React.FC<GlobalProviderProps> = ({ children }) => {
     const [globalState, setGlobalState] = useState<string>(EMPTY);
     const [user, setUser] = useState<string | null>(null);
+    const [email, setEmail] = useState<string | null>(null);
     const [userId, setUserId] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState(false);
     const [profilePicture, setProfilePicture] = useState<string | null>(null);
@@ -58,11 +66,13 @@ export const GlobalProvider: React.FC<GlobalProviderProps> = ({ children }) => {
             <GlobalContext.Provider value={{ globalState, setGlobalState }}>
                 <LoadingContext.Provider value={{ isLoading, setIsLoading }}>
                     <UserContext.Provider value={{ user, setUser }}>
-                        <UserIdContext.Provider value={{ userId, setUserId }}>
-                            <ProfilePictureContext.Provider value={{ profilePicture, setProfilePicture }}>
-                                {children}
-                            </ProfilePictureContext.Provider>
-                        </UserIdContext.Provider>
+                        <EmailContext.Provider value={{ email, setEmail }}>
+                            <UserIdContext.Provider value={{ userId, setUserId }}>
+                                <ProfilePictureContext.Provider value={{ profilePicture, setProfilePicture }}>
+                                    {children}
+                                </ProfilePictureContext.Provider>
+                            </UserIdContext.Provider>
+                        </EmailContext.Provider>
                     </UserContext.Provider>
                 </LoadingContext.Provider>
             </GlobalContext.Provider>

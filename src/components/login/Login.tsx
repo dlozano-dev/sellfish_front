@@ -1,5 +1,5 @@
 import {useState, useContext} from 'react';
-import {GlobalContext, ProfilePictureContext} from '../../Navigation';
+import {EmailContext, GlobalContext, ProfilePictureContext} from '../../Navigation';
 import { UserContext } from '../../Navigation';
 import { UserIdContext } from '../../Navigation';
 import { useTranslation } from "react-i18next";
@@ -15,6 +15,7 @@ export const Login = () => {
     const [action, setAction] = useState(LOGIN) // Login or Sign Up
     const { setGlobalState } = useContext(GlobalContext)!;
     const { setUser } = useContext(UserContext)!;
+    const { setEmail } = useContext(EmailContext)!;
     const { setProfilePicture } = useContext(ProfilePictureContext)!;
     const { setUserId } = useContext(UserIdContext)!;
     const [userInput, setUserInput] = useState<string>(EMPTY);
@@ -52,14 +53,20 @@ export const Login = () => {
         xhr.send();
         xhr.responseType = JSON;
         xhr.onload = () => {
-            const data = xhr.response
+            const data = xhr.response;
             if (data !== -1) {
                 setGlobalState(HOME);
                 setUser(userInput);
                 setUserId(data);
+                getEmail(data).then();
                 getProfilePicture(data).then();
             }
         };
+    }
+
+    async function getEmail(userId: string) {
+        const response = await axios.get<string>(`${HOSTNAME}/getEmail/${userId}`);
+        setEmail(response.data);
     }
 
     async function getProfilePicture(userId: string) {

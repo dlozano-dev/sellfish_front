@@ -34,7 +34,7 @@ export const Chats = () => {
     const prevChatRef = useRef<Message[]>([]);
     const toast = useRef<Toast>(null);
 
-    const showWarn = (message: string) => {
+    const showError = (message: string) => {
         toast.current?.clear()
         toast.current?.show({severity:'error', summary: 'Error', detail:message, life: 3000});
     }
@@ -125,7 +125,7 @@ export const Chats = () => {
         fetchChats()
             .then()
             .catch(() => {
-                showWarn('Error fetching chats');
+                showError('Error fetching chats');
             });
     }, [])
 
