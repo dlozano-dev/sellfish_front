@@ -161,7 +161,11 @@ export const Shop = () => {
                             dismissableMask
                             modal
                         >
-                            {item && <ItemDetails item={item} />}
+                            {
+                                item && <ItemDetails item={item} fetchClothes={() => {
+                                    fetchClothes(first, rows).then()
+                                }}/>
+                            }
                         </Dialog>
                     </div>
 

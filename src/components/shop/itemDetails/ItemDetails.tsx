@@ -11,7 +11,12 @@ import {Dialog} from "primereact/dialog";
 import {AutoComplete, AutoCompleteCompleteEvent} from "primereact/autocomplete";
 import axios from "axios";
 
-export const ItemDetails = ({ item }: { item: Item }) => {
+export const ItemDetails = ({
+    item, fetchClothes
+}:{
+    item: Item;
+    fetchClothes: () => void;
+}) => {
     const {setGlobalState} = useContext(GlobalContext)!;
     const {userId} = useContext(UserIdContext)!;
     const {user} = useContext(UserContext)!;
@@ -88,6 +93,7 @@ export const ItemDetails = ({ item }: { item: Item }) => {
             setExistsChanges(false);
             showSuccess('Changes saved successfully!');
             setShowSaleDialog(true);
+            fetchClothes();
         }).catch(() => {
             showError('Failed to save changes.');
         });
@@ -103,7 +109,6 @@ export const ItemDetails = ({ item }: { item: Item }) => {
 
         try {
             const response = await axios.get<string[]>(`${HOSTNAME}/searchUsernames/${query}`);
-
             setSuggestions(response.data);
         } catch {
             // Don't do anything, just they are 0 suggestions
@@ -179,6 +184,7 @@ export const ItemDetails = ({ item }: { item: Item }) => {
                                 checkmark={true}
                                 placeholder="Sale state"
                                 className="h-12 items-center me-2"
+                                disabled={saleState === SALE_STATES[2].value && !existsChanges}
                             />
                         :
                             <Button
