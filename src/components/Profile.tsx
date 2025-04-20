@@ -9,6 +9,9 @@ import {Review} from "./core/data/Review.ts";
 import {Toast} from "primereact/toast";
 import {Rating} from "primereact/rating";
 import {Avatar} from "primereact/avatar";
+import {ItemComponent} from "./core/ItemComponent.tsx";
+import {Dialog} from "primereact/dialog";
+import {ItemDetails} from "./shop/itemDetails/ItemDetails.tsx";
 
 export const Profile = () => {
     const { userId } = useContext(UserIdContext)!;
@@ -17,6 +20,7 @@ export const Profile = () => {
     const [user, setUser] = useState(EMPTY);
     const [profilePicture, setProfilePicture] = useState(EMPTY);
     const [clothes, setClothes] = useState<Clothe[]>([]);
+    const [item, setItem] = useState<Clothe | undefined>(undefined);
     const [reviews, setReviews] = useState<Review[]>([]);
     const toast = useRef<Toast>(null);
 
@@ -25,24 +29,24 @@ export const Profile = () => {
         toast.current?.show({severity:'error', summary: 'Error', detail: message, life: 3000});
     }
 
+    const fetchProfile = async () => {
+        try {
+            const response = await axios.get(`${HOSTNAME}/profile/${profileId}`);
+            const data = response.data;
+
+            setUser(data.username);
+            setEmail(data.email);
+            setProfilePicture(data.profilePicture);
+            setClothes(data.clothes || []);
+            setReviews(data.reviews || []);
+        } catch {
+            showError("Error loading profile");
+        }
+    };
+
     useEffect(() => {
-        const fetchProfile = async () => {
-            try {
-                const response = await axios.get(`${HOSTNAME}/profile/${profileId}`);
-                const data = response.data;
-
-                setUser(data.username);
-                setEmail(data.email);
-                setProfilePicture(data.profilePicture);
-                setClothes(data.clothes || []);
-                setReviews(data.reviews || []);
-            } catch {
-                showError("Error loading profile");
-            }
-        };
-
         fetchProfile().then();
-    }, [profileId]);
+    });
 
     const averageRating = reviews.length > 0
         ? reviews.reduce((sum, r) => sum + parseFloat(String(r.rate!)), 0) / reviews.length
@@ -77,13 +81,27 @@ export const Profile = () => {
             <TabView className="w-9/10 mx-auto">
                 <TabPanel header="Items" leftIcon="pi pi-warehouse mr-2">
                     {clothes.length > 0 ? (
-                        <ul className="list-disc pl-5">
-                            {clothes.map((item) => (
-                                <li key={item.id}>
-                                    <strong>{item.brand}</strong> - {item.model} (${item.price})
-                                </li>
+                        <div className="flex flex-wrap justify-center gap-4">
+                            {clothes.map((i, index) => (
+                                <ItemComponent key={index} setItem={setItem} item={i} />
                             ))}
-                        </ul>
+
+                            {/* Single Dialog outside the map */}
+                            <Dialog
+                                header="Item Details"
+                                visible={!!item} // Only visible if item is defined
+                                style={{ width: '50vw' }}
+                                onHide={() => setItem(undefined)}
+                                dismissableMask
+                                modal
+                            >
+                                {
+                                    item && <ItemDetails item={item} fetchClothes={() => {
+                                        fetchProfile().then()
+                                    }}/>
+                                }
+                            </Dialog>
+                        </div>
                     ) : (
                         <p>No items found.</p>
                     )}

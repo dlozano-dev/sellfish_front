@@ -20,6 +20,7 @@ import {ShopToolbar} from "./ShopToolbar.tsx";
 import {LoadingContext} from "../../../Navigation.tsx";
 import {AutoCompleteCompleteEvent} from "primereact/autocomplete";
 import {Suggestion} from "../../core/data/Suggestion.ts";
+import {ItemComponent} from "../../core/ItemComponent.tsx";
 
 export const Shop = () => {
     const [clothes, setClothes] = useState<Clothe[]>();
@@ -136,20 +137,7 @@ export const Shop = () => {
                 <div className="flex flex-col justify-center items-center gap-10 pb-20">
                     <div className="flex flex-wrap justify-center gap-4">
                         {clothes.map((i, index) => (
-                            <div
-                                onClick={() => setItem(i)}
-                                key={index}
-                                className="w-80 h-90 overflow-hidden rounded-md flex flex-col justify-end hover:cursor-pointer"
-                            >
-                                <img
-                                    src={`data:image/png;base64,${i.picture}`}
-                                    alt={i.brand}
-                                    className="w-full h-full object-cover rounded-md"
-                                />
-                                <p className="py-2 text-gray-800 font-semibold items-start">
-                                    {`${i.price} €`}
-                                </p>
-                            </div>
+                            <ItemComponent key={index} setItem={setItem} item={i} />
                         ))}
 
                         {/* Single Dialog outside the map */}
