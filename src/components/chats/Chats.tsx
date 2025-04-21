@@ -7,6 +7,10 @@ import axios from "axios";
 import {Avatar} from "primereact/avatar";
 import {Toast} from "primereact/toast";
 import {TabPanel, TabView} from "primereact/tabview";
+import {Dialog} from 'primereact/dialog';
+import {Rating} from 'primereact/rating';
+import {InputTextarea} from 'primereact/inputtextarea';
+import {Button} from 'primereact/button';
 
 type Message = {
     id: number;                 // Unique identifier for the message
@@ -18,6 +22,27 @@ type Message = {
     product: number | null;     // The id of the associated product
     brand: string | null;       // The brand of the associated product
     model: string | null;       // The model of the associated product
+};
+
+type Review = {
+    saleId: number;
+    productId: number;
+    clothe: {
+        id: number;
+        brand: string;
+        model: string;
+        category: string;
+        price: number;
+        publisher: number;
+        picture: string;
+        postDate: string;
+        size: string;
+        state: string;
+        location: string;
+        saleState: string;
+        favoritesCount: number;
+    };
+    seller: string; // username
 };
 
 export const Chats = () => {
@@ -37,6 +62,11 @@ export const Chats = () => {
     const [chatterName, setChatterName] = useState<string | null>();
     const prevChatRef = useRef<Message[]>([]);
     const toast = useRef<Toast>(null);
+    const [pendingReviews, setPendingReviews] = useState<Review[]>([]);
+    const [visibleDialog, setVisibleDialog] = useState(false);
+    const [selectedReview, setSelectedReview] = useState<Review | null>(null);
+    const [rateValue, setRateValue] = useState<number | null>(null);
+    const [reviewText, setReviewText] = useState("");
 
     const showError = (message: string) => {
         toast.current?.clear()
@@ -117,6 +147,12 @@ export const Chats = () => {
     }
 
     useEffect(() => {
+        axios.get(`${HOSTNAME}/sales/unrated/${userId}`)
+            .then(res => setPendingReviews(res.data))
+            .catch(() => showError("Error loading pending reviews"));
+    }, [userId]);
+
+    useEffect(() => {
         if (!item) return;
 
         const interval = setInterval(() => {
@@ -171,24 +207,55 @@ export const Chats = () => {
                                                 getChat(i!.id!, i!.publisher!)
                                             }}
                                             className={i!.id === item?.id
-                                                ? "flex py-2 cursor-pointer hover:opacity-80 bg-gray-100"
-                                                : "flex py-2 cursor-pointer hover:opacity-80"
+                                                ? "flex items-center py-2 cursor-pointer hover:opacity-80 bg-gray-100"
+                                                : "flex items-center py-2 cursor-pointer hover:opacity-80"
                                             }
                                         >
                                             <img
                                                 src={`data:image/png;base64,${i.picture}`}
                                                 alt={i.brand}
-                                                className="w-20 h-20 object-cover rounded-md mx-4"
+                                                className="w-17 h-17 object-cover rounded-md mx-4"
+
                                             />
-                                            <div className="flex flex-col">
-                                                <span>{i.brand + " " + i.model}</span>
-                                                <span className='text-stone-600'>{i.price + " €"}</span>
-                                                <span className='text-stone-800'>{i.publisherName}</span>
+                                            <div>
+                                                <p className='text-md'>{i.brand + " " + i.model}</p>
+                                                <p className='text-stone-600'>{i.price + " €"}</p>
                                             </div>
                                         </div>
                                     ))
                                 ) : (
                                     <p>0 chats opened.</p>
+                                )}
+                            </div>
+                        </TabPanel>
+                        <TabPanel header="Pending reviews" leftIcon="pi pi-clock mr-2">
+                            <div className="max-h-[70vh] overflow-y-auto pr-2">
+                                {pendingReviews.length > 0 ? pendingReviews.map((rev, index) => (
+                                    <div
+                                        key={index}
+                                        className="flex items-center cursor-pointer hover:bg-gray-100 py-2 px-4"
+                                        onClick={() => {
+                                            setSelectedReview(rev);
+                                            setRateValue(null);
+                                            setReviewText("");
+                                            setVisibleDialog(true);
+                                        }}
+                                    >
+                                        <img
+                                            src={`data:image/png;base64,${rev.clothe.picture}`}
+                                            className="w-17 h-17 object-cover rounded-md mr-4"
+                                            alt={'Item picture'}
+                                        />
+                                        <div>
+                                            <p className="text-md">{rev.clothe.brand} {rev.clothe.model}</p>
+                                            <p className="text-sm text-stone-600">Seller: {rev.seller}</p>
+                                        </div>
+                                    </div>
+                                )) : (
+                                    <div className='flex items-center justify-center mt-5'>
+                                        <span>No pending reviews</span>
+                                        <i className='ml-2 pi pi-check-square'/>
+                                    </div>
                                 )}
                             </div>
                         </TabPanel>
@@ -305,6 +372,63 @@ export const Chats = () => {
                         </div>
                     )}
                 </div>
+
+                <Dialog
+                    header="Leave a Review"
+                    visible={visibleDialog}
+                    style={{width: '30vw'}}
+                    onHide={() => setVisibleDialog(false)}
+                >
+                    {selectedReview && (
+                        <div className="flex flex-col gap-4">
+                            <div className="flex items-center gap-4">
+                                <img
+                                    src={`data:image/png;base64,${selectedReview.clothe.picture}`}
+                                    className="w-20 h-20 object-cover rounded-md"
+                                    alt={'Item Picture'}
+                                />
+                                <div>
+                                    <p className="text-lg">{selectedReview.clothe.brand} {selectedReview.clothe.model}</p>
+                                    <p className="text-sm text-stone-600">Seller: {selectedReview.seller}</p>
+                                </div>
+                            </div>
+                            <div>
+                                <label className="block mb-2">Rating (required)</label>
+                                <Rating value={rateValue!} cancel={false} onChange={(e) => setRateValue(e.value!)} />
+                            </div>
+                            <div>
+                                <label className="block mb-2">Review (optional)</label>
+                                <InputTextarea
+                                    autoResize
+                                    rows={3}
+                                    value={reviewText}
+                                    onChange={(e: { target: { value: React.SetStateAction<string>; }; }) => setReviewText(e.target.value)}
+                                    className="w-full"
+                                />
+                            </div>
+                            <Button
+                                label="Submit"
+                                icon="pi pi-check"
+                                disabled={!rateValue}
+                                onClick={() => {
+                                    axios.put(`${HOSTNAME}/sales/review/${selectedReview.saleId}`, null, {
+                                        params: {
+                                            rate: rateValue,
+                                            review: reviewText
+                                        }
+                                    }).then(() => {
+                                        toast.current?.show({severity: 'success', summary: 'Review submitted'});
+                                        setPendingReviews(pendingReviews.filter(p => p.saleId !== selectedReview.saleId));
+                                        setVisibleDialog(false);
+                                    }).catch(() => {
+                                        showError("Failed to submit review");
+                                    });
+                                }}
+                            />
+                        </div>
+                    )}
+                </Dialog>
+
             </div>
             <style>
                 {`
