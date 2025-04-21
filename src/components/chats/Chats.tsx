@@ -1,6 +1,6 @@
 import React, {useState, useContext, useEffect, useRef} from 'react'
-import {UserIdContext} from '../../Navigation'
-import {EMPTY, ENTER, GET, HOSTNAME, JSON} from "../../utils/Constants.tsx";
+import {GlobalContext, ProfileIdContext, UserIdContext} from '../../Navigation'
+import {EMPTY, ENTER, GET, HOSTNAME, JSON, PROFILE} from "../../utils/Constants.tsx";
 import {Header} from "../header/Header.tsx";
 import {Clothe} from "../shop/data/Clothe.ts";
 import axios from "axios";
@@ -21,7 +21,9 @@ type Message = {
 };
 
 export const Chats = () => {
+    const {setGlobalState} = useContext(GlobalContext)!;
     const {userId} = useContext(UserIdContext)!;
+    const {setProfileId} = useContext(ProfileIdContext)!;
     // Clothes that have chat
     const [chats, setChats] = useState<Clothe[]>([]);
     // Messages of the selected chat
@@ -31,6 +33,7 @@ export const Chats = () => {
     // Last message of the selected chat
     const messagesEndRef = useRef<HTMLDivElement | null>(null);
     const [chatterPfp, setChatterPfp] = useState<string | null>();
+    const [chatterId, setChatterId] = useState<string | null>();
     const [chatterName, setChatterName] = useState<string | null>();
     const prevChatRef = useRef<Message[]>([]);
     const toast = useRef<Toast>(null);
@@ -105,6 +108,7 @@ export const Chats = () => {
             const response = await axios.get<string>(`${HOSTNAME}/getUsername/${userId}`);
 
             // Set the new contact username in state
+            setChatterId(userId);
             setChatterName(response.data);
         } catch (error) {
             setChatterName('Unknown user');
@@ -193,20 +197,28 @@ export const Chats = () => {
                     {chat.length > 0 ? (
                         <div className="flex flex-col h-[80vh] w-5/7 bg-white rounded-lg shadow p-6 space-y-2">
                             <div className="w-full flex px-5 pb-2 border-b-2 border-stone-800">
-                                {chatterPfp != null ?
-                                    <Avatar
-                                        image={`data:image/png;base64,${chatterPfp}`}
-                                        size="large"
-                                        className='shadow-md rounded-md mx-3'
-                                    />
-                                    :
-                                    <Avatar
-                                        icon="pi pi-user"
-                                        size="large"
-                                        className='shadow-md rounded-md mx-3'
-                                        style={{backgroundColor: '#ffffff', color: '#5e5e5e'}}
-                                    />
-                                }
+                                <div
+                                    className='cursor-pointer'
+                                    onClick={() => {
+                                        setProfileId(chatterId!)
+                                        setGlobalState(PROFILE)
+                                    }}
+                                >
+                                    {chatterPfp != null ?
+                                        <Avatar
+                                            image={`data:image/png;base64,${chatterPfp}`}
+                                            size="large"
+                                            className='shadow-md rounded-md mx-3'
+                                        />
+                                        :
+                                        <Avatar
+                                            icon="pi pi-user"
+                                            size="large"
+                                            className='shadow-md rounded-md mx-3'
+                                            style={{backgroundColor: '#ffffff', color: '#5e5e5e'}}
+                                        />
+                                    }
+                                </div>
                                 <div>
                                     <p className='text-stone-800'>{chatterName}</p>
                                     <p className='text-stone-950'>{item?.brand + " " + item?.model}</p>
