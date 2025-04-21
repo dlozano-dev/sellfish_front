@@ -1,11 +1,12 @@
 import React, {useState, useContext, useEffect, useRef} from 'react'
-import { UserIdContext } from '../../Navigation'
+import {UserIdContext} from '../../Navigation'
 import {EMPTY, ENTER, GET, HOSTNAME, JSON} from "../../utils/Constants.tsx";
-import { Header } from "../header/Header.tsx";
-import { Clothe } from "../shop/data/Clothe.ts";
+import {Header} from "../header/Header.tsx";
+import {Clothe} from "../shop/data/Clothe.ts";
 import axios from "axios";
 import {Avatar} from "primereact/avatar";
 import {Toast} from "primereact/toast";
+import {TabPanel, TabView} from "primereact/tabview";
 
 type Message = {
     id: number;                 // Unique identifier for the message
@@ -20,23 +21,23 @@ type Message = {
 };
 
 export const Chats = () => {
-    const { userId } = useContext(UserIdContext)!;
+    const {userId} = useContext(UserIdContext)!;
     // Clothes that have chat
-    const [ chats, setChats ] = useState<Clothe[]>([]);
+    const [chats, setChats] = useState<Clothe[]>([]);
     // Messages of the selected chat
-    const [ chat, setChat ] = useState<Message[]>([]);
+    const [chat, setChat] = useState<Message[]>([]);
     // A single chat item
-    const [ item, setItem ] = useState<Clothe>();
+    const [item, setItem] = useState<Clothe>();
     // Last message of the selected chat
     const messagesEndRef = useRef<HTMLDivElement | null>(null);
-    const [ chatterPfp, setChatterPfp ] = useState<string | null>();
-    const [ chatterName, setChatterName ] = useState<string | null>();
+    const [chatterPfp, setChatterPfp] = useState<string | null>();
+    const [chatterName, setChatterName] = useState<string | null>();
     const prevChatRef = useRef<Message[]>([]);
     const toast = useRef<Toast>(null);
 
     const showError = (message: string) => {
         toast.current?.clear()
-        toast.current?.show({severity:'error', summary: 'Error', detail:message, life: 3000});
+        toast.current?.show({severity: 'error', summary: 'Error', detail: message, life: 3000});
     }
 
     const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -139,7 +140,7 @@ export const Chats = () => {
             !prevChat.every((msg, index) => msg.id === newMessages[index].id);
 
         if (isDifferent && messagesEndRef.current) {
-            messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+            messagesEndRef.current.scrollIntoView({behavior: "smooth"});
         }
 
         // Replace previous list for the new one
@@ -148,45 +149,46 @@ export const Chats = () => {
 
     return (
         <div>
-            <Header />
-            <div className="flex justify-center items-center w-full text-black pt-10">\
-                <Toast ref={toast} />
+            <Header/>
+            <div className="flex justify-center items-center w-full text-black pt-10">
+                <Toast ref={toast}/>
 
                 <div className="w-full flex px-5">
-                    {chats.length > 0 ? (
-                        <div className="w-1/4 max-h-[80vh] text-start bg-white rounded-lg shadow mr-5">
-                            <div className="p-4 border-b-2 text-gray-800 flex items-center">
-                                <i className="pi pi-inbox text-stone-800 mr-2" style={{fontSize: '1.2rem'}}/>
-                                <span className='text-lg'>Chats</span>
+                    <TabView
+                        className="w-1/4 max-h-[80vh] text-start bg-white rounded-lg shadow mr-5 overflow-y-auto no-tabview-padding">
+                        <TabPanel header="Chats" leftIcon="pi pi-inbox mr-2">
+                            <div className="max-h-[70vh] overflow-y-auto pr-2"> {/* scroll de los chats */}
+                                {chats.length > 0 ? (
+                                    chats.map((i, index) => (
+                                        <div
+                                            key={index}
+                                            onClick={() => {
+                                                setItem(i)
+                                                getChat(i!.id!, i!.publisher!)
+                                            }}
+                                            className={i!.id === item?.id
+                                                ? "flex py-2 cursor-pointer hover:opacity-80 bg-gray-100"
+                                                : "flex py-2 cursor-pointer hover:opacity-80"
+                                            }
+                                        >
+                                            <img
+                                                src={`data:image/png;base64,${i.picture}`}
+                                                alt={i.brand}
+                                                className="w-20 h-20 object-cover rounded-md mx-4"
+                                            />
+                                            <div className="flex flex-col">
+                                                <span>{i.brand + " " + i.model}</span>
+                                                <span className='text-stone-600'>{i.price + " €"}</span>
+                                                <span className='text-stone-800'>{i.publisherName}</span>
+                                            </div>
+                                        </div>
+                                    ))
+                                ) : (
+                                    <p>0 chats opened.</p>
+                                )}
                             </div>
-                            {chats.map((i, index) => (
-                                <div
-                                    key={index}
-                                    onClick={() => {
-                                        setItem(i)
-                                        getChat(i!.id!, i!.publisher!)
-                                    }}
-                                    className={ i!.id === item?.id
-                                        ? "flex py-2 cursor-pointer hover:opacity-80 bg-gray-100"
-                                        : "flex py-2 cursor-pointer hover:opacity-80"
-                                    }
-                                >
-                                    <img
-                                        src={`data:image/png;base64,${i.picture}`}
-                                        alt={i.brand}
-                                        className="w-20 h-20 object-cover rounded-md mx-4"
-                                    />
-                                    <div className="flex flex-col">
-                                        <span>{i.brand + " " + i.model}</span>
-                                        <span className='text-stone-600'>{i.price + " €"}</span>
-                                        <span className='text-stone-800'>{i.publisherName}</span>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                    ) : (
-                        <p>0 chats opened.</p>
-                    )}
+                        </TabPanel>
+                    </TabView>
 
                     {chat.length > 0 ? (
                         <div className="flex flex-col h-[80vh] w-5/7 bg-white rounded-lg shadow p-6 space-y-2">
@@ -292,6 +294,14 @@ export const Chats = () => {
                     )}
                 </div>
             </div>
+            <style>
+                {`
+                    /* Scoped override just for this file */
+                    .no-tabview-padding .p-tabview-panels {
+                        padding: 0 !important;
+                    }
+                `}
+            </style>
         </div>
     )
 }
