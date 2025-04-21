@@ -1,7 +1,7 @@
 import {useContext, useRef, useState} from 'react';
 import {GlobalContext, UserContext} from '../../../Navigation'
 import { UserIdContext } from '../../../Navigation'
-import {EMPTY, GET, HOSTNAME, JSON as json, PUT, SALE_STATES} from "../../../utils/Constants.js";
+import {CHATS, EMPTY, HOSTNAME, PUT, SALE_STATES} from "../../../utils/Constants.js";
 import {Clothe} from "../data/Clothe.ts";
 import GalleriaComponent from "../../core/Carrousel.tsx";
 import {Button} from "primereact/button";
@@ -10,6 +10,8 @@ import {Dropdown} from "primereact/dropdown";
 import {Dialog} from "primereact/dialog";
 import {AutoComplete, AutoCompleteCompleteEvent} from "primereact/autocomplete";
 import axios from "axios";
+import {FloatLabel} from "primereact/floatlabel";
+import {InputTextarea} from "primereact/inputtextarea";
 
 export const ItemDetails = ({
     item, fetchClothes
@@ -23,7 +25,9 @@ export const ItemDetails = ({
     const [saleState, setSaleState] = useState(item.saleState);
     const [existsChanges, setExistsChanges] = useState(false);
     const [showSaleDialog, setShowSaleDialog] = useState(false);
+    const [showChatDialog, setShowChatDialog] = useState(false);
     const [search, setSearch] = useState(EMPTY);
+    const [message, setMessage] = useState(EMPTY);
     const [suggestions, setSuggestions] = useState<string[]>();
     const toast = useRef<Toast>(null);
 
@@ -42,26 +46,17 @@ export const ItemDetails = ({
         toast.current?.show({severity:'success', summary: 'Success', detail: message, life: 3000});
     }
 
-    function testChat() {
+    async function initChat() {
         if (item.publisher === userId) {
             showWarn("You can't contact yourself!");
             return;
         }
 
-        const message = prompt('Chat to the seller');
-        const request = `${HOSTNAME}/postMessage/${userId}/${item!.publisher}/${item!.id}/${message}/${Date.now()}/${userId}`;
-
-        const xhr = new XMLHttpRequest();
-        xhr.open(GET, request, true);
-        xhr.responseType = json;
-        xhr.send();
-
-        xhr.onload = function() {
-            if (xhr.status === 200) {
-                setGlobalState("Chats");
-            } else {
-                showError("Message can't been sent");
-            }
+        try {
+            await axios.get(`${HOSTNAME}/postMessage/${userId}/${item!.publisher}/${item!.id}/${message}/${Date.now()}/${userId}`);
+            setGlobalState(CHATS);
+        } catch {
+            showError("The message couldn't be sent");
         }
     }
 
@@ -189,7 +184,7 @@ export const ItemDetails = ({
                         :
                             <Button
                                 label="Contact to seller"
-                                onClick={() => testChat()}
+                                onClick={() => setShowChatDialog(true)}
                             />
                         }
                         { existsChanges ?
@@ -222,6 +217,32 @@ export const ItemDetails = ({
                 />
 
                 <Button label='Submit' onClick={() => finishSale()} />
+            </Dialog>
+
+            <Dialog
+                header="Header"
+                visible={showChatDialog}
+                onHide={() => {
+                    setShowChatDialog(false)
+                    setMessage(EMPTY)
+                }}
+                style={{ width: '50vw' }}
+                breakpoints={{ '960px': '75vw', '641px': '100vw' }}
+            >
+                <FloatLabel className='mt-5'>
+                    <InputTextarea
+                        id="message"
+                        value={message}
+                        onChange={(e) => setMessage(e.target.value)}
+                        aria-multiline={false}
+                        className='w-full'
+                    />
+                    <label htmlFor="message">Contact to seller</label>
+                </FloatLabel>
+
+                <div className="flex justify-end mt-4">
+                    <Button label="Send" onClick={() => initChat()} />
+                </div>
             </Dialog>
         </div>
     );
