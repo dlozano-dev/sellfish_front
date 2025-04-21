@@ -8,6 +8,7 @@ export const POST = 'post'
 export const SHOP = 'shop'
 export const CHATS = 'chats'
 export const PROFILE = 'profile'
+export const WISHLIST = 'wishlist'
 
 /* HTTP METHODS */
 export const GET = 'get';

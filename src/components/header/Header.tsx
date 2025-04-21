@@ -4,7 +4,7 @@ import d_menu from '../../assets/Icons/d-menu.svg';
 import dagger_icon from '../../assets/Icons/dagger.svg';
 import {GlobalContext, ProfileIdContext, ProfilePictureContext, UserIdContext} from '../../Navigation';
 import { UserContext } from '../../Navigation';
-import {CHATS, HOME, POST, PROFILE, SETTINGS, SHOP} from "../../utils/Constants";
+import {CHATS, HOME, POST, PROFILE, SETTINGS, SHOP, WISHLIST} from "../../utils/Constants";
 import { Sidebar } from "primereact/sidebar";
 import { OverlayPanel } from "primereact/overlaypanel";
 import {Avatar} from "primereact/avatar";
@@ -27,7 +27,11 @@ export const Header = () => {
 
             {/* Icons */}
             <div className='flex space-x-4 p-8 items-center'>
-                <img src={String(dagger_icon)} alt='Favorite Icon' className='w-14 h-14 cursor-pointer hover:opacity-60'/>
+                <img src={String(dagger_icon)}
+                     alt='Favorite Icon'
+                     onClick={() => setGlobalState(WISHLIST)}
+                     className='w-14 h-14 cursor-pointer hover:opacity-60'
+                />
                 <div className="card flex justify-end">
                     { profilePicture != null ?
                         <Avatar
@@ -93,7 +97,7 @@ export const Header = () => {
                     <div onClick={() => setGlobalState(POST)} className='pl-10 py-4 hover:text-black cursor-pointer transition-transform duration-500 hover:translate-x-[10%]'>Post a Product</div>
                 </div>
                 <div className='hover:bg-gray-100 overflow-x-hidden'>
-                    <div onClick={() => setGlobalState('Wishlist')} className='pl-10 py-4 hover:text-black cursor-pointer transition-transform duration-500 hover:translate-x-[10%]'>Wishlist</div>
+                    <div onClick={() => setGlobalState(WISHLIST)} className='pl-10 py-4 hover:text-black cursor-pointer transition-transform duration-500 hover:translate-x-[10%]'>Wishlist</div>
                 </div>
                 <div className='hover:bg-gray-100 overflow-x-hidden'>
                     <div onClick={() => setGlobalState(CHATS)} className='pl-10 py-4 hover:text-black cursor-pointer transition-transform duration-500 hover:translate-x-[10%]'>Chats</div>
