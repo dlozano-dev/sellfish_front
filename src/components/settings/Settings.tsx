@@ -1,17 +1,13 @@
-import {useContext, useState, useCallback, useRef} from "react";
-import { Header } from "../header/Header";
-import { HOSTNAME } from "../../utils/Constants";
+import React, {useContext, useState, useRef} from "react";
+import {EMPTY, HOSTNAME} from "../../utils/Constants";
 import {EmailContext, ProfilePictureContext, UserContext, UserIdContext} from "../../Navigation";
 import { Button } from "primereact/button";
 import axios from "axios";
-import Cropper, {Area} from "react-easy-crop";
-import { useDropzone } from "react-dropzone";
-import { Dialog } from "primereact/dialog";
-import Slider from "@mui/material/Slider";
-import getCroppedImg from "../core/cropImage";
+import {Area} from "react-easy-crop";
 import {InputText} from "primereact/inputtext";
 import {Avatar} from "primereact/avatar";
 import {Toast} from "primereact/toast";
+import {ImageCropper} from "../core/ImageCropper.tsx";
 
 export const Settings = () => {
     const { profilePicture, setProfilePicture } = useContext(ProfilePictureContext)!;
@@ -19,13 +15,8 @@ export const Settings = () => {
     const { user } = useContext(UserContext)!;
     const { email, setEmail } = useContext(EmailContext)!;
 
-    const [imageSrc, setImageSrc] = useState<string | null>(null);
-    const [croppedAreaPixels, setCroppedAreaPixels] = useState<Area | null>(null);
-    const [crop, setCrop] = useState({ x: 0, y: 0 });
-    const [zoom, setZoom] = useState(1);
     const [croppedImage, setCroppedImage] = useState(profilePicture);
     const [loading, setIsLoading] = useState(false);
-    const [showCropper, setShowCropper] = useState(false);
     const [newEmail, setNewEmail] = useState(email);
     const toast = useRef<Toast>(null);
 
@@ -38,39 +29,6 @@ export const Settings = () => {
         toast.current?.clear()
         toast.current?.show({severity:'error', summary: 'Error', detail:message, life: 3000});
     }
-
-    // Dropzone config
-    const onDrop = useCallback((acceptedFiles: File[]) => {
-        const file = acceptedFiles[0];
-        const reader = new FileReader();
-        reader.onload = () => {
-            setImageSrc(reader.result as string);
-            setShowCropper(true);
-        };
-        reader.readAsDataURL(file);
-    }, []);
-
-    const { getRootProps, getInputProps } = useDropzone({
-        onDrop,
-        accept: {
-            'image/*': []
-        },
-        multiple: false
-    });
-
-    const onCropComplete = useCallback((_: Area, croppedPixels: Area) => {
-        setCroppedAreaPixels(croppedPixels);
-    }, []);
-
-    const cropImage = async () => {
-        try {
-            const croppedBase64 = await getCroppedImg(imageSrc!, croppedAreaPixels!, 1080, 1080);
-            setCroppedImage(croppedBase64.split(',')[1]);
-            setShowCropper(false);
-        } catch (e) {
-            console.error("Crop failed", e);
-        }
-    };
 
     const applyChanges = async () => {
         try {
@@ -109,29 +67,97 @@ export const Settings = () => {
         }
     };
 
+    const [image, setImage] = useState<string>(EMPTY);
+    const [showCropper, setShowCropper] = useState(false);
+    const [inputKey, setInputKey] = useState(Date.now()); // force reset file input
+    const inputReference = useRef<HTMLInputElement | null>(null);
+
+    // Handle the change event when a file is selected
+    const handleOnChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        if (event.target.files && event.target.files[0]) {
+            const reader = new FileReader();
+            reader.readAsDataURL(event.target.files[0]);
+            reader.onload = function() {
+                onImageSelected(reader.result);
+            };
+        }
+    };
+
+    const onChooseImg = () => {
+        inputReference.current?.click();
+    };
+
+    // Callback function when an image is selected
+    const onImageSelected = (selectedImage: string | ArrayBuffer | null) => {
+        if (typeof selectedImage === "string") {
+            setImage(selectedImage);
+            setShowCropper(true);
+            // reset file input
+            setInputKey(Date.now());
+        }
+    };
+
+    // Callback function when cropping is done
+    const onCropDone = (imgCroppedArea: Area) => {
+        const canvasElement = document.createElement("canvas");
+        canvasElement.width = imgCroppedArea.width;
+        canvasElement.height = imgCroppedArea.height;
+        const ctx = canvasElement.getContext("2d");
+
+        const imageObject = new Image();
+        imageObject.src = image;
+
+        imageObject.onload = () => {
+            ctx?.drawImage(
+                imageObject,
+                imgCroppedArea.x,
+                imgCroppedArea.y,
+                imgCroppedArea.width,
+                imgCroppedArea.height,
+                0,
+                0,
+                imgCroppedArea.width,
+                imgCroppedArea.height
+            );
+
+            const rawBase64 = canvasElement.toDataURL("image/webp").split(',')[1];
+            setCroppedImage(rawBase64);
+            setShowCropper(false);
+        };
+    };
+
     return (
-        <div className="w-screen h-screen">
-            <Header />
+        <div className="w-full h-full">
             <Toast ref={toast} />
 
             <div
                 className="w-1/4 mx-auto flex flex-col justify-center items-center gap-4 p-10 bg-white rounded-lg cursor-pointer text-stone-700">
                 {/* Avatar image */}
-                <div {...getRootProps()} className='hover:opacity-80'>
-                    <input {...getInputProps()} />
+                <input type='file' accept="image/*" ref={inputReference} onChange={handleOnChange} style={{ display: 'none' }} />
+                <div className='hover:opacity-80'>
                     {croppedImage != null ?
-                        <Avatar
-                            image={`data:image/png;base64,${croppedImage}`}
-                            size="xlarge"
-                            shape="circle"
-                            className="w-full h-full"
-                        />
+                        <div className='w-full flex justify-center items-center'>
+                            <Avatar
+                                image={`data:image/png;base64,${croppedImage}`}
+                                onChange={handleOnChange}
+                                onClick={onChooseImg}
+                                key={inputKey}
+                                size="xlarge"
+                                shape="circle"
+                                className="w-full h-full"
+                            />
+
+                            {/* Hidden file input element */}
+                        </div>
                     :
                         <Avatar
                             icon="pi pi-user"
                             size="xlarge"
                             shape="circle"
                             className='shadow-md rounded-md mx-3'
+                            onChange={handleOnChange}
+                            onClick={onChooseImg}
+                            key={inputKey}
                             style={{backgroundColor: '#ffffff', color: '#5e5e5e'}}
                         />
                     }
@@ -157,32 +183,23 @@ export const Settings = () => {
                 <Button label="Submit" icon="pi pi-check" loading={loading} onClick={applyChanges} disabled={profilePicture === croppedImage && email === newEmail}/>
             </div>
 
-            <Dialog header="Crop Image" visible={showCropper} modal style={{width: '90vw', maxWidth: '600px'}} onHide={() => setShowCropper(false)}>
-                <div className="relative w-full h-[400px] bg-black">
-                    <Cropper
-                        image={imageSrc!}
-                        crop={crop}
-                        zoom={zoom}
-                        aspect={1}
-                        onCropChange={setCrop}
-                        onZoomChange={setZoom}
-                        onCropComplete={onCropComplete}
-                        objectFit="contain"
-                    />
+            {showCropper ? (
+                <div className='w-screen h-screen absolute top-0 left-0 flex justify-center items-center'>
+                    <div className='w-screen h-screen bg-black opacity-20'></div>
+                    <div className='w-1/4 bg-white rounded-lg opacity-100 absolute'>
+                        <ImageCropper
+                            image={image}
+                            onCropDone={onCropDone}
+                            onCropCancel={() => {
+                                setImage(EMPTY);
+                                setShowCropper(false)
+                            }}
+                        />
+                    </div>
                 </div>
-
-                <div className="p-4">
-                    <label>Zoom</label>
-                    <Slider
-                        value={zoom}
-                        min={1}
-                        max={3}
-                        step={0.1}
-                        onChange={(_, val) => setZoom(val as number)}
-                    />
-                    <Button label="Crop" icon="pi pi-check" onClick={cropImage} className="mt-2" />
-                </div>
-            </Dialog>
+            ) :
+                <div></div>
+            }
         </div>
     );
 };

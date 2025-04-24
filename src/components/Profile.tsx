@@ -12,12 +12,14 @@ import {Avatar} from "primereact/avatar";
 import {ItemComponent} from "./core/ItemComponent.tsx";
 import {Dialog} from "primereact/dialog";
 import {ItemDetails} from "./shop/itemDetails/ItemDetails.tsx";
+import {Settings} from "./settings/Settings.tsx";
 
 export const Profile = () => {
     const { userId } = useContext(UserIdContext)!;
     const { profileId } = useContext(ProfileIdContext)!;
     const [email, setEmail] = useState(EMPTY);
     const [user, setUser] = useState(EMPTY);
+    const [showSettings, setShowSettings] = useState(false);
     const [profilePicture, setProfilePicture] = useState(EMPTY);
     const [clothes, setClothes] = useState<Clothe[]>([]);
     const [item, setItem] = useState<Clothe | undefined>(undefined);
@@ -69,7 +71,10 @@ export const Profile = () => {
                 </div>
 
                 {userId === profileId ?
-                    <button className='rounded-md border border-stone-800 cursor-pointer hover:oppacity-80 p-2 space-x-2 h-10'>
+                    <button
+                        onClick={() => setShowSettings(true)}
+                        className='rounded-md border border-stone-800 cursor-pointer hover:oppacity-80 p-2 space-x-2 h-10'
+                    >
                         <i className="pi pi-pencil" style={{ fontSize: '1rem' }} />
                         <span>Edit profile</span>
                     </button>
@@ -138,6 +143,17 @@ export const Profile = () => {
                     )}
                 </TabPanel>
             </TabView>
+
+            <Dialog
+                header="Settings"
+                visible={showSettings}
+                style={{ width: '30vw' }}
+                onHide={() => setShowSettings(false)}
+                dismissableMask
+                modal
+            >
+                <Settings />
+            </Dialog>
         </div>
     )
 }
