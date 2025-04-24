@@ -2,16 +2,16 @@ import { useState, useContext } from 'react';
 import Snackbar from '@mui/material/Snackbar';
 import { UserIdContext } from '../../Navigation';
 import { InputText } from 'primereact/inputtext';
-import { Header } from '../header/Header';
+import { Header } from '../core/Header.tsx';
 import {CATEGORIES, EMPTY, HOSTNAME, PROVINCES, SIZES, STATES} from '../../utils/Constants';
 import axios from 'axios';
 import { InputNumber } from "primereact/inputnumber";
 import { Dropdown } from "primereact/dropdown";
 import { Button } from "primereact/button";
 import { FloatLabel } from 'primereact/floatlabel';
-import { FileInput } from "../core/FileInput.tsx";
+import { FileInput } from "../core/ImageCropper/FileInput.tsx";
 import { Area } from "react-easy-crop";
-import { ImageCropper } from "../core/ImageCropper.tsx";
+import { ImageCropper } from "../core/ImageCropper/ImageCropper.tsx";
 
 export const Post = () => {
     const { userId } = useContext(UserIdContext)!;

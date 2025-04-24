@@ -3,7 +3,7 @@ import {GlobalContext, UserContext} from '../../../Navigation'
 import { UserIdContext } from '../../../Navigation'
 import {CHATS, EMPTY, HOSTNAME, PUT, SALE_STATES} from "../../../utils/Constants.js";
 import {Clothe} from "../data/Clothe.ts";
-import GalleriaComponent from "../../core/Carrousel.tsx";
+import GalleriaComponent from "../../core/items/Carrousel.tsx";
 import {Button} from "primereact/button";
 import {Toast} from "primereact/toast";
 import {Dropdown} from "primereact/dropdown";

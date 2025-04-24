@@ -1,4 +1,4 @@
-import {ItemComponent} from "../core/ItemComponent.tsx";
+import {ItemComponent} from "../core/items/ItemComponent.tsx";
 import {Dialog} from "primereact/dialog";
 import {ItemDetails} from "../shop/itemDetails/ItemDetails.tsx";
 import {useContext, useEffect, useRef, useState} from "react";
@@ -7,7 +7,7 @@ import {UserIdContext} from "../../Navigation.tsx";
 import axios from "axios";
 import {HOSTNAME} from "../../utils/Constants.tsx";
 import {Toast} from "primereact/toast";
-import {Header} from "../header/Header.tsx";
+import {Header} from "../core/Header.tsx";
 import dagger_icon from "../../assets/Icons/dagger.svg";
 
 export const Wishlist = () => {

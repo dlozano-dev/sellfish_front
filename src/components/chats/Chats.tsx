@@ -1,7 +1,7 @@
 import React, {useState, useContext, useEffect, useRef} from 'react'
 import {GlobalContext, ProfileIdContext, UserIdContext} from '../../Navigation'
 import {EMPTY, ENTER, GET, HOSTNAME, JSON, PROFILE} from "../../utils/Constants.tsx";
-import {Header} from "../header/Header.tsx";
+import {Header} from "../core/Header.tsx";
 import {Clothe} from "../shop/data/Clothe.ts";
 import axios from "axios";
 import {Avatar} from "primereact/avatar";

@@ -7,7 +7,7 @@ import {Area} from "react-easy-crop";
 import {InputText} from "primereact/inputtext";
 import {Avatar} from "primereact/avatar";
 import {Toast} from "primereact/toast";
-import {ImageCropper} from "../core/ImageCropper.tsx";
+import {ImageCropper} from "../core/ImageCropper/ImageCropper.tsx";
 
 export const Settings = () => {
     const { profilePicture, setProfilePicture } = useContext(ProfilePictureContext)!;

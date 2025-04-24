@@ -8,7 +8,7 @@ import {CHATS, HOME, POST, PROFILE, SETTINGS, SHOP, WISHLIST} from "./utils/Cons
 import {Post} from "./components/post/Post.tsx";
 import {Shop} from "./components/shop/explorer/Shop.tsx";
 import {Chats} from "./components/chats/Chats.tsx";
-import {Profile} from "./components/Profile.tsx";
+import {Profile} from "./components/Profile/Profile.tsx";
 import {Wishlist} from "./components/wishlist/Wishlist.tsx";
 
 function App() {

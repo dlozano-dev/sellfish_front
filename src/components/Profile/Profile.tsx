@@ -1,18 +1,18 @@
-import { Header } from "./header/Header.tsx";
+import { Header } from "../core/Header.tsx";
 import { TabView, TabPanel } from 'primereact/tabview';
 import {useContext, useEffect, useRef, useState} from "react";
-import {ProfileIdContext, UserIdContext} from "../Navigation.tsx";
-import {EMPTY, HOSTNAME} from "../utils/Constants.tsx";
+import {ProfileIdContext, UserIdContext} from "../../Navigation.tsx";
+import {EMPTY, HOSTNAME} from "../../utils/Constants.tsx";
 import axios from "axios";
-import {Clothe} from "./shop/data/Clothe.ts";
-import {Review} from "./core/data/Review.ts";
+import {Clothe} from "../shop/data/Clothe.ts";
+import {Review} from "../core/data/Review.ts";
 import {Toast} from "primereact/toast";
 import {Rating} from "primereact/rating";
 import {Avatar} from "primereact/avatar";
-import {ItemComponent} from "./core/ItemComponent.tsx";
+import {ItemComponent} from "../core/items/ItemComponent.tsx";
 import {Dialog} from "primereact/dialog";
-import {ItemDetails} from "./shop/itemDetails/ItemDetails.tsx";
-import {Settings} from "./settings/Settings.tsx";
+import {ItemDetails} from "../shop/itemDetails/ItemDetails.tsx";
+import {Settings} from "../settings/Settings.tsx";
 
 export const Profile = () => {
     const { userId } = useContext(UserIdContext)!;

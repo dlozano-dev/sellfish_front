@@ -1,9 +1,9 @@
 import { useContext, useRef, useState } from 'react';
 import d_menu from '../../assets/Icons/d-menu.svg';
 import dagger_icon from '../../assets/Icons/dagger.svg';
-import {GlobalContext, ProfileIdContext, ProfilePictureContext, UserIdContext} from '../../Navigation';
-import { UserContext } from '../../Navigation';
-import {CHATS, HOME, POST, PROFILE, SHOP, WISHLIST} from "../../utils/Constants";
+import {GlobalContext, ProfileIdContext, ProfilePictureContext, UserIdContext} from '../../Navigation.tsx';
+import { UserContext } from '../../Navigation.tsx';
+import {CHATS, HOME, POST, PROFILE, SHOP, WISHLIST} from "../../utils/Constants.tsx";
 import { Sidebar } from "primereact/sidebar";
 import { OverlayPanel } from "primereact/overlaypanel";
 import {Avatar} from "primereact/avatar";

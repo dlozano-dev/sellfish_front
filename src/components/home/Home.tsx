@@ -1,4 +1,4 @@
-import { Header } from "../header/Header";
+import { Header } from "../core/Header.tsx";
 import bg from '../../assets/backgrounds/bg-table.png';
 import sf_logo from '../../assets/brand_logos/sf-logo.png';
 

@@ -1,10 +1,10 @@
-import {Clothe} from "../shop/data/Clothe.ts";
+import {Clothe} from "../../shop/data/Clothe.ts";
 import React, {useContext, useEffect, useState} from "react";
-import {HOSTNAME, SALE_STATES} from "../../utils/Constants.tsx";
+import {HOSTNAME, SALE_STATES} from "../../../utils/Constants.tsx";
 import axios from "axios";
-import {UserIdContext} from "../../Navigation.tsx";
-import dagger_icon from "../../assets/Icons/dagger.svg";
-import dagger_bordered_icon from "../../assets/Icons/dagger_bordered.png";
+import {UserIdContext} from "../../../Navigation.tsx";
+import dagger_icon from "../../../assets/Icons/dagger.svg";
+import dagger_bordered_icon from "../../../assets/Icons/dagger_bordered.png";
 
 export const ItemComponent = ({
     setItem, item

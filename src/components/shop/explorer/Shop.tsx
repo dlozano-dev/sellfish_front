@@ -1,5 +1,5 @@
 import {useState, useEffect, SetStateAction, useContext} from 'react';
-import {Header} from "../../header/Header.jsx";
+import {Header} from "../../core/Header.tsx";
 import {ItemDetails} from "../itemDetails/ItemDetails.tsx";
 import {Dialog} from "primereact/dialog";
 import {Clothe} from "../data/Clothe.ts";
@@ -20,7 +20,7 @@ import {ShopToolbar} from "./ShopToolbar.tsx";
 import {LoadingContext} from "../../../Navigation.tsx";
 import {AutoCompleteCompleteEvent} from "primereact/autocomplete";
 import {Suggestion} from "../../core/data/Suggestion.ts";
-import {ItemComponent} from "../../core/ItemComponent.tsx";
+import {ItemComponent} from "../../core/items/ItemComponent.tsx";
 
 export const Shop = () => {
     const [clothes, setClothes] = useState<Clothe[]>();
