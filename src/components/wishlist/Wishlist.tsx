@@ -39,8 +39,8 @@ export const Wishlist = () => {
             <Header />
             <Toast ref={toast} />
 
-            <div className='w-9/10 mx-auto rounded-lg bg-white'>
-                <div className=' p-2 text-stone-700 flex items-center'>
+            <div className='w-9/10 mx-auto'>
+                <div className=' p-2 text-stone-700 flex items-center rounded-lg bg-white'>
                     <img
                         src={String(dagger_icon)}
                         alt='Favorite Icon'
@@ -51,7 +51,7 @@ export const Wishlist = () => {
                     </span>
                 </div>
                 {clothes.length > 0 ? (
-                    <div className="w-full mx-auto rounded-lg bg-white p-2 mb-5 text-stone-700 flex flex-wrap justify-center gap-4">
+                    <div className="w-full mx-auto p-2 pt-5 my-5 text-stone-700 flex flex-wrap justify-center gap-4 text-start">
                         {clothes.map((i, index) => (
                             <ItemComponent key={index} setItem={setItem} item={i}/>
                         ))}
