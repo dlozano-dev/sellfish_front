@@ -1,5 +1,5 @@
 /* HOST */
-export const HOSTNAME = "http://192.168.1.36:8080";
+export const HOSTNAME = "http://192.168.1.45:8080";
 
 /* ROUTES */
 export const HOME = 'home';
@@ -83,6 +83,15 @@ export const CATEGORIES = [
     { name: 'Pants', value: 'Pants' },
     { name: 'Accessories', value: 'Accessories' }
 ]
+
+export const STATES = [
+    { name: 'Brand New', value: 'Brand New' },
+    { name: 'Like New', value: 'Like New' },
+    { name: 'Barely Used', value: 'Barely Used' },
+    { name: 'Gently Used', value: 'Gently Used' },
+    { name: 'Used', value: 'Used' },
+    { name: 'Worn Out', value: 'Worn Out' }
+];
 
 export const SIZES = [
     { "name": "2XS", "value": "2XS" },
