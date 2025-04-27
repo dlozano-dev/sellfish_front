@@ -176,7 +176,10 @@ export const Profile = () => {
                         header="Settings"
                         visible={showSettings}
                         style={{ width: '30vw' }}
-                        onHide={() => setShowSettings(false)}
+                        onHide={() => {
+                            fetchProfile().then()
+                            setShowSettings(false)
+                        }}
                         dismissableMask
                         modal
                     >
