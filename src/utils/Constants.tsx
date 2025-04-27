@@ -9,6 +9,8 @@ export const SHOP = 'shop'
 export const CHATS = 'chats'
 export const PROFILE = 'profile'
 export const WISHLIST = 'wishlist'
+export const ABOUT_US = 'ABOUT_US'
+export const CONTACT_US = 'CONTACT_US'
 
 /* HTTP METHODS */
 export const GET = 'get';

@@ -80,7 +80,7 @@ export const Profile = () => {
                             { profilePicture != null ?
                                 <img
                                     src={`data:image/png;base64,${profilePicture}`}
-                                    alt={'Profile Picture'}
+                                    alt={'profile Picture'}
                                     className='w-20 h-20 rounded-md mr-3'
                                 />
                             :
