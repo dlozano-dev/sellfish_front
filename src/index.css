@@ -41,5 +41,19 @@ html, body {
     background-color: #5e81ac;
 }
 
+.price-filter{
+    outline-color: transparent;
+    font-feature-settings: var(--font-feature-settings, normal);
+    font-size: 1rem;
+    font-weight: lighter;
+    padding: 0.6rem;
+    color: #4c566a;
+    transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
+    appearance: none;
+    background: #ffffff;
+    border: 1px solid #d8dee9;
+    border-radius: 4px;
+}
+
 /* Hex: #81a1c1 */
 /* RGB: rgb(129,161,193) */

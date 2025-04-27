@@ -1,6 +1,4 @@
-import React, { useContext, useState } from "react";
-import { CircleDollarSign } from 'lucide-react';
-import { AnimatePresence, motion } from "framer-motion";
+import React, {useContext, useRef} from "react";
 import { Slider } from "@mui/material";
 import { MultiSelect } from 'primereact/multiselect';
 import { Dropdown } from "primereact/dropdown";
@@ -8,6 +6,7 @@ import {AutoComplete, AutoCompleteCompleteEvent} from 'primereact/autocomplete';
 import { Button } from "primereact/button";
 import { LoadingContext } from "../../../Navigation.tsx";
 import { CATEGORIES, ORDER_OPTIONS, PROVINCES, SIZES } from "../../../utils/Constants.tsx";
+import {OverlayPanel} from "primereact/overlaypanel";
 
 export const ShopToolbar = ({
     selectedProvince, setSelectedProvince,
@@ -36,9 +35,7 @@ export const ShopToolbar = ({
     onSubmit: () => void; // Function to handle the submit action
 }) => {
     const {isLoading} = useContext(LoadingContext)!;
-
-    // Price Range
-    const [showPriceDropdown, setShowPriceDropdown] = useState(false);
+    const op = useRef<OverlayPanel>(null);
     const minDistance = 1;
 
     const handleChange2 = (_event: Event, newValue: number[], activeThumb: number) => {
@@ -84,44 +81,41 @@ export const ShopToolbar = ({
 
                 {/* Price Range Dropdown */}
                 <div className="relative">
-                    <button onClick={() => setShowPriceDropdown(!showPriceDropdown)}
-                            className="flex px-3 hover:cursor-pointer">
-                        <CircleDollarSign/>
-                        <span className="ms-2">Price</span>
-                    </button>
+                    <Button
+                        label={'Price'}
+                        onClick={(e) => op.current?.toggle(e)}
+                        className="px-3 price-filter hover:opacity-80"
+                    />
 
-                    <AnimatePresence>
-                        {showPriceDropdown && (
-                            <motion.div initial={{opacity: 0, y: -10}} animate={{opacity: 1, y: 0}}
-                                        exit={{opacity: 0, y: -10}}
-                                        className="flex items-center justify-between absolute w-70 right-0 top-14 shadow-2xl rounded-md bg-white p-2 space-x-4">
-                                <Slider
-                                    getAriaLabel={() => 'Minimum distance shift'}
-                                    value={priceRange}
-                                    onChange={handleChange2}
-                                    valueLabelDisplay="auto"
-                                    disableSwap
-                                    className='ml-3'
-                                    sx={{
-                                        color: 'black', // Change the track and thumb color to black
-                                        '& .MuiSlider-thumb': {
-                                            backgroundColor: 'black', // Thumb color
-                                        },
-                                        '& .MuiSlider-track': {
-                                            backgroundColor: 'black', // Track color
-                                        },
-                                        '& .MuiSlider-rail': {
-                                            backgroundColor: 'gray', // Rail color (adjust if needed)
-                                        },
-                                    }}
-                                />
-                                <button onClick={() => setShowPriceDropdown(false)}
-                                        className="bg-black rounded p-3 py-1 text-white hover:cursor-pointer hover:opacity-70">
-                                    Apply
-                                </button>
-                            </motion.div>
-                        )}
-                    </AnimatePresence>
+                    <OverlayPanel ref={op}>
+                        <div className="flex items-center justify-between w-[20vw] p-2 space-x-8">
+                            <Slider
+                                getAriaLabel={() => 'Minimum distance shift'}
+                                value={priceRange}
+                                onChange={handleChange2}
+                                valueLabelDisplay="auto"
+                                disableSwap
+                                className='ml-3 w-full'
+                                sx={{
+                                    color: '#5e81ac', // Change the track and thumb color to black
+                                    '& .MuiSlider-thumb': {
+                                        backgroundColor: '#5e81ac', // Thumb color
+                                    },
+                                    '& .MuiSlider-track': {
+                                        backgroundColor: '#5e81ac', // Track color
+                                    },
+                                    '& .MuiSlider-rail': {
+                                        backgroundColor: '#5e81ac', // Rail color (adjust if needed)
+                                    },
+                                }}
+                            />
+                            <Button
+                                label={'Apply'}
+                                onClick={(e) => op.current?.toggle(e)}
+                                className='w-[10vw] text-center'
+                            />
+                        </div>
+                    </OverlayPanel>
                 </div>
 
                 {/* Search Bar */}

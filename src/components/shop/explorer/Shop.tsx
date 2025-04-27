@@ -38,7 +38,7 @@ export const Shop = () => {
     const [selectedSizes, setSelectedSizes] = useState<string[]>([]);
     const [orderBy, setOrderBy] = useState(ORDER_OPTIONS[0].value);
     const [search, setSearch] = useState(EMPTY);
-    const [priceRange, setPriceRange] = useState<number[]>([0, 500]);
+    const [priceRange, setPriceRange] = useState<number[]>([0, 5000]);
     const [submitTrigger, setSubmitTrigger] = useState(false);
 
     // Autocomplete
@@ -82,7 +82,6 @@ export const Shop = () => {
 
         const response = await fetch(`${HOSTNAME}/clothes?${params.toString()}`);
         const data = await response.json();
-        console.log(data.content)
 
         setClothes(data.content);
         setTotalRecords(data.totalElements);
