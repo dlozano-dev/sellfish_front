@@ -73,7 +73,7 @@ export const Wishlist = () => {
                         </Dialog>
                     </div>
                 ) : (
-                    <p className='pb-5'>No items found.</p>
+                    <p className='py-5'>No items found.</p>
                 )}
             </div>
         </div>

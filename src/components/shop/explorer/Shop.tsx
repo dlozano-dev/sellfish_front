@@ -82,6 +82,8 @@ export const Shop = () => {
 
         const response = await fetch(`${HOSTNAME}/clothes?${params.toString()}`);
         const data = await response.json();
+        console.log(data.content)
+
         setClothes(data.content);
         setTotalRecords(data.totalElements);
         setIsLoading(false);

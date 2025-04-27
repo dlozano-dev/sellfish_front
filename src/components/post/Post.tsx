@@ -1,5 +1,5 @@
 import {useState, useContext, useRef} from 'react';
-import { UserIdContext } from '../../Navigation';
+import {UserContext, UserIdContext} from '../../Navigation';
 import { InputText } from 'primereact/inputtext';
 import { Header } from '../core/Header.tsx';
 import {CATEGORIES, EMPTY, HOSTNAME, PROVINCES, SIZES, STATES} from '../../utils/Constants';
@@ -14,7 +14,8 @@ import { ImageCropper } from "../core/ImageCropper/ImageCropper.tsx";
 import {Toast} from "primereact/toast";
 
 export const Post = () => {
-    const { userId } = useContext(UserIdContext)!;
+    const {userId} = useContext(UserIdContext)!;
+    const {user} = useContext(UserContext)!; // SELLER USERNAME
     const [base64, setBase64] = useState(EMPTY);
     const [brand, setBrand] = useState(EMPTY);
     const [model, setModel] = useState(EMPTY);
@@ -48,6 +49,7 @@ export const Post = () => {
             category: category?.trim(),
             price: price,
             publisher: userId,
+            seller: user,
             picture: base64,
             size: size,
             state: state,

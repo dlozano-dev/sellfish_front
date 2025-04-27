@@ -1,7 +1,7 @@
 import {useContext, useRef, useState} from 'react';
-import {GlobalContext, UserContext} from '../../../Navigation'
+import {GlobalContext, ProfileIdContext, UserContext} from '../../../Navigation'
 import { UserIdContext } from '../../../Navigation'
-import {CHATS, EMPTY, HOSTNAME, PUT, SALE_STATES} from "../../../utils/Constants.js";
+import {CHATS, EMPTY, HOSTNAME, PROFILE, PUT, SALE_STATES} from "../../../utils/Constants.js";
 import {Clothe} from "../data/Clothe.ts";
 import GalleriaComponent from "../../core/items/Carrousel.tsx";
 import {Button} from "primereact/button";
@@ -20,6 +20,7 @@ export const ItemDetails = ({
     fetchClothes: () => void;
 }) => {
     const {setGlobalState} = useContext(GlobalContext)!;
+    const {setProfileId} = useContext(ProfileIdContext)!;
     const {userId} = useContext(UserIdContext)!;
     const {user} = useContext(UserContext)!;
     const [saleState, setSaleState] = useState(item.saleState);
@@ -165,12 +166,19 @@ export const ItemDetails = ({
                         <p>Category: {item!.category}</p>
                         <p>State: {item!.state}</p>
                     </div>
-                    <p className="mt-30">Seller: {item!.publisher}</p>
+                    <p className='mt-30 cursor-pointer'
+                       onClick={() => {
+                           setProfileId(item!.publisher!)
+                           setGlobalState(PROFILE)
+                       }}
+                    >
+                        Seller: {item!.seller}
+                    </p>
                     <p>Uploaded: {new Date(Number(item.postDate)).toLocaleDateString('en-GB')}</p>
 
                     {/* Contact Button */}
                     <div className='flex'>
-                        { item!.publisher === userId ?
+                        {item!.publisher === userId ?
                             // Sale states
                             <Dropdown
                                 value={saleState}
@@ -181,15 +189,15 @@ export const ItemDetails = ({
                                 className="h-12 items-center me-2"
                                 disabled={saleState === SALE_STATES[2].value && !existsChanges}
                             />
-                        :
+                            :
                             <Button
                                 label="Contact to seller"
                                 onClick={() => setShowChatDialog(true)}
                             />
                         }
-                        { existsChanges ?
+                        {existsChanges ?
                             <Button label="Save" onClick={() => saveChanges()}/>
-                        :
+                            :
                             <div></div>
                         }
                     </div>
@@ -198,7 +206,8 @@ export const ItemDetails = ({
 
             <p className="text-xs text-center mt-10 text-gray-400">CopyRight</p>
 
-            <Dialog header="Complete your sale" visible={showSaleDialog} modal style={{width: '90vw', maxWidth: '600px'}} onHide={() => setShowSaleDialog(false)}>
+            <Dialog header="Complete your sale" visible={showSaleDialog} modal
+                    style={{width: '90vw', maxWidth: '600px'}} onHide={() => setShowSaleDialog(false)}>
 
                 <label htmlFor="username">Select the user who bought your product</label>
                 <AutoComplete
