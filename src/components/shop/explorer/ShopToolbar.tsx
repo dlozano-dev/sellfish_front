@@ -1,12 +1,12 @@
-import React, {useContext, useRef} from "react";
+import React, { useContext, useRef } from "react";
 import { Slider } from "@mui/material";
 import { MultiSelect } from 'primereact/multiselect';
 import { Dropdown } from "primereact/dropdown";
-import {AutoComplete, AutoCompleteCompleteEvent} from 'primereact/autocomplete';
+import { AutoComplete, AutoCompleteCompleteEvent } from 'primereact/autocomplete';
 import { Button } from "primereact/button";
 import { LoadingContext } from "../../../Navigation.tsx";
 import { CATEGORIES, ORDER_OPTIONS, PROVINCES, SIZES } from "../../../utils/Constants.tsx";
-import {OverlayPanel} from "primereact/overlaypanel";
+import { OverlayPanel } from "primereact/overlaypanel";
 
 export const ShopToolbar = ({
     selectedProvince, setSelectedProvince,
@@ -16,23 +16,25 @@ export const ShopToolbar = ({
     priceRange, setPriceRange,
     orderBy, setOrderBy,
     suggestions, setSuggestions,
+    maxPrice,
     onSubmit
 }: {
-    selectedProvince: string; // The selected province
-    setSelectedProvince: React.Dispatch<React.SetStateAction<string>>; // Setter for selectedProvince
-    selectedCategories: string[]; // Array of selected categories
-    setSelectedCategories: React.Dispatch<React.SetStateAction<string[]>>; // Setter for selectedCategories
-    selectedSizes: string[]; // Array of selected sizes
-    setSelectedSizes: React.Dispatch<React.SetStateAction<string[]>>; // Setter for selectedSizes
-    search: string; // Current search query
-    setSearch: React.Dispatch<React.SetStateAction<string>>; // Setter for search query
-    orderBy: string; // Selected sorting option
-    setOrderBy: React.Dispatch<React.SetStateAction<string>>; // Setter for orderBy
-    priceRange: number[]; // Array of price range [minPrice, maxPrice]
-    setPriceRange: React.Dispatch<React.SetStateAction<number[]>>; // Setter for priceRange
-    suggestions: string[]; // Suggestions for the autocomplete
-    setSuggestions: React.Dispatch<AutoCompleteCompleteEvent>; // Setter for suggestions
-    onSubmit: () => void; // Function to handle the submit action
+    selectedProvince: string;
+    setSelectedProvince: React.Dispatch<React.SetStateAction<string>>;
+    selectedCategories: string[];
+    setSelectedCategories: React.Dispatch<React.SetStateAction<string[]>>;
+    selectedSizes: string[];
+    setSelectedSizes: React.Dispatch<React.SetStateAction<string[]>>;
+    search: string;
+    setSearch: React.Dispatch<React.SetStateAction<string>>;
+    orderBy: string;
+    setOrderBy: React.Dispatch<React.SetStateAction<string>>;
+    priceRange: number[];
+    setPriceRange: React.Dispatch<React.SetStateAction<number[]>>;
+    suggestions: string[];
+    setSuggestions: React.Dispatch<AutoCompleteCompleteEvent>;
+    maxPrice: number;
+    onSubmit: () => void;
 }) => {
     const {isLoading} = useContext(LoadingContext)!;
     const op = useRef<OverlayPanel>(null);
@@ -41,10 +43,10 @@ export const ShopToolbar = ({
     const handleChange2 = (_event: Event, newValue: number[], activeThumb: number) => {
         if (newValue[1] - newValue[0] < minDistance) {
             if (activeThumb === 0) {
-                const clamped = Math.min(newValue[0], 100 - minDistance);
+                const clamped = Math.min(newValue[0], priceRange[1] - minDistance);
                 setPriceRange([clamped, clamped + minDistance]);
             } else {
-                const clamped = Math.max(newValue[1], minDistance);
+                const clamped = Math.max(newValue[1], priceRange[0] + minDistance);
                 setPriceRange([clamped - minDistance, clamped]);
             }
         } else {
@@ -88,25 +90,32 @@ export const ShopToolbar = ({
                     />
 
                     <OverlayPanel ref={op}>
-                        <div className="flex items-center justify-between w-[20vw] p-2 space-x-8">
+                        <div className="flex flex-col items-center justify-center w-[20vw] p-2">
+                            <div className='w-[90%] flex justify-between'>
+                                <span>{'Min price: ' + priceRange[0]}</span>
+                                <span>{'Max price: ' + priceRange[1]}</span>
+                            </div>
                             <Slider
-                                getAriaLabel={() => 'Minimum distance shift'}
+                                getAriaLabel={() => 'Price range'}
                                 value={priceRange}
-                                onChange={handleChange2}
+                                onChange={handleChange2}  // Ensure this function is being used correctly
                                 valueLabelDisplay="auto"
                                 disableSwap
-                                className='ml-3 w-full'
+                                min={0} // Fixed min value
+                                max={maxPrice} // Fixed max value
+                                className="w-[5vw]"
                                 sx={{
-                                    color: '#5e81ac', // Change the track and thumb color to black
+                                    color: '#5e81ac',
                                     '& .MuiSlider-thumb': {
-                                        backgroundColor: '#5e81ac', // Thumb color
+                                        backgroundColor: '#5e81ac',
                                     },
                                     '& .MuiSlider-track': {
-                                        backgroundColor: '#5e81ac', // Track color
+                                        backgroundColor: '#5e81ac',
                                     },
                                     '& .MuiSlider-rail': {
-                                        backgroundColor: '#5e81ac', // Rail color (adjust if needed)
+                                        backgroundColor: '#5e81ac',
                                     },
+                                    width: '88%',
                                 }}
                             />
                             <Button

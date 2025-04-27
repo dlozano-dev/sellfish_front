@@ -38,8 +38,9 @@ export const Shop = () => {
     const [selectedSizes, setSelectedSizes] = useState<string[]>([]);
     const [orderBy, setOrderBy] = useState(ORDER_OPTIONS[0].value);
     const [search, setSearch] = useState(EMPTY);
-    const [priceRange, setPriceRange] = useState<number[]>([0, 5000]);
+    const [priceRange, setPriceRange] = useState<number[]>([0, 10000]);
     const [submitTrigger, setSubmitTrigger] = useState(false);
+    const [maxPrice, setMaxPrice] = useState<number>(10000);
 
     // Autocomplete
     const [suggestions, setSuggestions] = useState<Suggestion[]>();
@@ -78,13 +79,24 @@ export const Shop = () => {
         if (selectedSizes.length) selectedSizes.forEach(s => params.append('sizes', s));
         if (orderBy) params.append('sort', orderBy);
         if (priceRange[0] > 0) params.append('minPrice', priceRange[0].toString());
-        if (priceRange[1] < 500) params.append('maxPrice', priceRange[1].toString());
+        if (priceRange[1] < maxPrice) params.append('maxPrice', priceRange[1].toString());
 
         const response = await fetch(`${HOSTNAME}/clothes?${params.toString()}`);
+        console.log(params.toString());
         const data = await response.json();
 
         setClothes(data.content);
         setTotalRecords(data.totalElements);
+
+        // Get the max price from the data content and update the slider max price
+        // Get the max price from the data content and update the slider max price
+        let max = 10000; // Default to 10000 if no items are found
+        if (data.content.length > 0) {
+            max = Math.max(...data.content.map((item: { price: Clothe; }) => item.price));
+        }
+
+        setPriceRange([priceRange[0], max]);  // Set the max value of the price range
+        setMaxPrice(max);
         setIsLoading(false);
     }
 
@@ -125,6 +137,7 @@ export const Shop = () => {
                 setPriceRange={setPriceRange}
                 suggestions={filteredSuggestions}
                 setSuggestions={autocomplete}
+                maxPrice={maxPrice}
                 onSubmit={() => {
                     // go start
                     setFirst(0);
@@ -175,7 +188,8 @@ export const Shop = () => {
                             strokeWidth="6"
                             aria-label="Loading"
                             animationDuration=".8s"
-                            className='p-progress-spinner-color'/>
+                            className='p-progress-spinner-color'
+                        />
                     </div>
                 ) : (
                     <p className='text-center'>No clothes available.</p>
