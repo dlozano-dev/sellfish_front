@@ -224,7 +224,7 @@ export const Chats = () => {
                                         </div>
                                     ))
                                 ) : (
-                                    <p>0 chats opened.</p>
+                                    <p className='text-center mt-5'>0 chats opened</p>
                                 )}
                             </div>
                         </TabPanel>

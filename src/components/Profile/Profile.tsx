@@ -48,7 +48,7 @@ export const Profile = () => {
 
     useEffect(() => {
         fetchProfile().then();
-    });
+    }, []);
 
     const averageRating = reviews.length > 0
         ? reviews.reduce((sum, r) => sum + parseFloat(String(r.rate!)), 0) / reviews.length
@@ -62,7 +62,20 @@ export const Profile = () => {
 
             <div className="w-9/10 mx-auto rounded-lg bg-white p-7 mb-5 text-stone-700 flex justify-between">
                 <div className="flex">
-                    <img src={`data:image/png;base64,${profilePicture}`} alt={'Profile Picture'} className='w-20 h-20 rounded-md mr-3' />
+                    { profilePicture != null ?
+                        <img
+                            src={`data:image/png;base64,${profilePicture}`}
+                            alt={'Profile Picture'}
+                            className='w-20 h-20 rounded-md mr-3'
+                        />
+                    :
+                        <Avatar
+                            icon="pi pi-user"
+                            size="xlarge"
+                            className='shadow-md mr-4'
+                            style={{ backgroundColor: '#ffffff', color: '#5e5e5e' }}
+                        />
+                    }
                     <div>
                         <h1 className='text-2xl text-stone-900'>{user}</h1>
                         <h1 className='text-lg text-stone-600'>{email}</h1>

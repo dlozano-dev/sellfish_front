@@ -1,5 +1,4 @@
-import { useState, useContext } from 'react';
-import Snackbar from '@mui/material/Snackbar';
+import {useState, useContext, useRef} from 'react';
 import { UserIdContext } from '../../Navigation';
 import { InputText } from 'primereact/inputtext';
 import { Header } from '../core/Header.tsx';
@@ -12,6 +11,7 @@ import { FloatLabel } from 'primereact/floatlabel';
 import { FileInput } from "../core/ImageCropper/FileInput.tsx";
 import { Area } from "react-easy-crop";
 import { ImageCropper } from "../core/ImageCropper/ImageCropper.tsx";
+import {Toast} from "primereact/toast";
 
 export const Post = () => {
     const { userId } = useContext(UserIdContext)!;
@@ -23,12 +23,22 @@ export const Post = () => {
     const [size, setSize] = useState(SIZES[0].value);
     const [state, setState] = useState(STATES[0].value);
     const [province, setProvince] = useState(PROVINCES[0].value);
-    const [snackBar, setSnackBar] = useState(EMPTY);
     const [loading, setIsLoading] = useState(false);
+    const toast = useRef<Toast>(null);
+
+    const showWarn = (message: string) => {
+        toast.current?.clear()
+        toast.current?.show({severity:'warn', summary: 'Warning', detail:message, life: 3000});
+    }
+
+    const showSuccess = (message: string) => {
+        toast.current?.clear()
+        toast.current?.show({severity:'success', summary: 'Success', detail: message, life: 3000});
+    }
 
     const publish = async () => {
-        if (!brand || !model || !category || !price) {
-            alert("Please fill in all fields before publishing.");
+        if (!brand || !model || !category || !price || !base64 || !size || !state || !province) {
+            showWarn("Please fill in all fields before publishing.");
             throw Error;
         }
 
@@ -93,6 +103,7 @@ export const Post = () => {
     return (
         <div>
             <Header />
+            <Toast ref={toast} />
 
             <div className='flex flex-col justify-center items-center gap-10'>
                 {base64 !== EMPTY ? (
@@ -199,9 +210,7 @@ export const Post = () => {
                     onClick={() => {
                         setIsLoading(true);
                         publish().then(() =>
-                            setSnackBar('Product posted successfully!')
-                        ).catch(() =>
-                            setSnackBar('An error happened trying to post the product.')
+                            showSuccess('Product posted successfully!')
                         ).finally(() =>
                             setIsLoading(false)
                         );
@@ -209,32 +218,23 @@ export const Post = () => {
                 />
 
                 {showCropper ? (
-                        <div className='w-screen h-screen absolute top-0 left-0 flex justify-center items-center'>
-                            <div className='w-screen h-screen bg-black opacity-20'></div>
-                            <div className='w-1/4 bg-white rounded-lg opacity-100 absolute'>
-                                <ImageCropper
-                                    image={image}
-                                    onCropDone={onCropDone}
-                                    onCropCancel={() => {
-                                        setImage(EMPTY);
-                                        setShowCropper(false)
-                                    }}
-                                />
-                            </div>
+                    <div className='w-screen h-screen absolute top-0 left-0 flex justify-center items-center'>
+                        <div className='w-screen h-screen bg-black opacity-20'></div>
+                        <div className='w-1/4 bg-white rounded-lg opacity-100 absolute'>
+                            <ImageCropper
+                                image={image}
+                                onCropDone={onCropDone}
+                                onCropCancel={() => {
+                                    setImage(EMPTY);
+                                    setShowCropper(false)
+                                }}
+                            />
                         </div>
-                    ) :
+                    </div>
+                ) :
                     <div></div>
                 }
             </div>
-
-            <Snackbar
-                open={!!snackBar}
-                autoHideDuration={6000}
-                onClose={() => {
-                    setSnackBar(EMPTY);
-                }}
-                message={snackBar}
-            />
         </div>
     );
 };
