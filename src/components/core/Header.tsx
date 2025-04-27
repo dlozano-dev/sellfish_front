@@ -7,9 +7,10 @@ import {CHATS, HOME, POST, PROFILE, SHOP, WISHLIST} from "../../utils/Constants.
 import { Sidebar } from "primereact/sidebar";
 import { OverlayPanel } from "primereact/overlaypanel";
 import {Avatar} from "primereact/avatar";
+import sf_logo from "../../assets/brand_logos/sf-logo.png";
 
 export const Header = () => {
-    const { setGlobalState } = useContext(GlobalContext)!;
+    const { globalState, setGlobalState } = useContext(GlobalContext)!;
     const { userId } = useContext(UserIdContext)!;
     const { setUser } = useContext(UserContext)!;
     const { setProfileId } = useContext(ProfileIdContext)!;
@@ -23,6 +24,14 @@ export const Header = () => {
             <div className='cursor-pointer opacity-100 hover:opacity-60' onClick={() => setShowSideBar(true)}>
                 <img src={String(d_menu)} alt='Menu icon' className='w-12 h-12 transition duration-300'/>
             </div>
+
+            { globalState != HOME ? (
+                <img src={sf_logo} alt={'Sellfish logo'}
+                     className='w-45 h-auto absolute top-10 left-1/2 transform -translate-x-1/2 -translate-y-1/2'
+                />
+            ) : (
+                <></>
+            )}
 
             {/* Icons */}
             <div className='flex space-x-4 p-8 items-center'>

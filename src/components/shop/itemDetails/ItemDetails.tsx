@@ -88,8 +88,11 @@ export const ItemDetails = ({
         }).then(() => {
             setExistsChanges(false);
             showSuccess('Changes saved successfully!');
-            setShowSaleDialog(true);
-            fetchClothes();
+            if (saleState == SALE_STATES[2].value) {
+                setShowSaleDialog(true);
+            } else {
+                fetchClothes()
+            }
         }).catch(() => {
             showError('Failed to save changes.');
         });
@@ -131,6 +134,7 @@ export const ItemDetails = ({
                 }
             });
 
+            fetchClothes()
             showSuccess("Sale registered successfully!");
             setShowSaleDialog(false);
         } catch {
@@ -229,7 +233,7 @@ export const ItemDetails = ({
             </Dialog>
 
             <Dialog
-                header="Header"
+                header="Complete your sell"
                 visible={showChatDialog}
                 onHide={() => {
                     setShowChatDialog(false)
