@@ -1,12 +1,12 @@
 import { useContext, useRef, useState } from 'react';
 import d_menu from '../../assets/Icons/d-menu.svg';
 import dagger_icon from '../../assets/Icons/dagger.svg';
-import {GlobalContext, ProfileIdContext, ProfilePictureContext, UserIdContext} from '../../Navigation.tsx';
+import { GlobalContext, ProfileIdContext, ProfilePictureContext, UserIdContext } from '../../Navigation.tsx';
 import { UserContext } from '../../Navigation.tsx';
-import {ABOUT_US, CHATS, CONTACT_US, HOME, POST, PROFILE, SHOP, WISHLIST} from "../../utils/Constants.tsx";
+import { ABOUT_US, CHATS, CONTACT_US, HOME, POST, PROFILE, SHOP, WISHLIST } from "../../utils/Constants.tsx";
 import { Sidebar } from "primereact/sidebar";
 import { OverlayPanel } from "primereact/overlaypanel";
-import {Avatar} from "primereact/avatar";
+import { Avatar } from "primereact/avatar";
 import sf_logo from "../../assets/brand_logos/sf-logo.png";
 
 export const Header = () => {
@@ -19,71 +19,81 @@ export const Header = () => {
     const op = useRef<OverlayPanel>(null);
 
     return (
-        <div className='flex justify-between items-center pl-4 w-full h-20'>
+        <div className='flex justify-between items-center px-4 w-full h-20 relative z-50'>
             {/* Menu Icon */}
-            <div className='cursor-pointer opacity-100 hover:opacity-60' onClick={() => setShowSideBar(true)}>
-                <img src={String(d_menu)} alt='Menu icon' className='w-12 h-12 transition duration-300'/>
+            <div className='cursor-pointer opacity-100 hover:opacity-60 flex-shrink-0' onClick={() => setShowSideBar(true)}>
+                <img src={String(d_menu)} alt='Menu icon' className='w-10 h-10 sm:w-12 sm:h-12 transition duration-300' />
             </div>
 
-            { globalState != HOME ? (
-                <img src={sf_logo} alt={'Sellfish logo'}
-                     className='w-45 h-auto absolute top-10 left-1/2 transform -translate-x-1/2 -translate-y-1/2'
+            {/* Centered Logo on non-HOME pages */}
+            {globalState !== HOME && (
+                <img
+                    src={sf_logo}
+                    alt={'Sellfish logo'}
+                    className='hidden sm:block w-40 h-auto absolute top-10 left-1/2 transform -translate-x-1/2 -translate-y-1/2'
                 />
-            ) : (
-                <></>
             )}
 
-            {/* Icons */}
-            <div className='flex space-x-4 p-8 items-center'>
-                <img src={String(dagger_icon)}
-                     alt='Favorite Icon'
-                     onClick={() => setGlobalState(WISHLIST)}
-                     className='w-14 h-14 cursor-pointer hover:opacity-60'
+            {/* Right Side Icons */}
+            <div className='flex items-center space-x-3 sm:space-x-4'>
+                <img
+                    src={String(dagger_icon)}
+                    alt='Favorite Icon'
+                    onClick={() => setGlobalState(WISHLIST)}
+                    className='w-10 h-10 sm:w-14 sm:h-14 cursor-pointer hover:opacity-60'
                 />
+
                 <div className="card flex justify-end">
-                    { profilePicture != null ?
+                    {profilePicture != null ? (
                         <Avatar
                             image={`data:image/png;base64,${profilePicture}`}
                             size="large"
                             onClick={(e) => op.current?.toggle(e)}
                         />
-                    :
+                    ) : (
                         <Avatar
                             icon="pi pi-user"
                             size="large"
                             onClick={(e) => op.current?.toggle(e)}
                             style={{ backgroundColor: '#ffffff', color: '#5e5e5e' }}
                         />
-                    }
+                    )}
 
+                    {/* Dropdown Menu */}
                     <OverlayPanel ref={op} className='w-48 bg-white rounded-lg shadow-lg text-gray-600 fill-gray-600'>
                         <div className='flex justify-between items-center px-4 py-2 border-b'>
                             <span className='text-gray-700 font-semibold'>Menu</span>
                         </div>
 
-                        <div className='hover:cursor-pointer hover:bg-gray-100 hover:fill-black flex items-center justify-between'
-                            onClick={ () => {
-                                setProfileId(userId)
-                                setGlobalState(PROFILE)
+                        <div
+                            className='hover:cursor-pointer hover:bg-gray-100 flex items-center justify-between'
+                            onClick={() => {
+                                setProfileId(userId);
+                                setGlobalState(PROFILE);
                             }}
                         >
-                            <div
-                                className='flex items-center w-full px-4 py-2 hover:text-black transition-transform duration-500 hover:translate-x-[10%]'>
-                                <i className="pi pi-user mr-4"/>
+                            <div className='flex items-center w-full px-4 py-2 hover:text-black transition-transform duration-500 hover:translate-x-[10%]'>
+                                <i className="pi pi-user mr-4" />
                                 <span>Profile</span>
                             </div>
                         </div>
 
-                        <div onClick={ () => setGlobalState(CHATS) } className='hover:cursor-pointer hover:bg-gray-100 hover:fill-black flex items-center justify-between'>
+                        <div
+                            onClick={() => setGlobalState(CHATS)}
+                            className='hover:cursor-pointer hover:bg-gray-100 flex items-center justify-between'
+                        >
                             <div className='flex items-center w-full px-4 py-2 hover:text-black transition-transform duration-500 hover:translate-x-[10%]'>
-                                <i className="pi pi-inbox mr-4"/>
+                                <i className="pi pi-inbox mr-4" />
                                 <span>Chats</span>
                             </div>
                         </div>
 
-                        <div onClick={() => setUser(null)} className='hover:cursor-pointer hover:bg-gray-100 hover:fill-black flex items-center justify-between'>
+                        <div
+                            onClick={() => setUser(null)}
+                            className='hover:cursor-pointer hover:bg-gray-100 flex items-center justify-between'
+                        >
                             <div className='flex items-center w-full px-4 py-2 hover:text-black transition-transform duration-500 hover:translate-x-[10%]'>
-                                <i className="pi pi-sign-out mr-4"/>
+                                <i className="pi pi-sign-out mr-4" />
                                 <span>Log out</span>
                             </div>
                         </div>
@@ -91,50 +101,33 @@ export const Header = () => {
                 </div>
             </div>
 
-            {/* Sidebar Navigation */}
+            {/* Sidebar Navigation for Mobile */}
             <Sidebar visible={showSideBar} onHide={() => setShowSideBar(false)} className='p-0 m-0 min-h-0 sidebar'>
-                <div className='hover:bg-gray-100 p-0 overflow-x-hidden'>
-                    <div onClick={() => setGlobalState(HOME)}
-                         className='pl-10 py-4 hover:text-black cursor-pointer transition-transform duration-500 hover:translate-x-[10%]'>Home
+                {[
+                    { label: 'Home', state: HOME },
+                    { label: 'Shop', state: SHOP },
+                    { label: 'Post a Product', state: POST },
+                    { label: 'Wishlist', state: WISHLIST },
+                    { label: 'Chats', state: CHATS },
+                    { label: 'About Us', state: ABOUT_US },
+                    { label: 'Contact Us', state: CONTACT_US },
+                ].map((item, index) => (
+                    <div key={index} className='hover:bg-gray-100 overflow-x-hidden'>
+                        <div
+                            onClick={() => setGlobalState(item.state)}
+                            className='pl-10 py-4 hover:text-black cursor-pointer transition-transform duration-500 hover:translate-x-[10%]'
+                        >
+                            {item.label}
+                        </div>
                     </div>
-                </div>
-                <div className='hover:bg-gray-100 overflow-x-hidden'>
-                    <div onClick={() => setGlobalState(SHOP)}
-                         className='pl-10 py-4 hover:text-black cursor-pointer transition-transform duration-500 hover:translate-x-[10%]'>Shop
-                    </div>
-                </div>
-                <div className='hover:bg-gray-100 overflow-x-hidden'>
-                    <div onClick={() => setGlobalState(POST)}
-                         className='pl-10 py-4 hover:text-black cursor-pointer transition-transform duration-500 hover:translate-x-[10%]'>Post
-                        a Product
-                    </div>
-                </div>
-                <div className='hover:bg-gray-100 overflow-x-hidden'>
-                    <div onClick={() => setGlobalState(WISHLIST)}
-                         className='pl-10 py-4 hover:text-black cursor-pointer transition-transform duration-500 hover:translate-x-[10%]'>Wishlist
-                    </div>
-                </div>
-                <div className='hover:bg-gray-100 overflow-x-hidden'>
-                    <div onClick={() => setGlobalState(CHATS)}
-                         className='pl-10 py-4 hover:text-black cursor-pointer transition-transform duration-500 hover:translate-x-[10%]'>Chats
-                    </div>
-                </div>
-                <div className='hover:bg-gray-100 overflow-x-hidden'>
-                    <div onClick={() => setGlobalState(ABOUT_US)}
-                         className='pl-10 py-4 hover:text-black cursor-pointer transition-transform duration-500 hover:translate-x-[10%]'>About Us
-                    </div>
-                </div>
-                <div className='hover:bg-gray-100 overflow-x-hidden'>
-                    <div onClick={() => setGlobalState(CONTACT_US)}
-                         className='pl-10 py-4 hover:text-black cursor-pointer transition-transform duration-500 hover:translate-x-[10%]'>Contact Us
-                    </div>
-                </div>
+                ))}
+
                 <div className='hover:bg-gray-100 overflow-x-hidden'>
                     <div
                         className='pl-10 py-4 hover:text-black cursor-pointer transition-transform duration-500 hover:translate-x-[10%]'
                         onClick={() => {
-                            setProfileId(userId)
-                            setGlobalState(PROFILE)
+                            setProfileId(userId);
+                            setGlobalState(PROFILE);
                         }}
                     >
                         Profile
