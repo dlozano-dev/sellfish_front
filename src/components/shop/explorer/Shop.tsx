@@ -82,7 +82,7 @@ export const Shop = () => {
         if (priceRange[1] < maxPrice) params.append('maxPrice', priceRange[1].toString());
 
         const response = await fetch(`${HOSTNAME}/clothes?${params.toString()}`);
-        console.log(params.toString());
+
         const data = await response.json();
 
         setClothes(data.content);
