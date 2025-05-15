@@ -57,8 +57,8 @@ export const ContactUs = () => {
                         className='p-progress-spinner-color' />
                 </div>
             ) : (
-                <div className="w-full pt-5">
-                    <div className="w-5/10 mx-auto rounded-lg bg-white p-7 mb-5 text-stone-700 items-center">
+                <div className="w-full p-5">
+                    <div className="w-full 2xl:w-5/10 xl:w-7/10 lg:8/10 mx-auto rounded-lg bg-white p-7 mb-5 text-stone-700 items-center">
                         <h1 className="text-3xl text-stone-900 mb-5">Contact Us</h1>
 
                         <div className="space-y-4">
