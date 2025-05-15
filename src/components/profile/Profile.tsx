@@ -74,8 +74,8 @@ export const Profile = () => {
                         className='p-progress-spinner-color'/>
                 </div>
             ) : (
-                <div className="w-full max-w-7xl mx-auto px-4">
-                    <div className="rounded-lg bg-white p-5 md:p-7 mb-5 text-stone-700 flex flex-col md:flex-row justify-between gap-4">
+                <div className="w-full">
+                    <div className="w-9/10 mx-auto rounded-lg bg-white p-5 md:p-7 mb-5 text-stone-700 flex flex-col md:flex-row justify-between gap-4">
                         <div className="flex flex-col sm:flex-row">
                             { profilePicture != null ?
                                 <img
@@ -111,7 +111,7 @@ export const Profile = () => {
                         )}
                     </div>
 
-                    <TabView className="w-full">
+                    <TabView className="w-9/10 mx-auto">
                         <TabPanel header="Items" leftIcon="pi pi-warehouse mr-2">
                             {clothes.length > 0 ? (
                                 <div className="flex flex-wrap justify-center gap-4">
