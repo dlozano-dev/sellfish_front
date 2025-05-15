@@ -107,64 +107,67 @@ export const Post = () => {
             <Header />
             <Toast ref={toast} />
 
-            <div className='flex flex-col justify-center items-center gap-10'>
+            <div className='flex flex-col justify-center items-center px-4 sm:px-0 py-10'>
                 {base64 !== EMPTY ? (
-                    <img src={`data:image/webp;base64,${base64}`} alt="crop-img" className='w-[15vw]'/>
+                    <img src={`data:image/webp;base64,${base64}`} alt="crop-img" className='w-[50vw] sm:w-[15vw]' />
                 ) : (
                     <div></div>
                 )}
 
                 <FileInput onImageSelected={onImageSelected} key={inputKey}/>
 
-                <div className='flex flex-wrap justify-center gap-5 w-150'>
-                    <FloatLabel>
+                {/* Brand and Model */}
+                <div className='flex flex-col sm:flex-row flex-wrap justify-center w-full max-w-[600px]'>
+                    <FloatLabel className='w-full sm:w-64 my-5 sm:mx-5'>
                         <InputText
                             id='brand'
                             value={brand}
                             onChange={(e) => setBrand(e.target.value)}
-                            className="w-64"
+                            className="w-full"
                         />
                         <label htmlFor="brand">Brand</label>
                     </FloatLabel>
 
-                    <FloatLabel>
+                    <FloatLabel className='w-full sm:w-64 my-5 sm:mx-5'>
                         <InputText
                             id='model'
                             value={model}
                             onChange={(e) => setModel(e.target.value)}
-                            className="w-64"
+                            className="w-full"
                         />
                         <label htmlFor="model">Model</label>
                     </FloatLabel>
                 </div>
 
-                <div className='flex flex-wrap justify-center gap-5 w-150'>
-                    <FloatLabel>
+                {/* Price and Category */}
+                <div className='flex flex-col sm:flex-row flex-wrap justify-center  w-full max-w-[600px]'>
+                    <FloatLabel className='w-full sm:w-64 my-5 sm:mx-5'>
                         <InputNumber
                             id='price'
                             value={price}
-                            onValueChange={(e) => setPrice(e.target.value)}
+                            onValueChange={(e) => setPrice(e.value)}
                             maxFractionDigits={2}
-                            className="w-64"
+                            className="w-full"
                         />
                         <label htmlFor="price">Price</label>
                     </FloatLabel>
 
-                    <FloatLabel>
+                    <FloatLabel className='w-full sm:w-64 my-5 sm:mx-5'>
                         <Dropdown
                             id='category'
                             value={category}
                             onChange={(e) => setCategory(e.value)}
                             options={CATEGORIES}
                             optionLabel="name"
-                            className="w-64"
+                            className="w-full"
                         />
                         <label htmlFor="category">Category</label>
                     </FloatLabel>
                 </div>
 
-                <div className='flex flex-wrap justify-center gap-5 w-150'>
-                    <FloatLabel>
+                {/* Size and State */}
+                <div className='flex flex-col sm:flex-row flex-wrap justify-center  w-full max-w-[600px]'>
+                    <FloatLabel className='w-full sm:w-64 my-5 sm:mx-5'>
                         <Dropdown
                             id='size'
                             value={size}
@@ -172,26 +175,27 @@ export const Post = () => {
                             options={SIZES}
                             optionLabel="name"
                             checkmark={true}
-                            className="w-64"
+                            className="w-full"
                         />
                         <label htmlFor="size">Size</label>
                     </FloatLabel>
 
-                    <FloatLabel>
+                    <FloatLabel className='w-full sm:w-64 my-5 sm:mx-5'>
                         <Dropdown
                             id='state'
                             value={state}
                             onChange={(e) => setState(e.value)}
                             options={STATES}
                             optionLabel="name"
-                            className="w-64"
+                            className="w-full"
                         />
                         <label htmlFor="state">State</label>
                     </FloatLabel>
                 </div>
 
-                <div className='flex flex-wrap justify-center gap-5 w-150'>
-                    <FloatLabel>
+                {/* Province */}
+                <div className='flex justify-center w-full max-w-[600px]'>
+                    <FloatLabel className='w-full sm:w-64 my-5 sm:mx-5'>
                         <Dropdown
                             id='province'
                             value={province}
@@ -199,7 +203,7 @@ export const Post = () => {
                             options={PROVINCES}
                             optionLabel="name"
                             checkmark={true}
-                            className="w-64"
+                            className="w-full"
                         />
                         <label htmlFor="province">Province</label>
                     </FloatLabel>
@@ -219,10 +223,11 @@ export const Post = () => {
                     }}
                 />
 
-                {showCropper ? (
-                    <div className='w-screen h-screen absolute top-0 left-0 flex justify-center items-center'>
-                        <div className='w-screen h-screen bg-black opacity-20'></div>
-                        <div className='w-1/4 bg-white rounded-lg opacity-100 absolute'>
+                {/* Image cropper modal */}
+                {showCropper && (
+                    <div className='w-screen h-screen fixed top-0 left-0 flex justify-center items-center z-50'>
+                        <div className='w-screen h-screen bg-black opacity-20 absolute'></div>
+                        <div className='w-11/12 sm:w-1/3 bg-white rounded-lg shadow-lg p-4 z-50'>
                             <ImageCropper
                                 image={image}
                                 onCropDone={onCropDone}
@@ -233,9 +238,7 @@ export const Post = () => {
                             />
                         </div>
                     </div>
-                ) :
-                    <div></div>
-                }
+                )}
             </div>
         </div>
     );

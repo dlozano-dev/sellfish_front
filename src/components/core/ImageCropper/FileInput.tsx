@@ -24,7 +24,7 @@ export const FileInput = ({ onImageSelected }: FileInputProps) => {
     };
 
     return (
-        <div className='w-full flex justify-center items-center'>
+        <div className='w-full flex justify-center items-center m-5'>
             {/* Hidden file input element */}
             <input type='file' accept="image/*" ref={inputRef} onChange={handleOnChange} style={{ display: 'none' }} />
 
