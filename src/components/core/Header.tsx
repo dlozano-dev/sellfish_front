@@ -8,6 +8,7 @@ import { Sidebar } from "primereact/sidebar";
 import { OverlayPanel } from "primereact/overlaypanel";
 import { Avatar } from "primereact/avatar";
 import sf_logo from "../../assets/brand_logos/sf-logo.png";
+import {useTranslation} from "react-i18next";
 
 export const Header = () => {
     const { globalState, setGlobalState } = useContext(GlobalContext)!;
@@ -17,6 +18,7 @@ export const Header = () => {
     const { profilePicture } = useContext(ProfilePictureContext)!;
     const [showSideBar, setShowSideBar] = useState(false);
     const op = useRef<OverlayPanel>(null);
+    const { t } = useTranslation();
 
     return (
         <div className='flex justify-between items-center px-4 w-full h-20 relative z-50'>
@@ -62,7 +64,7 @@ export const Header = () => {
                     {/* Dropdown Menu */}
                     <OverlayPanel ref={op} className='w-48 bg-white rounded-lg shadow-lg text-gray-600 fill-gray-600'>
                         <div className='flex justify-between items-center px-4 py-2 border-b'>
-                            <span className='text-gray-700 font-semibold'>Menu</span>
+                            <span className='text-gray-700 font-semibold'>{t('Menu')}</span>
                         </div>
 
                         <div
@@ -74,7 +76,7 @@ export const Header = () => {
                         >
                             <div className='flex items-center w-full px-4 py-2 hover:text-black transition-transform duration-500 hover:translate-x-[10%]'>
                                 <i className="pi pi-user mr-4" />
-                                <span>Profile</span>
+                                <span>{t('Profile')}</span>
                             </div>
                         </div>
 
@@ -84,7 +86,7 @@ export const Header = () => {
                         >
                             <div className='flex items-center w-full px-4 py-2 hover:text-black transition-transform duration-500 hover:translate-x-[10%]'>
                                 <i className="pi pi-inbox mr-4" />
-                                <span>Chats</span>
+                                <span>{t('Chats')}</span>
                             </div>
                         </div>
 
@@ -94,7 +96,7 @@ export const Header = () => {
                         >
                             <div className='flex items-center w-full px-4 py-2 hover:text-black transition-transform duration-500 hover:translate-x-[10%]'>
                                 <i className="pi pi-sign-out mr-4" />
-                                <span>Log out</span>
+                                <span>{t('Log out')}</span>
                             </div>
                         </div>
                     </OverlayPanel>
@@ -104,13 +106,13 @@ export const Header = () => {
             {/* Sidebar Navigation for Mobile */}
             <Sidebar visible={showSideBar} onHide={() => setShowSideBar(false)} className='p-0 m-0 min-h-0 sidebar'>
                 {[
-                    { label: 'Home', state: HOME },
-                    { label: 'Shop', state: SHOP },
-                    { label: 'Post a Product', state: POST },
-                    { label: 'Wishlist', state: WISHLIST },
-                    { label: 'Chats', state: CHATS },
-                    { label: 'About Us', state: ABOUT_US },
-                    { label: 'Contact Us', state: CONTACT_US },
+                    { label: t('Home'), state: HOME },
+                    { label: t('Shop'), state: SHOP },
+                    { label: t('Post a Product'), state: POST },
+                    { label: t('Wishlist'), state: WISHLIST },
+                    { label: t('Chats'), state: CHATS },
+                    { label: t('About Us'), state: ABOUT_US },
+                    { label: t('Contact Us'), state: CONTACT_US },
                 ].map((item, index) => (
                     <div key={index} className='hover:bg-gray-100 overflow-x-hidden'>
                         <div
