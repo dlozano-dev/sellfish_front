@@ -65,7 +65,7 @@ export const Profile = () => {
             <Toast ref={toast} />
 
             { isLoading ? (
-                <div className="card items-center w-full flex pt-10">
+                <div className="card flex items-center justify-center w-full pt-10">
                     <ProgressSpinner
                         style={{width: '50px', height: '50px'}}
                         strokeWidth="6"
@@ -74,44 +74,44 @@ export const Profile = () => {
                         className='p-progress-spinner-color'/>
                 </div>
             ) : (
-                <div className="w-full">
-                    <div className="w-9/10 mx-auto rounded-lg bg-white p-7 mb-5 text-stone-700 flex justify-between">
-                        <div className="flex">
+                <div className="w-full max-w-7xl mx-auto px-4">
+                    <div className="rounded-lg bg-white p-5 md:p-7 mb-5 text-stone-700 flex flex-col md:flex-row justify-between gap-4">
+                        <div className="flex flex-col sm:flex-row">
                             { profilePicture != null ?
                                 <img
                                     src={`data:image/png;base64,${profilePicture}`}
                                     alt={'profile Picture'}
-                                    className='w-20 h-20 rounded-md mr-3'
+                                    className='w-20 h-20 rounded-md mr-0 sm:mr-3 mb-3 sm:mb-0'
                                 />
-                            :
+                                :
                                 <Avatar
                                     icon="pi pi-user"
                                     size="xlarge"
-                                    className='shadow-md mr-4'
+                                    className='shadow-md mr-0 sm:mr-4 mb-3 sm:mb-0'
                                     style={{ backgroundColor: '#ffffff', color: '#5e5e5e' }}
                                 />
                             }
                             <div>
-                                <h1 className='text-2xl text-stone-900'>{user}</h1>
-                                <h1 className='text-lg text-stone-600'>{email}</h1>
+                                <h1 className='text-2xl text-stone-900 break-words'>{user}</h1>
+                                <h1 className='text-lg text-stone-600 break-words'>{email}</h1>
                                 <Rating value={averageRating} readOnly cancel={false} />
                             </div>
                         </div>
 
-                        {userId === profileId ?
+                        {userId === profileId ? (
                             <button
                                 onClick={() => setShowSettings(true)}
-                                className='rounded-md border border-stone-800 cursor-pointer hover:oppacity-80 p-2 space-x-2 h-10'
+                                className='rounded-md border border-stone-800 cursor-pointer hover:opacity-80 px-3 py-2 h-10 flex items-center space-x-2 self-start md:self-center'
                             >
                                 <i className="pi pi-pencil" style={{ fontSize: '1rem' }} />
                                 <span>Edit profile</span>
                             </button>
-                            :
+                        ) : (
                             <div></div>
-                        }
+                        )}
                     </div>
 
-                    <TabView className="w-9/10 mx-auto">
+                    <TabView className="w-full">
                         <TabPanel header="Items" leftIcon="pi pi-warehouse mr-2">
                             {clothes.length > 0 ? (
                                 <div className="flex flex-wrap justify-center gap-4">
@@ -122,8 +122,8 @@ export const Profile = () => {
                                     {/* Single Dialog outside the map */}
                                     <Dialog
                                         header="Item Details"
-                                        visible={!!item} // Only visible if item is defined
-                                        style={{ width: '50vw' }}
+                                        visible={!!item}
+                                        style={{ width: '90vw', maxWidth: '600px' }}
                                         onHide={() => setItem(undefined)}
                                         dismissableMask
                                         modal
@@ -139,27 +139,27 @@ export const Profile = () => {
                                 <p>No items found.</p>
                             )}
                         </TabPanel>
-                        <TabPanel header={"Reviews (" + reviews.length + ")"} leftIcon="pi pi-star mr-2">
+                        <TabPanel header={`Reviews (${reviews.length})`} leftIcon="pi pi-star mr-2">
                             {reviews.length > 0 ? (
-                                <div className="pl-5 space-y-4">
-                                    {reviews.map((review) => (
-                                        <div className='flex items-center'>
+                                <div className="pl-2 md:pl-5 space-y-4">
+                                    {reviews.map((review, idx) => (
+                                        <div key={idx} className='flex flex-col sm:flex-row items-start sm:items-center gap-3'>
                                             { review.buyerProfilePicture != null ?
                                                 <Avatar
                                                     image={`data:image/png;base64,${review.buyerProfilePicture}`}
                                                     size="large"
-                                                    className='shadow-md mr-4'
+                                                    className='shadow-md'
                                                 />
-                                            :
+                                                :
                                                 <Avatar
                                                     icon="pi pi-user"
                                                     size="large"
-                                                    className='shadow-md mr-4'
+                                                    className='shadow-md'
                                                     style={{ backgroundColor: '#ffffff', color: '#5e5e5e' }}
                                                 />
                                             }
                                             <div>
-                                                <h1>{review.buyerUsername}</h1>
+                                                <h1 className="font-semibold">{review.buyerUsername}</h1>
                                                 <Rating value={review!.rate} readOnly cancel={false}/>
                                                 <h1>{review.review ? review.review : EMPTY}</h1>
                                             </div>
@@ -175,7 +175,7 @@ export const Profile = () => {
                     <Dialog
                         header="Settings"
                         visible={showSettings}
-                        style={{ width: '30vw' }}
+                        style={{ width: '90vw', maxWidth: '500px' }}
                         onHide={() => {
                             fetchProfile().then()
                             setShowSettings(false)
