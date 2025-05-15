@@ -54,7 +54,7 @@ export const Chats = () => {
     // Messages of the selected chat
     const [chat, setChat] = useState<Message[]>([]);
     // A single chat item
-    const [item, setItem] = useState<Clothe>();
+    const [item, setItem] = useState<Clothe | null>();
     // Last message of the selected chat
     const messagesEndRef = useRef<HTMLDivElement | null>(null);
     const [chatterPfp, setChatterPfp] = useState<string | null>();
@@ -195,9 +195,9 @@ export const Chats = () => {
 
                 <div className="w-full flex px-5">
                     <TabView
-                        className="w-1/4 max-h-[80vh] text-start bg-white rounded-lg shadow mr-5 overflow-y-auto no-tabview-padding">
+                        className={`w-full lg:w-1/4 max-h-[80vh] text-start bg-white rounded-lg shadow lg:mr-5 overflow-y-auto no-tabview-padding lg:block ${chat.length > 0 ? ('hidden') : ('block')}`}>
                         <TabPanel header="Chats" leftIcon="pi pi-inbox mr-2">
-                            <div className="max-h-[70vh] overflow-y-auto pr-2"> {/* scroll de los chats */}
+                            <div className="h-[80vh] overflow-y-auto pr-2">
                                 {chats.length > 0 ? (
                                     chats.map((i, index) => (
                                         <div
@@ -229,7 +229,7 @@ export const Chats = () => {
                             </div>
                         </TabPanel>
                         <TabPanel header="Pending reviews" leftIcon="pi pi-clock mr-2">
-                            <div className="max-h-[70vh] overflow-y-auto pr-2">
+                            <div className="h-[80vh] overflow-y-auto pr-2">
                                 {pendingReviews.length > 0 ? pendingReviews.map((rev, index) => (
                                     <div
                                         key={index}
@@ -262,7 +262,7 @@ export const Chats = () => {
                     </TabView>
 
                     {chat.length > 0 ? (
-                        <div className="flex flex-col h-[80vh] w-5/7 bg-white rounded-lg shadow p-6 space-y-2">
+                        <div className={`flex flex-col h-[80vh] w-full lg:w-5/7 bg-white rounded-lg shadow p-6 space-y-2`}>
                             <div className="w-full flex px-5 pb-2 border-b-2 border-stone-800">
                                 <div
                                     className='cursor-pointer'
@@ -289,6 +289,15 @@ export const Chats = () => {
                                 <div>
                                     <p className='text-stone-800'>{chatterName}</p>
                                     <p className='text-stone-950'>{item?.brand + " " + item?.model}</p>
+                                </div>
+                                <div className='ml-auto flex justify-end items-center lg:hidden'>
+                                    <i className="pi pi-arrow-left text-stone-600 cursor-pointer"
+                                        style={{fontSize: '1.5rem'}}
+                                        onClick={()=> {
+                                            setItem(null)
+                                            setChat([])
+                                        }}
+                                    />
                                 </div>
                             </div>
 
@@ -365,8 +374,7 @@ export const Chats = () => {
                             </div>
                         </div>
                     ) : (
-                        <div
-                            className='h-[80vh] w-5/7 bg-white rounded-lg shadow p-6 flex flex-col items-center justify-center'>
+                        <div className='h-[80vh] hidden lg:flex w-full lg:w-5/7 bg-white rounded-lg shadow p-6 flex flex-col items-center justify-center'>
                             <i className="pi pi-inbox text-stone-600" style={{fontSize: '1.5rem'}}/>
                             <span className="text-stone-600 text-lg">{'No chats opened'}</span>
                         </div>
