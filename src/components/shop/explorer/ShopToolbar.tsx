@@ -7,6 +7,7 @@ import { Button } from "primereact/button";
 import { LoadingContext } from "../../../Navigation.tsx";
 import { CATEGORIES, ORDER_OPTIONS, PROVINCES, SIZES } from "../../../utils/Constants.tsx";
 import { OverlayPanel } from "primereact/overlaypanel";
+import {useTranslation} from "react-i18next";
 
 export const ShopToolbar = ({
     selectedProvince, setSelectedProvince,
@@ -39,6 +40,7 @@ export const ShopToolbar = ({
     const {isLoading} = useContext(LoadingContext)!;
     const op = useRef<OverlayPanel>(null);
     const minDistance = 1;
+    const { t } = useTranslation();
 
     const handleChange2 = (_event: Event, newValue: number[], activeThumb: number) => {
         if (newValue[1] - newValue[0] < minDistance) {
@@ -64,7 +66,7 @@ export const ShopToolbar = ({
                         onChange={(e) => setSelectedProvince(e.value)} options={PROVINCES}
                         optionLabel="name"
                         checkmark={true}
-                        placeholder="Location"
+                        placeholder={t("Location")}
                         className="w-full h-12 md:w-14rem items-center"
                     />
                 </div>
@@ -76,7 +78,7 @@ export const ShopToolbar = ({
                         onChange={(e) => setOrderBy(e.value)} options={ORDER_OPTIONS}
                         optionLabel="name"
                         checkmark={true}
-                        placeholder="Order by"
+                        placeholder={t("Order by")}
                         className="w-full h-12 md:w-14rem items-center"
                     />
                 </div>
@@ -84,7 +86,7 @@ export const ShopToolbar = ({
                 {/* Price Range Dropdown */}
                 <div className="relative">
                     <Button
-                        label={'Price'}
+                        label={t("Price")}
                         onClick={(e) => op.current?.toggle(e)}
                         className="px-3 price-filter hover:opacity-80"
                     />
@@ -92,11 +94,11 @@ export const ShopToolbar = ({
                     <OverlayPanel ref={op}>
                         <div className="flex flex-col items-center justify-center w-[20vw] p-2">
                             <div className='w-[90%] flex justify-between'>
-                                <span>{'Min price: ' + priceRange[0]}</span>
-                                <span>{'Max price: ' + priceRange[1]}</span>
+                                <span>{t('Min Price')} {priceRange[0]}</span>
+                                <span>{t('Max Price')} {priceRange[1]}</span>
                             </div>
                             <Slider
-                                getAriaLabel={() => 'Price range'}
+                                getAriaLabel={() => t('Price range')}
                                 value={priceRange}
                                 onChange={handleChange2}  // Ensure this function is being used correctly
                                 valueLabelDisplay="auto"
@@ -119,7 +121,7 @@ export const ShopToolbar = ({
                                 }}
                             />
                             <Button
-                                label={'Apply'}
+                                label={t("Apply")}
                                 onClick={(e) => op.current?.toggle(e)}
                                 className='w-[10vw] text-center'
                             />
@@ -130,7 +132,7 @@ export const ShopToolbar = ({
                 {/* Search Bar */}
                 <AutoComplete
                     value={search}
-                    placeholder="Search"
+                    placeholder={t("Search")}
                     suggestions={suggestions}
                     completeMethod={setSuggestions}
                     onChange={(e) => setSearch(e.value)}
@@ -145,7 +147,7 @@ export const ShopToolbar = ({
                     options={CATEGORIES}
                     optionLabel="name"
                     display="chip"
-                    placeholder="Select Categories"
+                    placeholder={t("SELECT CATEGORIES")}
                     maxSelectedLabels={3}
                     className=" w-max-40 md:w-20rem h-12 items-center"
                 />
@@ -156,12 +158,12 @@ export const ShopToolbar = ({
                     options={SIZES}
                     optionLabel="name"
                     display="chip"
-                    placeholder="Select Sizes"
+                    placeholder={t("SELECT SIZES")}
                     maxSelectedLabels={3}
                     className=" w-max-40 md:w-20rem h-12 items-center"
                 />
 
-                <Button label="Submit" icon="pi pi-check" loading={isLoading} onClick={onSubmit} />
+                <Button label={t("Submit")} icon="pi pi-check" loading={isLoading} onClick={onSubmit} />
             </div>
         </div>
     );
