@@ -51,7 +51,7 @@ export const Wishlist = () => {
                     </span>
                 </div>
                 {clothes.length > 0 ? (
-                    <div className="w-full mx-auto p-2 pt-5 my-5 text-stone-700 flex flex-wrap justify-center gap-4 text-start">
+                    <div className="w-full mx-auto sm:p-2 pt-5 my-5 text-stone-700 flex flex-wrap justify-center gap-4 text-start">
                         {clothes.map((i, index) => (
                             <ItemComponent key={index} setItem={setItem} item={i}/>
                         ))}
