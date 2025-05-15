@@ -1,5 +1,5 @@
-import {useState, useContext} from 'react';
-import {EmailContext, GlobalContext, ProfilePictureContext} from '../../Navigation';
+import { useState, useContext } from 'react';
+import { EmailContext, GlobalContext, ProfilePictureContext } from '../../Navigation';
 import { UserContext } from '../../Navigation';
 import { UserIdContext } from '../../Navigation';
 import { useTranslation } from "react-i18next";
@@ -8,7 +8,7 @@ import user_icon from "../../assets/person.png"
 import email_icon from "../../assets/email.png";
 import password_icon from "../../assets/password.png";
 import sf_icon from "../../assets/brand_logos/sf-logo.svg"
-import {EMPTY, GET, HOME, HOSTNAME, JSON, LOGIN, SIGN_UP} from "../../utils/Constants";
+import { EMPTY, HOME, HOSTNAME, LOGIN, SIGN_UP } from "../../utils/Constants";
 import axios from "axios";
 
 export const Login = () => {
@@ -24,69 +24,86 @@ export const Login = () => {
     const [snackBar, setSnackBar] = useState<string>(EMPTY);
     const { t } = useTranslation();
 
+    // Register user if not already exists
     function register() {
-        const xhr = new XMLHttpRequest();
-        xhr.open(GET, `${HOSTNAME}/userExists/${emailInput}/${userInput}`);
-        xhr.send();
-        xhr.responseType = JSON;
-        xhr.onload = () => {
-            const data = xhr.response;
-
-            if (data) {
-                setSnackBar(t('error_user_already_registered'));
-            } else {
-                const xhr = new XMLHttpRequest();
-                xhr.open(GET, `${HOSTNAME}/saveUser/${userInput}/${emailInput}/${passwordInput}`);
-                xhr.send();
-                xhr.responseType = JSON;
-                xhr.onload = () => {
-                    setSnackBar("User created successfully.");
-                    login()
-                };
-            }
-        };
+        axios.get(`${HOSTNAME}/userExists/${emailInput}/${userInput}`)
+            .then(res => {
+                if (res.data) {
+                    setSnackBar(t('error_user_already_registered'));
+                } else {
+                    axios.post(`${HOSTNAME}/register`, {
+                        username: userInput,
+                        email: emailInput,
+                        password: passwordInput
+                    }).then(() => {
+                        setSnackBar("User created successfully.");
+                        login(); // Auto login after register
+                    }).catch(() => {
+                        setSnackBar("Registration failed.");
+                    });
+                }
+            })
+            .catch(() => setSnackBar("Error checking user existence."));
     }
 
+    // Log user in and retrieve token + user info
     function login() {
-        const xhr = new XMLHttpRequest();
-        xhr.open(GET, `${HOSTNAME}/login/${userInput}/${passwordInput}`);
-        xhr.send();
-        xhr.responseType = JSON;
-        xhr.onload = () => {
-            const data = xhr.response;
-            if (data !== -1) {
+        axios.post(`${HOSTNAME}/login`, {
+            username: userInput,
+            password: passwordInput
+        })
+            .then(async res => {
+                const token = res.data.token;
+                localStorage.setItem("jwt", token);
+
+                const me = await axios.get(`${HOSTNAME}/me`, {
+                    headers: { Authorization: `Bearer ${token}` }
+                });
+
+                const userId = me.data.id;
+
                 setGlobalState(HOME);
                 setUser(userInput);
-                setUserId(data);
-                getEmail(data).then();
-                getProfilePicture(data).then();
-            }
-        };
+                setUserId(userId);
+                await getEmail(userId, token);
+                await getProfilePicture(userId, token);
+            })
+            .catch(() => {
+                setSnackBar("Invalid credentials.");
+            });
     }
 
-    async function getEmail(userId: string) {
-        const response = await axios.get<string>(`${HOSTNAME}/getEmail/${userId}`);
-        setEmail(response.data);
-    }
-
-    async function getProfilePicture(userId: string) {
+    // Get user email
+    async function getEmail(userId: string, token: string) {
         try {
-            const response = await axios.get<string>(`${HOSTNAME}/profilePicture/${userId}`);
+            const response = await axios.get<string>(`${HOSTNAME}/getEmail/${userId}`, {
+                headers: { Authorization: `Bearer ${token}` }
+            });
+            setEmail(response.data);
+        } catch {
+            setEmail(EMPTY);
+        }
+    }
 
-            // Set the new profile picture in state
+    // Get user profile picture
+    async function getProfilePicture(userId: string, token: string) {
+        try {
+            const response = await axios.get<string>(`${HOSTNAME}/profilePicture/${userId}`, {
+                headers: { Authorization: `Bearer ${token}` }
+            });
             setProfilePicture(response.data);
-        } catch (error) {
+        } catch {
             setProfilePicture(null);
-            console.error('Error fetching profile picture:', error);
+            console.error('Error fetching profile picture.');
         }
     }
 
     return (
         <div className='flex flex-col justify-center items-center'>
-            <img src={ String(sf_icon) } alt="Sellfish logo" className='w-96 h-auto'/>
+            <img src={String(sf_icon)} alt="Sellfish logo" className='w-96 h-auto' />
 
             <div className='flex items-center w-3/10 h-18 m-6 bg-white rounded-md'>
-                <img src={ String(user_icon) } alt="User icon" className='mx-6'/>
+                <img src={String(user_icon)} alt="User icon" className='mx-6' />
                 <input
                     value={userInput}
                     onChange={e => setUserInput(e.target.value.trim())}
@@ -97,9 +114,9 @@ export const Login = () => {
                 />
             </div>
 
-            { action===LOGIN ? <div></div> :
+            {action === LOGIN ? <div></div> :
                 <div className='flex items-center w-3/10 h-18 m-6 bg-white rounded-md'>
-                    <img src={ String(email_icon) } alt={EMPTY} className='mx-6'/>
+                    <img src={String(email_icon)} alt={EMPTY} className='mx-6' />
                     <input
                         value={emailInput}
                         onChange={e => setEmailInput(e.target.value.trim())}
@@ -112,7 +129,7 @@ export const Login = () => {
             }
 
             <div className='flex items-center w-3/10 h-18 m-6 bg-white rounded-md'>
-                <img src={ String(password_icon) } alt={EMPTY} className='mx-6'/>
+                <img src={String(password_icon)} alt={EMPTY} className='mx-6' />
                 <input
                     value={passwordInput}
                     onChange={e => setPasswordInput(e.target.value.trim())}
@@ -123,12 +140,12 @@ export const Login = () => {
                 />
             </div>
 
-            <div onClick={()=> action===LOGIN ? setAction(SIGN_UP) : setAction(LOGIN)} className='cursor-pointer mb-8 text-xl'>
-                { action===LOGIN ? 'Click here to create an account!' : 'Log in if you already have an account'}
+            <div onClick={() => action === LOGIN ? setAction(SIGN_UP) : setAction(LOGIN)} className='cursor-pointer mb-8 text-xl'>
+                {action === LOGIN ? 'Click here to create an account!' : 'Log in if you already have an account'}
             </div>
 
-            <div onClick={() => action===LOGIN ? login() : register()} className='bg-black text-xl cursor-pointer text-white w-1/10 h-18 flex justify-center items-center rounded-md'>
-                { action===LOGIN ? 'Log in' : 'Sign up' }
+            <div onClick={() => action === LOGIN ? login() : register()} className='bg-black text-xl cursor-pointer text-white w-1/10 h-18 flex justify-center items-center rounded-md'>
+                {action === LOGIN ? 'Log in' : 'Sign up'}
             </div>
 
             <Snackbar

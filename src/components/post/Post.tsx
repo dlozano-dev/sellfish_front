@@ -116,7 +116,7 @@ export const Post = () => {
 
                 <FileInput onImageSelected={onImageSelected} key={inputKey}/>
 
-                <div className='flex justify-center gap-5 w-150'>
+                <div className='flex flex-wrap justify-center gap-5 w-150'>
                     <FloatLabel>
                         <InputText
                             id='brand'
@@ -138,7 +138,7 @@ export const Post = () => {
                     </FloatLabel>
                 </div>
 
-                <div className='flex justify-center gap-5 w-150'>
+                <div className='flex flex-wrap justify-center gap-5 w-150'>
                     <FloatLabel>
                         <InputNumber
                             id='price'
@@ -163,7 +163,7 @@ export const Post = () => {
                     </FloatLabel>
                 </div>
 
-                <div className='flex justify-center gap-5 w-150'>
+                <div className='flex flex-wrap justify-center gap-5 w-150'>
                     <FloatLabel>
                         <Dropdown
                             id='size'
@@ -190,7 +190,7 @@ export const Post = () => {
                     </FloatLabel>
                 </div>
 
-                <div className='flex justify-center gap-5 w-150'>
+                <div className='flex flex-wrap justify-center gap-5 w-150'>
                     <FloatLabel>
                         <Dropdown
                             id='province'
