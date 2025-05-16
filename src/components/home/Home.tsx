@@ -4,12 +4,20 @@ import sf_logo from '../../assets/brand_logos/sf-logo.png';
 
 export const Home = () => {
     return (
-        <div className="w-screen h-screen bg-cover bg-no-repeat bg-center bg-fixed" style={{ backgroundImage: `url(${bg})` }}>
+        <div
+            className="min-h-screen w-full bg-cover bg-no-repeat bg-center bg-fixed"
+            style={{backgroundImage: `url(${bg})`}}
+        >
             <Header/>
-            <main className="w-screen flex flex-col justify-center items-center mt-10">
-                <img src={String(sf_logo)} alt={'Sellfish logo'} className='w-120 h-auto'/>
-                <p className='w-170 text-center mt-10'>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam
+            <main className="w-full flex flex-col justify-center items-center mt-10 px-4 sm:px-8 md:px-16">
+                <img
+                    src={String(sf_logo)}
+                    alt="Sellfish logo"
+                    className="w-40 sm:w-60 md:w-80 lg:w-96 h-auto"
+                />
+                <p className="max-w-md sm:max-w-lg md:max-w-xl lg:max-w-2xl text-center mt-6 text-sm sm:text-base md:text-lg">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
+                    et dolore magna aliqua. Ut enim ad minim veniam
                 </p>
             </main>
         </div>
