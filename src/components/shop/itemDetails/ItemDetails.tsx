@@ -12,6 +12,7 @@ import {AutoComplete, AutoCompleteCompleteEvent} from "primereact/autocomplete";
 import axios from "axios";
 import {FloatLabel} from "primereact/floatlabel";
 import {InputTextarea} from "primereact/inputtextarea";
+import {useTranslation} from "react-i18next";
 
 export const ItemDetails = ({
     item, fetchClothes
@@ -31,25 +32,26 @@ export const ItemDetails = ({
     const [message, setMessage] = useState(EMPTY);
     const [suggestions, setSuggestions] = useState<string[]>();
     const toast = useRef<Toast>(null);
+    const { t } = useTranslation();
 
     const showWarn = (message: string) => {
         toast.current?.clear()
-        toast.current?.show({severity:'warn', summary: 'Warning', detail:message, life: 3000});
+        toast.current?.show({severity:'warn', summary: t('warning'), detail:message, life: 3000});
     }
 
     const showError = (message: string) => {
         toast.current?.clear()
-        toast.current?.show({severity:'error', summary: 'Error', detail: message, life: 3000});
+        toast.current?.show({severity:'error', summary: t('error'), detail: message, life: 3000});
     }
 
     const showSuccess = (message: string) => {
         toast.current?.clear()
-        toast.current?.show({severity:'success', summary: 'Success', detail: message, life: 3000});
+        toast.current?.show({severity:'success', summary: t('success'), detail: message, life: 3000});
     }
 
     async function initChat() {
         if (item.publisher === userId) {
-            showWarn("You can't contact yourself!");
+            showWarn(t('you_cant_contact_yourself'));
             return;
         }
 
@@ -57,7 +59,7 @@ export const ItemDetails = ({
             await axios.get(`${HOSTNAME}/postMessage/${userId}/${item!.publisher}/${item!.id}/${message}/${Date.now()}/${userId}`);
             setGlobalState(CHATS);
         } catch {
-            showError("The message couldn't be sent");
+            showError(t("message_could_not_be_sent"));
         }
     }
 
@@ -83,18 +85,18 @@ export const ItemDetails = ({
                 saleState: saleState,
             })
         }).then(res => {
-            if (!res.ok) throw new Error("Update failed");
+            if (!res.ok) throw new Error(t('update_failed'));
             return res.json();
         }).then(() => {
             setExistsChanges(false);
-            showSuccess('Changes saved successfully!');
+            showSuccess(t('changes_saved_successfully'));
             if (saleState == SALE_STATES[2].value) {
                 setShowSaleDialog(true);
             } else {
                 fetchClothes()
             }
         }).catch(() => {
-            showError('Failed to save changes.');
+            showError(t('failed_to_save_changes'));
         });
     }
 
@@ -116,12 +118,12 @@ export const ItemDetails = ({
 
     const finishSale = async () => {
         if (!search || search.trim() === '') {
-            showWarn("Please select a buyer");
+            showWarn(t("please_select_a_buyer"));
             return;
         }
 
         if (search === user) {
-            showWarn("You can't buy your own item!");
+            showWarn(t("you_cant_buy_own_item"));
             return;
         }
 
@@ -135,10 +137,10 @@ export const ItemDetails = ({
             });
 
             fetchClothes()
-            showSuccess("Sale registered successfully!");
+            showSuccess(t('sale_registered_successfully'));
             setShowSaleDialog(false);
         } catch {
-            showError("Error registering sale");
+            showError(t('error_registering_sale'));
         }
     };
 
@@ -166,9 +168,9 @@ export const ItemDetails = ({
                 {/* Info section */}
                 <div className="text-gray-800 text-base space-y-2">
                     <div className="pt-2 space-y-1">
-                        <p>Size: {item!.size}</p>
-                        <p>Category: {item!.category}</p>
-                        <p>State: {item!.state}</p>
+                        <p>{t('size')}: {item!.size}</p>
+                        <p>{t('category')}: {item!.category}</p>
+                        <p>{t('state')}: {item!.state}</p>
                     </div>
                     <p className='mt-30 cursor-pointer'
                        onClick={() => {
@@ -176,9 +178,9 @@ export const ItemDetails = ({
                            setGlobalState(PROFILE)
                        }}
                     >
-                        Seller: {item!.seller}
+                        {t('seller')}: {item!.seller}
                     </p>
-                    <p>Uploaded: {new Date(Number(item.postDate)).toLocaleDateString('en-GB')}</p>
+                    <p>{t('uploaded')}: {new Date(Number(item.postDate)).toLocaleDateString('en-GB')}</p>
 
                     {/* Contact Button */}
                     <div className='flex'>
@@ -189,18 +191,18 @@ export const ItemDetails = ({
                                 onChange={(e) => setChanges(() => setSaleState(e.value))} options={SALE_STATES}
                                 optionLabel="name"
                                 checkmark={true}
-                                placeholder="Sale state"
+                                placeholder={t("sale_state")}
                                 className="h-12 items-center me-2"
                                 disabled={saleState === SALE_STATES[2].value && !existsChanges}
                             />
-                            :
+                        :
                             <Button
-                                label="Contact to seller"
+                                label={t("contact_seller")}
                                 onClick={() => setShowChatDialog(true)}
                             />
                         }
                         {existsChanges ?
-                            <Button label="Save" onClick={() => saveChanges()}/>
+                            <Button label={t('save')} onClick={() => saveChanges()}/>
                             :
                             <div></div>
                         }
@@ -210,13 +212,13 @@ export const ItemDetails = ({
 
             <p className="text-xs text-center mt-10 text-gray-400">CopyRight</p>
 
-            <Dialog header="Complete your sale" visible={showSaleDialog} modal
+            <Dialog header={t("complete_your_sale")} visible={showSaleDialog} modal
                     style={{width: '90vw', maxWidth: '600px'}} onHide={() => setShowSaleDialog(false)}>
 
-                <label htmlFor="username">Select the user who bought your product</label>
+                <label htmlFor="username">{t('select_user_bought_product')}</label>
                 <AutoComplete
                     value={search}
-                    placeholder="Search"
+                    placeholder={t('search')}
                     suggestions={suggestions}
                     completeMethod={autocomplete}
                     onChange={(e) => setSearch(e.value)}
@@ -229,11 +231,11 @@ export const ItemDetails = ({
                     className="me-3"
                 />
 
-                <Button label='Submit' onClick={() => finishSale()} />
+                <Button label={t('submit')} onClick={() => finishSale()} />
             </Dialog>
 
             <Dialog
-                header="Complete your sell"
+                header={t("complete_your_sell")}
                 visible={showChatDialog}
                 onHide={() => {
                     setShowChatDialog(false)
@@ -250,11 +252,11 @@ export const ItemDetails = ({
                         aria-multiline={false}
                         className='w-full'
                     />
-                    <label htmlFor="message">Contact to seller</label>
+                    <label htmlFor="message">{t('contact_seller')}</label>
                 </FloatLabel>
 
                 <div className="flex justify-end mt-4">
-                    <Button label="Send" onClick={() => initChat()} />
+                    <Button label={t('send')} onClick={() => initChat()} />
                 </div>
             </Dialog>
         </div>

@@ -21,6 +21,7 @@ import {LoadingContext} from "../../../Navigation.tsx";
 import {AutoCompleteCompleteEvent} from "primereact/autocomplete";
 import {Suggestion} from "../../core/data/Suggestion.ts";
 import {ItemComponent} from "../../core/items/ItemComponent.tsx";
+import {useTranslation} from "react-i18next";
 
 export const Shop = () => {
     const [clothes, setClothes] = useState<Clothe[]>();
@@ -45,6 +46,7 @@ export const Shop = () => {
     // Autocomplete
     const [suggestions, setSuggestions] = useState<Suggestion[]>();
     const [filteredSuggestions, setFilteredSuggestions] = useState<string[]>([]);
+    const { t } = useTranslation();
 
     const autocomplete = (event: AutoCompleteCompleteEvent) => {
         const query = event.query.toLowerCase();
@@ -156,7 +158,7 @@ export const Shop = () => {
 
                         {/* Single Dialog outside the map */}
                         <Dialog
-                            header="Item Details"
+                            header={t("Item Details")}
                             visible={!!item} // Only visible if item is defined
                             style={{ width: '50vw' }}
                             onHide={() => setItem(undefined)}
