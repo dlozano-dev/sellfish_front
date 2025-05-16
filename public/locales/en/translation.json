@@ -97,5 +97,11 @@
    "submit": "Submit",
    "complete_your_sell": "Complete your sell",
    "send": "Send",
-   "copyright": "CopyRight"
+   "copyright": "CopyRight",
+   "error_user_already_registered": "User already registered!",
+   "success_user_created": "User created successfully.",
+   "error_registration_failed": "Registration failed.",
+   "error_checking_user_existence": "Error checking user existence.",
+   "error_invalid_credentials": "Invalid credentials.",
+   "label_password": "Password"
 }

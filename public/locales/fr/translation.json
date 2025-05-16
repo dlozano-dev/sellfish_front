@@ -97,5 +97,11 @@
   "submit": "Absenden",
   "complete_your_sell": "Verkauf abschließen",
   "send": "Senden",
-  "copyright": "Urheberrecht"
+  "copyright": "Urheberrecht",
+  "error_user_already_registered": "Utilisateur déjà enregistré !",
+  "success_user_created": "Utilisateur créé avec succès.",
+  "error_registration_failed": "Échec de l'enregistrement.",
+  "error_checking_user_existence": "Erreur lors de la vérification de l'existence de l'utilisateur.",
+  "error_invalid_credentials": "Identifiants invalides.",
+  "label_password": "Mot de passe"
 }

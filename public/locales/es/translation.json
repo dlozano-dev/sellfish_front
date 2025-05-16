@@ -97,5 +97,11 @@
   "submit": "Enviar",
   "complete_your_sell": "Completa tu venta",
   "send": "Enviar",
-  "copyright": "Derechos reservados"
+  "copyright": "Derechos reservados",
+  "error_user_already_registered": "¡Usuario ya registrado!",
+  "success_user_created": "Usuario creado exitosamente.",
+  "error_registration_failed": "Error al registrar.",
+  "error_checking_user_existence": "Error al comprobar la existencia del usuario.",
+  "error_invalid_credentials": "Credenciales inválidas.",
+  "label_password": "Contraseña"
 }

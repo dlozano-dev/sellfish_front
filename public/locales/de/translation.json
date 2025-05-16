@@ -97,5 +97,11 @@
   "submit": "Soumettre",
   "complete_your_sell": "Terminez votre vente",
   "send": "Envoyer",
-  "copyright": "Droits d'auteur"
+  "copyright": "Droits d'auteur",
+  "error_user_already_registered": "Benutzer ist bereits registriert!",
+  "success_user_created": "Benutzer erfolgreich erstellt.",
+  "error_registration_failed": "Registrierung fehlgeschlagen.",
+  "error_checking_user_existence": "Fehler beim Überprüfen der Benutzerexistenz.",
+  "error_invalid_credentials": "Ungültige Anmeldedaten.",
+  "label_password": "Passwort"
 }

@@ -4,9 +4,6 @@ import { UserContext } from '../../Navigation';
 import { UserIdContext } from '../../Navigation';
 import { useTranslation } from "react-i18next";
 import Snackbar from '@mui/material/Snackbar';
-import user_icon from "../../assets/person.png"
-import email_icon from "../../assets/email.png";
-import password_icon from "../../assets/password.png";
 import sf_icon from "../../assets/brand_logos/sf-logo.svg"
 import { EMPTY, HOME, HOSTNAME, LOGIN, SIGN_UP } from "../../utils/Constants";
 import axios from "axios";
@@ -36,14 +33,14 @@ export const Login = () => {
                         email: emailInput,
                         password: passwordInput
                     }).then(() => {
-                        setSnackBar("User created successfully.");
+                        setSnackBar(t("success_user_created"));
                         login(); // Auto login after register
                     }).catch(() => {
-                        setSnackBar("Registration failed.");
+                        setSnackBar(t("error_registration_failed"));
                     });
                 }
             })
-            .catch(() => setSnackBar("Error checking user existence."));
+            .catch(() => setSnackBar(t("error_checking_user_existence")));
     }
 
     // Log user in and retrieve token + user info
@@ -69,7 +66,7 @@ export const Login = () => {
                 await getProfilePicture(userId, token);
             })
             .catch(() => {
-                setSnackBar("Invalid credentials.");
+                setSnackBar(t("error_invalid_credentials"));
             });
     }
 
@@ -99,53 +96,53 @@ export const Login = () => {
     }
 
     return (
-        <div className='flex flex-col justify-center items-center'>
-            <img src={String(sf_icon)} alt="Sellfish logo" className='w-96 h-auto' />
+        <div className='flex flex-col justify-center items-center px-4 sm:px-6 md:px-8'>
+            <img src={String(sf_icon)} alt="Sellfish logo" className='w-60 sm:w-80 md:w-96 h-auto' />
 
-            <div className='flex items-center w-3/10 h-18 m-6 bg-white rounded-md'>
-                <img src={String(user_icon)} alt="User icon" className='mx-6' />
+            <div className='flex items-center w-full max-w-md h-18 m-4 bg-white rounded-md'>
+                <i className="pi pi-user mx-4 sm:mx-6" style={{fontSize: '1.8rem', color: '#708090'}}/>
                 <input
                     value={userInput}
                     onChange={e => setUserInput(e.target.value.trim())}
                     type="text"
-                    placeholder='Name'
+                    placeholder={t('Name')}
                     id='user'
-                    className='w-full h-full border-none outline-none text-xl autofill:shadow-[inset_0_0_0px_1000px_rgb(255,255,255)]'
+                    className='w-full h-full border-none outline-none text-base sm:text-lg md:text-xl autofill:shadow-[inset_0_0_0px_1000px_rgb(255,255,255)]'
                 />
             </div>
 
             {action === LOGIN ? <div></div> :
-                <div className='flex items-center w-3/10 h-18 m-6 bg-white rounded-md'>
-                    <img src={String(email_icon)} alt={EMPTY} className='mx-6' />
+                <div className='flex items-center w-full max-w-md h-18 m-4 bg-white rounded-md'>
+                    <i className="pi pi-envelope mx-4 sm:mx-6" style={{fontSize: '1.8rem', color: '#708090'}}/>
                     <input
                         value={emailInput}
                         onChange={e => setEmailInput(e.target.value.trim())}
                         type="email"
-                        placeholder='Email'
+                        placeholder={t('Email')}
                         id='email'
-                        className='w-full h-full border-none outline-none text-xl autofill:shadow-[inset_0_0_0px_1000px_rgb(255,255,255)]'
+                        className='w-full h-full border-none outline-none text-base sm:text-lg md:text-xl autofill:shadow-[inset_0_0_0px_1000px_rgb(255,255,255)]'
                     />
                 </div>
             }
 
-            <div className='flex items-center w-3/10 h-18 m-6 bg-white rounded-md'>
-                <img src={String(password_icon)} alt={EMPTY} className='mx-6' />
+            <div className='flex items-center w-full max-w-md h-18 m-4 bg-white rounded-md'>
+                <i className="pi pi-lock mx-4 sm:mx-6" style={{fontSize: '1.8rem', color: '#708090'}}/>
                 <input
                     value={passwordInput}
                     onChange={e => setPasswordInput(e.target.value.trim())}
                     type="password"
-                    placeholder='Password'
+                    placeholder={t('label_password')}
                     id='pass'
-                    className='w-full h-full border-none outline-none text-xl autofill:shadow-[inset_0_0_0px_1000px_rgb(255,255,255)]'
+                    className='w-full h-full border-none outline-none text-base sm:text-lg md:text-xl autofill:shadow-[inset_0_0_0px_1000px_rgb(255,255,255)]'
                 />
             </div>
 
-            <div onClick={() => action === LOGIN ? setAction(SIGN_UP) : setAction(LOGIN)} className='cursor-pointer mb-8 text-xl'>
-                {action === LOGIN ? 'Click here to create an account!' : 'Log in if you already have an account'}
+            <div onClick={() => action === LOGIN ? setAction(SIGN_UP) : setAction(LOGIN)} className='cursor-pointer mb-6 text-center text-base sm:text-lg md:text-xl'>
+                {action === LOGIN ? t('Click here to create an account!') : t('Log in if you already have an account')}
             </div>
 
-            <div onClick={() => action === LOGIN ? login() : register()} className='bg-black text-xl cursor-pointer text-white w-1/10 h-18 flex justify-center items-center rounded-md'>
-                {action === LOGIN ? 'Log in' : 'Sign up'}
+            <div onClick={() => action === LOGIN ? login() : register()} className='bg-black text-white w-full max-w-xs h-12 sm:h-14 md:h-16 flex justify-center items-center text-base sm:text-lg md:text-xl rounded-md cursor-pointer mb-4'>
+                {action === LOGIN ? t('Log in') : t('Sign Up')}
             </div>
 
             <Snackbar
