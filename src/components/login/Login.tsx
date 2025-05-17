@@ -6,6 +6,7 @@ import { useTranslation } from "react-i18next";
 import Snackbar from '@mui/material/Snackbar';
 import sf_icon from "../../assets/brand_logos/sf-logo.svg"
 import { EMPTY, HOME, HOSTNAME, LOG_IN, SIGN_UP } from "../../utils/Constants";
+import Cookies from 'js-cookie';
 import axios from "axios";
 
 export const Login = ({
@@ -55,7 +56,7 @@ export const Login = ({
         })
             .then(async res => {
                 const token = res.data.token;
-                localStorage.setItem("jwt", token);
+                Cookies.set('jwt', token); // Save token as cookie
 
                 const me = await axios.get(`${HOSTNAME}/me`, {
                     headers: { Authorization: `Bearer ${token}` }

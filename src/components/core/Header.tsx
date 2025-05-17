@@ -9,6 +9,7 @@ import { OverlayPanel } from "primereact/overlaypanel";
 import { Avatar } from "primereact/avatar";
 import sf_logo from "../../assets/brand_logos/sf-logo.png";
 import {useTranslation} from "react-i18next";
+import Cookies from 'js-cookie';
 
 export const Header = () => {
     const { globalState, setGlobalState } = useContext(GlobalContext)!;
@@ -92,9 +93,10 @@ export const Header = () => {
 
                         <div
                             onClick={() => {
-                                setUserId(null)
-                                setUser(null)
-                                setGlobalState(HOME)
+                                setUserId(null);
+                                setUser(null);
+                                setGlobalState(HOME);
+                                Cookies.remove('jwt'); // Remove token on logout
                             }}
                             className='hover:cursor-pointer hover:bg-gray-100 flex items-center justify-between'
                         >
@@ -103,6 +105,7 @@ export const Header = () => {
                                 <span>{t('Log out')}</span>
                             </div>
                         </div>
+
                     </OverlayPanel>
                 </div>
             </div>

@@ -2,11 +2,57 @@ import { Header } from "../core/Header.tsx";
 import bg from '../../assets/backgrounds/bg-table.png';
 import sf_logo from '../../assets/brand_logos/sf-logo.png';
 import {NoSessionHeader} from "../core/NoSessionHeader.tsx";
-import {useContext} from "react";
-import {UserIdContext} from "../../Navigation.tsx";
+import {useContext, useEffect} from "react";
+import {EmailContext, GlobalContext, ProfilePictureContext, UserContext, UserIdContext} from "../../Navigation.tsx";
+import Cookies from 'js-cookie';
+import axios from "axios";
+import {HOME, HOSTNAME} from "../../utils/Constants.tsx";
 
 export const Home = () => {
     const { userId } = useContext(UserIdContext)!;
+    const { setGlobalState } = useContext(GlobalContext)!;
+    const { setUser } = useContext(UserContext)!;
+    const { setEmail } = useContext(EmailContext)!;
+    const { setProfilePicture } = useContext(ProfilePictureContext)!;
+    const { setUserId } = useContext(UserIdContext)!;
+
+    useEffect(() => {
+        const token = Cookies.get('jwt');
+
+        // If token exists, try to auto-login
+        if (token) {
+            axios.get(`${HOSTNAME}/me`, {
+                headers: { Authorization: `Bearer ${token}` }
+            }).then(async res => {
+                const userId = res.data.id;
+                setGlobalState(HOME);
+                setUser(res.data.username);
+                setUserId(userId);
+
+                try {
+                    const emailRes = await axios.get(`${HOSTNAME}/getEmail/${userId}`, {
+                        headers: { Authorization: `Bearer ${token}` }
+                    });
+                    setEmail(emailRes.data);
+                } catch {
+                    setEmail('');
+                }
+
+                try {
+                    const profilePicRes = await axios.get(`${HOSTNAME}/profilePicture/${userId}`, {
+                        headers: { Authorization: `Bearer ${token}` }
+                    });
+                    setProfilePicture(profilePicRes.data);
+                } catch {
+                    setProfilePicture(null);
+                }
+
+            }).catch(() => {
+                Cookies.remove('jwt');
+                setUserId(null);
+            });
+        }
+    }, []);
 
     return (
         <div
