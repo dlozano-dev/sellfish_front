@@ -12,7 +12,7 @@ import {useTranslation} from "react-i18next";
 
 export const Header = () => {
     const { globalState, setGlobalState } = useContext(GlobalContext)!;
-    const { userId } = useContext(UserIdContext)!;
+    const { userId, setUserId } = useContext(UserIdContext)!;
     const { setUser } = useContext(UserContext)!;
     const { setProfileId } = useContext(ProfileIdContext)!;
     const { profilePicture } = useContext(ProfilePictureContext)!;
@@ -91,7 +91,11 @@ export const Header = () => {
                         </div>
 
                         <div
-                            onClick={() => setUser(null)}
+                            onClick={() => {
+                                setUserId(null)
+                                setUser(null)
+                                setGlobalState(HOME)
+                            }}
                             className='hover:cursor-pointer hover:bg-gray-100 flex items-center justify-between'
                         >
                             <div className='flex items-center w-full px-4 py-2 hover:text-black transition-transform duration-500 hover:translate-x-[10%]'>

@@ -5,11 +5,14 @@ import { UserIdContext } from '../../Navigation';
 import { useTranslation } from "react-i18next";
 import Snackbar from '@mui/material/Snackbar';
 import sf_icon from "../../assets/brand_logos/sf-logo.svg"
-import { EMPTY, HOME, HOSTNAME, LOGIN, SIGN_UP } from "../../utils/Constants";
+import { EMPTY, HOME, HOSTNAME, LOG_IN, SIGN_UP } from "../../utils/Constants";
 import axios from "axios";
 
-export const Login = () => {
-    const [action, setAction] = useState(LOGIN) // Login or Sign Up
+export const Login = ({
+    navigationAction
+}:{
+    navigationAction: string;
+}) => {
     const { setGlobalState } = useContext(GlobalContext)!;
     const { setUser } = useContext(UserContext)!;
     const { setEmail } = useContext(EmailContext)!;
@@ -19,6 +22,7 @@ export const Login = () => {
     const [emailInput, setEmailInput] = useState<string>(EMPTY);
     const [passwordInput, setPasswordInput] = useState<string>(EMPTY);
     const [snackBar, setSnackBar] = useState<string>(EMPTY);
+    const [action, setAction] = useState(navigationAction) // Login or Sign Up
     const { t } = useTranslation();
 
     // Register user if not already exists
@@ -111,7 +115,7 @@ export const Login = () => {
                 />
             </div>
 
-            {action === LOGIN ? <div></div> :
+            {action === LOG_IN ? <div></div> :
                 <div className='flex items-center w-full max-w-md h-18 m-4 bg-white rounded-md'>
                     <i className="pi pi-envelope mx-4 sm:mx-6" style={{fontSize: '1.8rem', color: '#708090'}}/>
                     <input
@@ -137,12 +141,12 @@ export const Login = () => {
                 />
             </div>
 
-            <div onClick={() => action === LOGIN ? setAction(SIGN_UP) : setAction(LOGIN)} className='cursor-pointer mb-6 text-center text-base sm:text-lg md:text-xl'>
-                {action === LOGIN ? t('Click here to create an account!') : t('Log in if you already have an account')}
+            <div onClick={() => action === LOG_IN ? setAction(SIGN_UP) : setAction(LOG_IN)} className='cursor-pointer mb-6 text-center text-base sm:text-lg md:text-xl'>
+                {action === LOG_IN ? t('Click here to create an account!') : t('Log in if you already have an account')}
             </div>
 
-            <div onClick={() => action === LOGIN ? login() : register()} className='bg-black text-white w-full max-w-xs h-12 sm:h-14 md:h-16 flex justify-center items-center text-base sm:text-lg md:text-xl rounded-md cursor-pointer mb-4'>
-                {action === LOGIN ? t('Log in') : t('Sign Up')}
+            <div onClick={() => action === LOG_IN ? login() : register()} className='bg-black text-white w-full max-w-xs h-12 sm:h-14 md:h-16 flex justify-center items-center text-base sm:text-lg md:text-xl rounded-md cursor-pointer mb-4'>
+                {action === LOG_IN ? t('Log in') : t('Sign Up')}
             </div>
 
             <Snackbar

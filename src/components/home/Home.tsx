@@ -1,14 +1,20 @@
 import { Header } from "../core/Header.tsx";
 import bg from '../../assets/backgrounds/bg-table.png';
 import sf_logo from '../../assets/brand_logos/sf-logo.png';
+import {NoSessionHeader} from "../core/NoSessionHeader.tsx";
+import {useContext} from "react";
+import {UserIdContext} from "../../Navigation.tsx";
 
 export const Home = () => {
+    const { userId } = useContext(UserIdContext)!;
+
     return (
         <div
             className="min-h-screen w-full bg-cover bg-no-repeat bg-center bg-fixed"
             style={{backgroundImage: `url(${bg})`}}
         >
-            <Header/>
+            { userId === null ? <NoSessionHeader/> : <Header/> }
+
             <main className="w-full flex flex-col justify-center items-center mt-10 px-4 sm:px-8 md:px-16">
                 <img
                     src={String(sf_logo)}

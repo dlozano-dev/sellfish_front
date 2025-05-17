@@ -4,13 +4,15 @@ export const HOSTNAME = "http://192.168.1.40:8080";
 /* ROUTES */
 export const HOME = 'home';
 export const SETTINGS = 'settings';
-export const POST = 'post'
-export const SHOP = 'shop'
-export const CHATS = 'chats'
-export const PROFILE = 'profile'
-export const WISHLIST = 'wishlist'
-export const ABOUT_US = 'ABOUT_US'
-export const CONTACT_US = 'CONTACT_US'
+export const POST = 'post';
+export const SHOP = 'shop';
+export const CHATS = 'chats';
+export const PROFILE = 'profile';
+export const WISHLIST = 'wishlist';
+export const ABOUT_US = 'ABOUT_US';
+export const CONTACT_US = 'CONTACT_US';
+export const LOGIN = 'LOGIN';
+export const REGISTER = 'REGISTER';
 
 /* HTTP METHODS */
 export const GET = 'get';
@@ -23,7 +25,7 @@ export const JSON = 'json';
 export const EMPTY = '';
 
 /* LOGIN */
-export const LOGIN = 'login';
+export const LOG_IN = 'login';
 export const SIGN_UP = 'signup'
 
 /* KEYS */
