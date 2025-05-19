@@ -1,4 +1,4 @@
-import React, { useContext, useRef } from "react";
+import React, {useContext, useRef, useState} from "react";
 import { Slider } from "@mui/material";
 import { MultiSelect } from 'primereact/multiselect';
 import { Dropdown } from "primereact/dropdown";
@@ -38,9 +38,10 @@ export const ShopToolbar = ({
     onSubmit: () => void;
 }) => {
     const {isLoading} = useContext(LoadingContext)!;
+    const [showFilters, setShowFilters] = useState<boolean>(false);
     const op = useRef<OverlayPanel>(null);
-    const minDistance = 1;
     const { t } = useTranslation();
+    const minDistance = 1;
 
     const handleChange2 = (_event: Event, newValue: number[], activeThumb: number) => {
         if (newValue[1] - newValue[0] < minDistance) {
@@ -57,8 +58,10 @@ export const ShopToolbar = ({
     };
 
     return (
-        <div className="bg-white w-[90vw] h-auto flex flex-wrap items-center justify-between px-4 py-3 gap-2 mb-5 shadow-xl mx-auto rounded-md">
-            <div className="flex flex-wrap items-center justify-between px-2 py-1 gap-6">
+        <div className="bg-white w-[90vw] h-auto flex flex-wrap items-center justify-between px-4 py-3 md:gap-2 mb-5 shadow-xl mx-auto rounded-md">
+            <button onClick={() => setShowFilters(!showFilters)} className={`md:hidden`}>{t((showFilters?'Hide filters':'Show filters'))}</button>
+
+            <div className={`${showFilters?'flex flex-col justify-start items-start':'hidden'} md:flex flex-wrap md:items-center md:justify-between md:px-2 py-1 gap-2 md:gap-6`}>
                 {/* Location Dropdown */}
                 <div className='flex items-center'>
                     <Dropdown
@@ -92,8 +95,8 @@ export const ShopToolbar = ({
                     />
 
                     <OverlayPanel ref={op}>
-                        <div className="flex flex-col items-center justify-center w-[20vw] p-2">
-                            <div className='w-[90%] flex justify-between'>
+                        <div className="flex flex-col items-center justify-center w-[70vw] md:w-[20vw] p-2">
+                            <div className='w-[90%] flex-col md:flex-row flex justify-between'>
                                 <span>{t('Min Price')} {priceRange[0]}</span>
                                 <span>{t('Max Price')} {priceRange[1]}</span>
                             </div>
@@ -123,7 +126,7 @@ export const ShopToolbar = ({
                             <Button
                                 label={t("Apply")}
                                 onClick={(e) => op.current?.toggle(e)}
-                                className='w-[10vw] text-center'
+                                className='w-[50vw] md:w-[10vw] text-center'
                             />
                         </div>
                     </OverlayPanel>
@@ -140,7 +143,7 @@ export const ShopToolbar = ({
             </div>
 
             {/* Categories Dropdown */}
-            <div className="card flex justify-center items-center space-x-4">
+            <div className={`${showFilters?'flex flex-col items-start':'hidden'} gap-2 py-1 card md:flex justify-center md:items-center space-x-4`}>
                 <MultiSelect
                     value={selectedCategories}
                     onChange={(e) => setSelectedCategories(e.value)}
