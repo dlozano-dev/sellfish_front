@@ -9,12 +9,14 @@ import {HOSTNAME} from "../../utils/Constants.tsx";
 import {Toast} from "primereact/toast";
 import {Header} from "../core/Header.tsx";
 import dagger_icon from "../../assets/Icons/dagger.svg";
+import {useTranslation} from "react-i18next";
 
 export const Wishlist = () => {
     const { userId } = useContext(UserIdContext)!;
     const [clothes, setClothes] = useState<Clothe[]>([]);
     const [item, setItem] = useState<Clothe | undefined>(undefined);
     const toast = useRef<Toast>(null);
+    const { t } = useTranslation();
 
     const showError = (message: string) => {
         toast.current?.clear()
@@ -47,7 +49,7 @@ export const Wishlist = () => {
                         className="w-16 h-16"
                     />
                     <span className='text-lg'>
-                        {'Favorite items'}
+                        {t('Favorite items')}
                     </span>
                 </div>
                 {clothes.length > 0 ? (
@@ -58,7 +60,7 @@ export const Wishlist = () => {
 
                         {/* Single Dialog outside the map */}
                         <Dialog
-                            header="Item Details"
+                            header={t("Item Details")}
                             visible={!!item} // Only visible if item is defined
                             style={{ width: '50vw' }}
                             onHide={() => setItem(undefined)}
@@ -73,7 +75,7 @@ export const Wishlist = () => {
                         </Dialog>
                     </div>
                 ) : (
-                    <p className='py-5'>No items found.</p>
+                    <p className='py-5'>{t('No Items Found')}</p>
                 )}
             </div>
         </div>

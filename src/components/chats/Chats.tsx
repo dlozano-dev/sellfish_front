@@ -11,6 +11,7 @@ import {Dialog} from 'primereact/dialog';
 import {Rating} from 'primereact/rating';
 import {InputTextarea} from 'primereact/inputtextarea';
 import {Button} from 'primereact/button';
+import {useTranslation} from "react-i18next";
 
 type Message = {
     id: number;                 // Unique identifier for the message
@@ -66,11 +67,12 @@ export const Chats = () => {
     const [visibleDialog, setVisibleDialog] = useState(false);
     const [selectedReview, setSelectedReview] = useState<Review | null>(null);
     const [rateValue, setRateValue] = useState<number | null>(null);
-    const [reviewText, setReviewText] = useState("");
+    const [reviewText, setReviewText] = useState(EMPTY);
+    const { t } = useTranslation();
 
     const showError = (message: string) => {
         toast.current?.clear()
-        toast.current?.show({severity: 'error', summary: 'Error', detail: message, life: 3000});
+        toast.current?.show({severity: 'error', summary: t('Error'), detail: message, life: 3000});
     }
 
     const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -376,7 +378,7 @@ export const Chats = () => {
                     ) : (
                         <div className='h-[80vh] hidden lg:flex w-full lg:w-5/7 bg-white rounded-lg shadow p-6 flex flex-col items-center justify-center'>
                             <i className="pi pi-inbox text-stone-600" style={{fontSize: '1.5rem'}}/>
-                            <span className="text-stone-600 text-lg">{'No chats opened'}</span>
+                            <span className="text-stone-600 text-lg">{t('No chats opened')}</span>
                         </div>
                     )}
                 </div>
