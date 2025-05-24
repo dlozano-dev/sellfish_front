@@ -189,7 +189,7 @@ export const ItemDetails = ({
                             <Dropdown
                                 value={saleState}
                                 onChange={(e) => setChanges(() => setSaleState(e.value))} options={SALE_STATES}
-                                optionLabel="name"
+                                optionLabel={t("name")}
                                 checkmark={true}
                                 placeholder={t("sale_state")}
                                 className="h-12 items-center me-2"
@@ -210,7 +210,7 @@ export const ItemDetails = ({
                 </div>
             </div>
 
-            <p className="text-xs text-center mt-10 text-gray-400">CopyRight</p>
+            <p className="text-xs text-center mt-10 text-gray-400">Sellfish</p>
 
             <Dialog header={t("complete_your_sale")} visible={showSaleDialog} modal
                     style={{width: '90vw', maxWidth: '600px'}} onHide={() => setShowSaleDialog(false)}>

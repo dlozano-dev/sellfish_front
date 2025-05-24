@@ -8,17 +8,18 @@ import {InputText} from "primereact/inputtext";
 import {Avatar} from "primereact/avatar";
 import {Toast} from "primereact/toast";
 import {ImageCropper} from "../core/ImageCropper/ImageCropper.tsx";
+import {useTranslation} from "react-i18next";
 
 export const Settings = () => {
     const { profilePicture, setProfilePicture } = useContext(ProfilePictureContext)!;
     const { userId } = useContext(UserIdContext)!;
     const { user } = useContext(UserContext)!;
     const { email, setEmail } = useContext(EmailContext)!;
-
     const [croppedImage, setCroppedImage] = useState(profilePicture);
     const [loading, setIsLoading] = useState(false);
     const [newEmail, setNewEmail] = useState(email);
     const toast = useRef<Toast>(null);
+    const {t} = useTranslation();
 
     const showSuccess = (message: string) => {
         toast.current?.clear()
@@ -59,9 +60,9 @@ export const Settings = () => {
                 setEmail(newEmail);
             }
 
-            showSuccess("User data has been updated successfully!");
+            showSuccess(t('update_success'));
         } catch {
-            showError("Error updating user data");
+            showError(t('update_error'));
         } finally {
             setIsLoading(false);
         }
@@ -146,8 +147,6 @@ export const Settings = () => {
                                 shape="circle"
                                 className="w-full h-full"
                             />
-
-                            {/* Hidden file input element */}
                         </div>
                     :
                         <Avatar
@@ -167,16 +166,16 @@ export const Settings = () => {
 
                 {/* Avatar image */}
                 <div className="flex flex-col gap-2">
-                    <label htmlFor="username">Username</label>
+                    <label htmlFor="username">{t('username')}</label>
                     <InputText id="username" disabled value={user} aria-describedby="username-help"/>
                     <small id="username-help">
-                        Username cannot be changed.
+                        {t('username_immutable')}
                     </small>
                 </div>
 
                 {/* Avatar image */}
                 <div className="flex flex-col gap-2 mb-4">
-                    <label htmlFor="email">Email</label>
+                    <label htmlFor="email">{t('Email')}</label>
                     <InputText id="email" value={newEmail} onChange={(e) => setNewEmail(e.target.value)}/>
                 </div>
 

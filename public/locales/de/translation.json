@@ -103,5 +103,18 @@
   "error_registration_failed": "Registrierung fehlgeschlagen.",
   "error_checking_user_existence": "Fehler beim Überprüfen der Benutzerexistenz.",
   "error_invalid_credentials": "Ungültige Anmeldedaten.",
-  "label_password": "Passwort"
+  "label_password": "Passwort",
+  "no_pending_reviews": "Keine ausstehenden Bewertungen",
+  "no_reviews": "Noch keine Bewertungen",
+  "username": "Nome utente",
+  "username_immutable": "Il nome utente non può essere modificato",
+  "settings": "Impostazioni",
+  "error_loading_profile": "Errore nel caricamento del profilo",
+  "update_success": "Dati utente aggiornati con successo!",
+  "update_error": "Errore durante l'aggiornamento dei dati utente",
+  "fill_all_fields": "Per favore, compila tutti i campi prima di pubblicare",
+  "post_success": "Prodotto pubblicato con successo!",
+  "error_pending_reviews": "Errore nel caricamento delle recensioni in sospeso",
+  "error_fetching_chats": "Errore nel recupero delle chat",
+  "review_submit_fail": "Impossibile inviare la recensione"
 }

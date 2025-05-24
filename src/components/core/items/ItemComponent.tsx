@@ -5,6 +5,7 @@ import axios from "axios";
 import {UserIdContext} from "../../../Navigation.tsx";
 import dagger_icon from "../../../assets/Icons/dagger.svg";
 import dagger_bordered_icon from "../../../assets/Icons/dagger_bordered.png";
+import {useTranslation} from "react-i18next";
 
 export const ItemComponent = ({
     setItem, item
@@ -14,6 +15,7 @@ export const ItemComponent = ({
 }) => {
     const { userId } = useContext(UserIdContext)!;
     const [fav, setFav] = useState(false);
+    const { t } = useTranslation();
 
     async function setAsFavorite() {
         const response = await axios.get(`${HOSTNAME}/liked/${userId}/${item!.id}`);
@@ -57,7 +59,7 @@ export const ItemComponent = ({
             <p className="py-2 text-gray-800 font-semibold items-start">
                 {item.saleState !== SALE_STATES[0].value ?
                     <span className={item.saleState === SALE_STATES[1].value ? 'text-purple-800' : 'text-green-700'}>
-                        {`[${item.saleState}] `}
+                        {`[${t(item.saleState!)}] `}
                     </span>
                 :
                     <span></span>

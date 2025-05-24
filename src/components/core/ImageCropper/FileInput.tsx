@@ -1,5 +1,6 @@
 import React, { useRef } from "react";
 import { Button } from "primereact/button";
+import {useTranslation} from "react-i18next";
 
 type FileInputProps = {
     onImageSelected: (dataUrl: string | ArrayBuffer | null) => void;
@@ -7,6 +8,7 @@ type FileInputProps = {
 
 export const FileInput = ({ onImageSelected }: FileInputProps) => {
     const inputRef = useRef<HTMLInputElement | null>(null);
+    const { t } = useTranslation();
 
     // Handle the change event when a file is selected
     const handleOnChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -29,7 +31,7 @@ export const FileInput = ({ onImageSelected }: FileInputProps) => {
             <input type='file' accept="image/*" ref={inputRef} onChange={handleOnChange} style={{ display: 'none' }} />
 
             {/* Button to trigger the file input dialog */}
-            <Button label='Choose image' onClick={onChooseImg} />
+            <Button label={t('Choose Image')} onClick={onChooseImg} />
         </div>
     );
 };

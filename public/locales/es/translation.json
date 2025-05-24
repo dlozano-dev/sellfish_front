@@ -103,5 +103,18 @@
   "error_registration_failed": "Error al registrar.",
   "error_checking_user_existence": "Error al comprobar la existencia del usuario.",
   "error_invalid_credentials": "Credenciales inválidas.",
-  "label_password": "Contraseña"
+  "label_password": "Contraseña",
+  "no_pending_reviews": "No hay reseñas pendientes",
+  "no_reviews": "Aún no hay reseñas",
+  "username": "Nombre de usuario",
+  "username_immutable": "El nombre de usuario no se puede cambiar",
+  "settings": "Configuración",
+  "error_loading_profile": "Error al cargar el perfil",
+  "update_success": "¡Datos de usuario actualizados con éxito!",
+  "update_error": "Error al actualizar los datos del usuario",
+  "fill_all_fields": "Por favor, completa todos los campos antes de publicar",
+  "post_success": "¡Producto publicado con éxito!",
+  "error_pending_reviews": "Error al cargar las reseñas pendientes",
+  "error_fetching_chats": "Error al obtener los chats",
+  "review_submit_fail": "Error al enviar la reseña"
 }

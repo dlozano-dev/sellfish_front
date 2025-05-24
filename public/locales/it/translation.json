@@ -103,5 +103,18 @@
   "error_registration_failed": "Registrazione fallita.",
   "error_checking_user_existence": "Errore durante la verifica dell'esistenza dell'utente.",
   "error_invalid_credentials": "Credenziali non valide.",
-  "label_password": "Password"
+  "label_password": "Password",
+  "no_pending_reviews": "Nessuna recensione in sospeso",
+  "no_reviews": "Nessuna recensione ancora",
+  "username": "Benutzername",
+  "username_immutable": "Der Benutzername kann nicht geändert werden",
+  "settings": "Einstellungen",
+  "error_loading_profile": "Fehler beim Laden des Profils",
+  "update_success": "Benutzerdaten wurden erfolgreich aktualisiert!",
+  "update_error": "Fehler beim Aktualisieren der Benutzerdaten",
+  "fill_all_fields": "Bitte fülle alle Felder aus, bevor du veröffentlichst",
+  "post_success": "Produkt erfolgreich veröffentlicht!",
+  "error_pending_reviews": "Fehler beim Laden ausstehender Bewertungen",
+  "error_fetching_chats": "Fehler beim Abrufen der Chats",
+  "review_submit_fail": "Fehler beim Absenden der Bewertung"
 }

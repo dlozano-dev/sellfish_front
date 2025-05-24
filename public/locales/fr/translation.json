@@ -103,5 +103,18 @@
   "error_registration_failed": "Échec de l'enregistrement.",
   "error_checking_user_existence": "Erreur lors de la vérification de l'existence de l'utilisateur.",
   "error_invalid_credentials": "Identifiants invalides.",
-  "label_password": "Mot de passe"
+  "label_password": "Mot de passe",
+  "no_pending_reviews": "Aucun avis en attente",
+  "no_reviews": "Pas encore d'avis",
+  "username": "Nom d'utilisateur",
+  "username_immutable": "Le nom d'utilisateur ne peut pas être modifié",
+  "settings": "Paramètres",
+  "error_loading_profile": "Erreur lors du chargement du profil",
+  "update_success": "Les données utilisateur ont été mises à jour avec succès !",
+  "update_error": "Erreur lors de la mise à jour des données utilisateur",
+  "fill_all_fields": "Veuillez remplir tous les champs avant de publier",
+  "post_success": "Produit publié avec succès !",
+  "error_pending_reviews": "Erreur lors du chargement des avis en attente",
+  "error_fetching_chats": "Erreur lors de la récupération des discussions",
+  "review_submit_fail": "Échec de l'envoi de l'avis"
 }

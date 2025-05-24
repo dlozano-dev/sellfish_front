@@ -14,6 +14,7 @@ import {Dialog} from "primereact/dialog";
 import {ItemDetails} from "../shop/itemDetails/ItemDetails.tsx";
 import {Settings} from "../settings/Settings.tsx";
 import {ProgressSpinner} from "primereact/progressspinner";
+import {useTranslation} from "react-i18next";
 
 export const Profile = () => {
     const { userId } = useContext(UserIdContext)!;
@@ -27,6 +28,7 @@ export const Profile = () => {
     const [item, setItem] = useState<Clothe | undefined>(undefined);
     const [reviews, setReviews] = useState<Review[]>([]);
     const toast = useRef<Toast>(null);
+    const { t } = useTranslation();
 
     const showError = (message: string) => {
         toast.current?.clear()
@@ -45,7 +47,7 @@ export const Profile = () => {
             setClothes(data.clothes || []);
             setReviews(data.reviews || []);
         } catch {
-            showError("Error loading profile");
+            showError(t('error_loading_profile'));
         } finally {
             setIsLoading(false);
         }
@@ -104,7 +106,7 @@ export const Profile = () => {
                                 className='rounded-md border border-stone-800 cursor-pointer hover:opacity-80 px-3 py-2 h-10 flex items-center space-x-2 self-start md:self-center'
                             >
                                 <i className="pi pi-pencil" style={{ fontSize: '1rem' }} />
-                                <span>Edit profile</span>
+                                <span>{t('Edit profile')}</span>
                             </button>
                         ) : (
                             <div></div>
@@ -112,7 +114,7 @@ export const Profile = () => {
                     </div>
 
                     <TabView className="w-9/10 mx-auto">
-                        <TabPanel header="Items" leftIcon="pi pi-warehouse mr-2">
+                        <TabPanel header={t("Items")} leftIcon="pi pi-warehouse mr-2">
                             {clothes.length > 0 ? (
                                 <div className="flex flex-wrap justify-center gap-4">
                                     {clothes.map((i, index) => (
@@ -123,7 +125,7 @@ export const Profile = () => {
                                     <Dialog
                                         header="Item Details"
                                         visible={!!item}
-                                        style={{ width: '90vw', maxWidth: '600px' }}
+                                        style={{ width: '90vw', maxWidth: '900px' }}
                                         onHide={() => setItem(undefined)}
                                         dismissableMask
                                         modal
@@ -136,10 +138,10 @@ export const Profile = () => {
                                     </Dialog>
                                 </div>
                             ) : (
-                                <p>No items found.</p>
+                                <p>{t('No Items Found')}</p>
                             )}
                         </TabPanel>
-                        <TabPanel header={`Reviews (${reviews.length})`} leftIcon="pi pi-star mr-2">
+                        <TabPanel header={`${t('Reviews')} (${reviews.length})`} leftIcon="pi pi-star mr-2">
                             {reviews.length > 0 ? (
                                 <div className="pl-2 md:pl-5 space-y-4">
                                     {reviews.map((review, idx) => (
@@ -173,7 +175,7 @@ export const Profile = () => {
                     </TabView>
 
                     <Dialog
-                        header="Settings"
+                        header={t("settings")}
                         visible={showSettings}
                         style={{ width: '90vw', maxWidth: '500px' }}
                         onHide={() => {

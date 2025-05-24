@@ -103,5 +103,18 @@
    "error_registration_failed": "Registration failed.",
    "error_checking_user_existence": "Error checking user existence.",
    "error_invalid_credentials": "Invalid credentials.",
-   "label_password": "Password"
+   "label_password": "Password",
+   "no_pending_reviews": "No pending reviews",
+   "no_reviews": "No reviews yet",
+   "username": "Username",
+   "username_immutable": "Username cannot be changed",
+   "settings": "Settings",
+   "error_loading_profile": "Error loading profile",
+   "update_success": "User data has been updated successfully!",
+   "update_error": "Error updating user data",
+   "fill_all_fields": "Please fill in all fields before publishing",
+   "post_success": "Product posted successfully!",
+   "error_pending_reviews": "Error loading pending reviews",
+   "error_fetching_chats": "Error fetching chats",
+   "review_submit_fail": "Failed to submit review"
 }

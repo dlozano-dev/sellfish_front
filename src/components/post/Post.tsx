@@ -12,6 +12,7 @@ import { FileInput } from "../core/ImageCropper/FileInput.tsx";
 import { Area } from "react-easy-crop";
 import { ImageCropper } from "../core/ImageCropper/ImageCropper.tsx";
 import {Toast} from "primereact/toast";
+import {useTranslation} from "react-i18next";
 
 export const Post = () => {
     const {userId} = useContext(UserIdContext)!;
@@ -26,6 +27,7 @@ export const Post = () => {
     const [province, setProvince] = useState(PROVINCES[0].value);
     const [loading, setIsLoading] = useState(false);
     const toast = useRef<Toast>(null);
+    const { t } = useTranslation();
 
     const showWarn = (message: string) => {
         toast.current?.clear()
@@ -39,7 +41,7 @@ export const Post = () => {
 
     const publish = async () => {
         if (!brand || !model || !category || !price || !base64 || !size || !state || !province) {
-            showWarn("Please fill in all fields before publishing.");
+            showWarn(t('fill_all_fields'));
             throw Error;
         }
 
@@ -125,7 +127,7 @@ export const Post = () => {
                             onChange={(e) => setBrand(e.target.value)}
                             className="w-full"
                         />
-                        <label htmlFor="brand">Brand</label>
+                        <label htmlFor="brand">{t('Brand')}</label>
                     </FloatLabel>
 
                     <FloatLabel className='w-full sm:w-64 my-5 sm:mx-5'>
@@ -135,7 +137,7 @@ export const Post = () => {
                             onChange={(e) => setModel(e.target.value)}
                             className="w-full"
                         />
-                        <label htmlFor="model">Model</label>
+                        <label htmlFor="model">{t('Model')}</label>
                     </FloatLabel>
                 </div>
 
@@ -149,7 +151,7 @@ export const Post = () => {
                             maxFractionDigits={2}
                             className="w-full"
                         />
-                        <label htmlFor="price">Price</label>
+                        <label htmlFor="price">{t('Price')}</label>
                     </FloatLabel>
 
                     <FloatLabel className='w-full sm:w-64 my-5 sm:mx-5'>
@@ -161,7 +163,7 @@ export const Post = () => {
                             optionLabel="name"
                             className="w-full"
                         />
-                        <label htmlFor="category">Category</label>
+                        <label htmlFor="category">{t('Category')}</label>
                     </FloatLabel>
                 </div>
 
@@ -177,7 +179,7 @@ export const Post = () => {
                             checkmark={true}
                             className="w-full"
                         />
-                        <label htmlFor="size">Size</label>
+                        <label htmlFor="size">{t('size')}</label>
                     </FloatLabel>
 
                     <FloatLabel className='w-full sm:w-64 my-5 sm:mx-5'>
@@ -189,7 +191,7 @@ export const Post = () => {
                             optionLabel="name"
                             className="w-full"
                         />
-                        <label htmlFor="state">State</label>
+                        <label htmlFor="state">{t('state')}</label>
                     </FloatLabel>
                 </div>
 
@@ -205,18 +207,18 @@ export const Post = () => {
                             checkmark={true}
                             className="w-full"
                         />
-                        <label htmlFor="province">Province</label>
+                        <label htmlFor="province">{t('Province')}</label>
                     </FloatLabel>
                 </div>
 
                 <Button
-                    label="Submit"
+                    label={t("Submit")}
                     icon="pi pi-check"
                     loading={loading}
                     onClick={() => {
                         setIsLoading(true);
                         publish().then(() =>
-                            showSuccess('Product posted successfully!')
+                            showSuccess(t('post_success'))
                         ).finally(() =>
                             setIsLoading(false)
                         );

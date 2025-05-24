@@ -160,7 +160,7 @@ export const Shop = () => {
                         <Dialog
                             header={t("Item Details")}
                             visible={!!item} // Only visible if item is defined
-                            style={{ width: '50vw' }}
+                            style={{ width: '40vw' }}
                             onHide={() => setItem(undefined)}
                             dismissableMask
                             modal

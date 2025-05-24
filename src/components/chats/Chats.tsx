@@ -151,7 +151,7 @@ export const Chats = () => {
     useEffect(() => {
         axios.get(`${HOSTNAME}/sales/unrated/${userId}`)
             .then(res => setPendingReviews(res.data))
-            .catch(() => showError("Error loading pending reviews"));
+            .catch(() => showError(t('error_pending_reviews')));
     }, [userId]);
 
     useEffect(() => {
@@ -168,7 +168,7 @@ export const Chats = () => {
         fetchChats()
             .then()
             .catch(() => {
-                showError('Error fetching chats');
+                showError(t('error_fetching_chats'));
             });
     }, [])
 
@@ -198,7 +198,7 @@ export const Chats = () => {
                 <div className="w-full flex px-5">
                     <TabView
                         className={`w-full lg:w-1/4 max-h-[80vh] text-start bg-white rounded-lg shadow lg:mr-5 overflow-y-auto no-tabview-padding lg:block ${chat.length > 0 ? ('hidden') : ('block')}`}>
-                        <TabPanel header="Chats" leftIcon="pi pi-inbox mr-2">
+                        <TabPanel header={t("Chats")} leftIcon="pi pi-inbox mr-2">
                             <div className="h-[80vh] overflow-y-auto pr-2">
                                 {chats.length > 0 ? (
                                     chats.map((i, index) => (
@@ -226,11 +226,11 @@ export const Chats = () => {
                                         </div>
                                     ))
                                 ) : (
-                                    <p className='text-center mt-5'>0 chats opened</p>
+                                    <p className='text-center mt-5'>{t('No chats opened')}</p>
                                 )}
                             </div>
                         </TabPanel>
-                        <TabPanel header="Pending reviews" leftIcon="pi pi-clock mr-2">
+                        <TabPanel header={t("Pending reviews")} leftIcon="pi pi-clock mr-2">
                             <div className="h-[80vh] overflow-y-auto pr-2">
                                 {pendingReviews.length > 0 ? pendingReviews.map((rev, index) => (
                                     <div
@@ -255,7 +255,7 @@ export const Chats = () => {
                                     </div>
                                 )) : (
                                     <div className='flex items-center justify-center mt-5'>
-                                        <span>No pending reviews</span>
+                                        <span>{t('no_pending_reviews')}</span>
                                         <i className='ml-2 pi pi-check-square'/>
                                     </div>
                                 )}
@@ -431,7 +431,7 @@ export const Chats = () => {
                                         setPendingReviews(pendingReviews.filter(p => p.saleId !== selectedReview.saleId));
                                         setVisibleDialog(false);
                                     }).catch(() => {
-                                        showError("Failed to submit review");
+                                        showError(t('review_submit_fail'));
                                     });
                                 }}
                             />
