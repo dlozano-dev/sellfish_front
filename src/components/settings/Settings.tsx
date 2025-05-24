@@ -185,7 +185,7 @@ export const Settings = () => {
             {showCropper ? (
                 <>
                     <div className="fixed top-0 left-0 w-screen h-screen bg-black opacity-20 z-40"></div>
-                    <div className="fixed top-1/2 left-1/2 w-1/4 bg-white rounded-lg z-50 transform -translate-x-1/2 -translate-y-1/2">
+                    <div className="fixed top-1/2 left-1/2 w-[90vw] lg:w-1/4 bg-white rounded-lg z-50 transform -translate-x-1/2 -translate-y-1/2">
                         <ImageCropper
                             image={image}
                             onCropDone={onCropDone}

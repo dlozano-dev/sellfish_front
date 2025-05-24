@@ -34,7 +34,7 @@ export const ItemComponent = ({
     return(
         <div
             onClick={() => setItem(item)}
-            className="w-40 lg:w-80 lg:h-90 overflow-hidden rounded-md flex flex-col justify-end hover:cursor-pointer"
+            className="w-36 lg:w-80 lg:h-90 overflow-hidden rounded-md flex flex-col justify-end hover:cursor-pointer"
         >
             {/* Image wrapper with relative positioning */}
             <div className="relative w-full h-full">

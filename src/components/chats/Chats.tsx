@@ -266,40 +266,49 @@ export const Chats = () => {
                     {chat.length > 0 ? (
                         <div className={`flex flex-col h-[80vh] w-full lg:w-5/7 bg-white rounded-lg shadow p-6 space-y-2`}>
                             <div className="w-full flex px-5 pb-2 border-b-2 border-stone-800">
-                                <div
-                                    className='cursor-pointer'
-                                    onClick={() => {
-                                        setProfileId(chatterId!)
-                                        setGlobalState(PROFILE)
-                                    }}
-                                >
-                                    {chatterPfp != null ?
-                                        <Avatar
-                                            image={`data:image/png;base64,${chatterPfp}`}
-                                            size="large"
-                                            className='shadow-md rounded-md mx-3'
-                                        />
-                                        :
-                                        <Avatar
-                                            icon="pi pi-user"
-                                            size="large"
-                                            className='shadow-md rounded-md mx-3'
-                                            style={{backgroundColor: '#ffffff', color: '#5e5e5e'}}
-                                        />
-                                    }
-                                </div>
                                 <div>
-                                    <p className='text-stone-800'>{chatterName}</p>
-                                    <p className='text-stone-950'>{item?.brand + " " + item?.model}</p>
-                                </div>
-                                <div className='ml-auto flex justify-end items-center lg:hidden'>
-                                    <i className="pi pi-arrow-left text-stone-600 cursor-pointer"
-                                        style={{fontSize: '1.5rem'}}
-                                        onClick={()=> {
-                                            setItem(null)
-                                            setChat([])
-                                        }}
-                                    />
+                                    <div
+                                        className='cursor-pointer flex justify-between w-full'
+                                    >
+                                        <div
+                                            className='flex'
+                                            onClick={() => {
+                                                setProfileId(chatterId!)
+                                                setGlobalState(PROFILE)
+                                            }}
+                                        >
+                                            {chatterPfp != null ?
+                                                <Avatar
+                                                    image={`data:image/png;base64,${chatterPfp}`}
+                                                    size="large"
+                                                    className='shadow-md rounded-md mr-3'
+                                                />
+                                                :
+                                                <Avatar
+                                                    icon="pi pi-user"
+                                                    size="large"
+                                                    className='shadow-md rounded-md mr-3'
+                                                    style={{backgroundColor: '#ffffff', color: '#5e5e5e'}}
+                                                />
+                                            }
+                                            <p className='text-stone-800'>{chatterName}</p>
+                                        </div>
+
+
+                                        <div className='ml-auto flex justify-end items-center lg:hidden'>
+                                            <i className="pi pi-arrow-left text-stone-600 cursor-pointer"
+                                               style={{fontSize: '1.5rem'}}
+                                               onClick={() => {
+                                                   setItem(null)
+                                                   setChat([])
+                                               }}
+                                            />
+                                        </div>
+
+                                    </div>
+                                    <div className='w-full mt-2'>
+                                        <p className='text-stone-950'>{item?.brand + " " + item?.model}</p>
+                                    </div>
                                 </div>
                             </div>
 

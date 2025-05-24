@@ -62,7 +62,7 @@ export const Wishlist = () => {
                         <Dialog
                             header={t("Item Details")}
                             visible={!!item} // Only visible if item is defined
-                            style={{ width: '50vw' }}
+                            style={{ width: '90vw', maxWidth: '900px' }}
                             onHide={() => setItem(undefined)}
                             dismissableMask
                             modal
