@@ -3,7 +3,7 @@ import d_menu from '../../assets/Icons/d-menu.svg';
 import dagger_icon from '../../assets/Icons/dagger.svg';
 import { GlobalContext, ProfileIdContext, ProfilePictureContext, UserIdContext } from '../../Navigation.tsx';
 import { UserContext } from '../../Navigation.tsx';
-import { ABOUT_US, CHATS, CONTACT_US, HOME, POST, PROFILE, SHOP, WISHLIST } from "../../utils/Constants.tsx";
+import { CHATS, CONTACT_US, HOME, POST, PROFILE, SHOP, WISHLIST } from "../../utils/Constants.tsx";
 import { Sidebar } from "primereact/sidebar";
 import { OverlayPanel } from "primereact/overlaypanel";
 import { Avatar } from "primereact/avatar";
@@ -118,8 +118,8 @@ export const Header = () => {
                     { label: t('Post a Product'), state: POST },
                     { label: t('Wishlist'), state: WISHLIST },
                     { label: t('Chats'), state: CHATS },
-                    { label: t('About Us'), state: ABOUT_US },
                     { label: t('Contact Us'), state: CONTACT_US },
+                    { label: t('Profile'), state: PROFILE },
                 ].map((item, index) => (
                     <div key={index} className='hover:bg-gray-100 overflow-x-hidden'>
                         <div
@@ -130,18 +130,6 @@ export const Header = () => {
                         </div>
                     </div>
                 ))}
-
-                <div className='hover:bg-gray-100 overflow-x-hidden'>
-                    <div
-                        className='pl-10 py-4 hover:text-black cursor-pointer transition-transform duration-500 hover:translate-x-[10%]'
-                        onClick={() => {
-                            setProfileId(userId);
-                            setGlobalState(PROFILE);
-                        }}
-                    >
-                        Profile
-                    </div>
-                </div>
             </Sidebar>
         </div>
     );

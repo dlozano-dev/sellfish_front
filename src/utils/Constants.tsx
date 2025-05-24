@@ -1,5 +1,5 @@
 /* HOST */
-export const HOSTNAME = "http://192.168.1.40:8080";
+export const HOSTNAME = "http://192.168.1.47:8080";
 
 /* ROUTES */
 export const HOME = 'home';
