@@ -1,5 +1,4 @@
 import { useTranslation } from 'react-i18next';
-// import Flag from 'react-world-flags';
 
 export const LanguageSelector = () => {
     const { i18n } = useTranslation();
@@ -16,7 +15,7 @@ export const LanguageSelector = () => {
                 value={i18n.language}
                 className="border border-gray-300 rounded-md px-2 py-1 text-sm bg-white text-gray-500"
             >
-                {/*<option value="en"><Flag code="es" style={{ width: '32px', height: 'auto' }} /> EN</option>*/}
+                <option value="en">EN</option>
                 <option value="es">ES</option>
                 <option value="fr">FR</option>
                 <option value="de">DE</option>

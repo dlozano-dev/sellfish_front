@@ -6,7 +6,7 @@ import {useContext, useEffect} from "react";
 import {EmailContext, GlobalContext, ProfilePictureContext, UserContext, UserIdContext} from "../../Navigation.tsx";
 import Cookies from 'js-cookie';
 import axios from "axios";
-import {HOME, HOSTNAME} from "../../utils/Constants.tsx";
+import {HOSTNAME, SHOP} from "../../utils/Constants.tsx";
 
 export const Home = () => {
     const { userId } = useContext(UserIdContext)!;
@@ -25,7 +25,7 @@ export const Home = () => {
                 headers: { Authorization: `Bearer ${token}` }
             }).then(async res => {
                 const userId = res.data.id;
-                setGlobalState(HOME);
+                setGlobalState(SHOP);
                 setUser(res.data.username);
                 setUserId(userId);
 

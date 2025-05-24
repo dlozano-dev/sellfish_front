@@ -5,7 +5,7 @@ import { UserIdContext } from '../../Navigation';
 import { useTranslation } from "react-i18next";
 import Snackbar from '@mui/material/Snackbar';
 import sf_icon from "../../assets/brand_logos/sf-logo.svg"
-import { EMPTY, HOME, HOSTNAME, LOG_IN, SIGN_UP } from "../../utils/Constants";
+import {EMPTY, HOSTNAME, LOG_IN, SHOP, SIGN_UP} from "../../utils/Constants";
 import Cookies from 'js-cookie';
 import axios from "axios";
 
@@ -64,7 +64,7 @@ export const Login = ({
 
                 const userId = me.data.id;
 
-                setGlobalState(HOME);
+                setGlobalState(SHOP);
                 setUser(userInput);
                 setUserId(userId);
                 await getEmail(userId, token);
