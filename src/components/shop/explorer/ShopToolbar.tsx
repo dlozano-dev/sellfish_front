@@ -9,6 +9,7 @@ import { CATEGORIES, ORDER_OPTIONS, PROVINCES, SIZES } from "../../../utils/Cons
 import { OverlayPanel } from "primereact/overlaypanel";
 import {useTranslation} from "react-i18next";
 import {translateOptions} from "../../../utils/GetTranslatedConstants.ts";
+import { motion, AnimatePresence } from "framer-motion";
 
 export const ShopToolbar = ({
     selectedProvince, setSelectedProvince,
@@ -58,11 +59,9 @@ export const ShopToolbar = ({
         }
     };
 
-    return (
-        <div className="bg-white w-[90vw] h-auto flex flex-wrap items-center justify-between px-4 py-3 md:gap-2 mb-5 shadow-xl mx-auto rounded-md">
-            <button onClick={() => setShowFilters(!showFilters)} className={`md:hidden`}>{t((showFilters?'Hide filters':'Show filters'))}</button>
-
-            <div className={`${showFilters?'flex flex-col justify-start items-start':'hidden'} md:flex flex-wrap md:items-center md:justify-between md:px-2 py-1 gap-2 md:gap-6`}>
+    const renderFilterContent = () => (
+        <>
+            <div className={`${showFilters ? 'flex flex-col justify-start items-start' : 'hidden'} md:flex flex-wrap md:items-center md:justify-between md:px-2 py-1 gap-2 md:gap-6`}>
                 {/* Location Dropdown */}
                 <div className='flex items-center'>
                     <Dropdown
@@ -89,7 +88,8 @@ export const ShopToolbar = ({
 
                 {/* Price Range Dropdown */}
                 <div className="relative">
-                    <button onClick={(e) => op.current?.toggle(e)} className="px-3 price-filter hover:opacity-80 no-bg-button cursor-pointer">
+                    <button onClick={(e) => op.current?.toggle(e)}
+                            className="px-3 price-filter hover:opacity-80 no-bg-button cursor-pointer">
                         {t("Price")}
                     </button>
 
@@ -142,7 +142,8 @@ export const ShopToolbar = ({
             </div>
 
             {/* Categories Dropdown */}
-            <div className={`${showFilters?'flex flex-col items-start':'hidden'} gap-2 py-1 card md:flex justify-center md:items-center space-x-4`}>
+            <div
+                className={`${showFilters ? 'flex flex-col items-start' : 'hidden'} gap-2 py-1 card md:flex justify-center md:items-center space-x-4`}>
                 <MultiSelect
                     value={selectedCategories}
                     onChange={(e) => setSelectedCategories(e.value)}
@@ -165,7 +166,36 @@ export const ShopToolbar = ({
                     className=" w-max-40 md:w-20rem h-12 items-center"
                 />
 
-                <Button label={t("Submit")} icon="pi pi-check" loading={isLoading} onClick={onSubmit} />
+                <Button label={t("Submit")} icon="pi pi-check" loading={isLoading} onClick={onSubmit}/>
+            </div>
+        </>
+    );
+
+    return (
+        <div className="bg-white w-[90vw] h-auto flex flex-wrap items-center justify-between px-4 py-3 md:gap-2 mb-5 shadow-xl mx-auto rounded-md">
+            <button onClick={() => setShowFilters(!showFilters)} className="md:hidden">
+                {t(showFilters ? 'Hide filters' : 'Show filters')}
+            </button>
+
+            <div className="w-full">
+                <AnimatePresence initial={false}>
+                    {showFilters && (
+                        <motion.div
+                            key="filters-mobile"
+                            initial={{height: 0, opacity: 0}}
+                            animate={{height: "auto", opacity: 1}}
+                            exit={{height: 0, opacity: 0}}
+                            transition={{duration: 0.3, ease: "easeInOut"}}
+                            className="overflow-hidden flex flex-col justify-start items-start md:hidden"
+                        >
+                            {renderFilterContent()}
+                        </motion.div>
+                    )}
+                </AnimatePresence>
+
+                <div className="hidden md:flex md:flex-wrap md:items-center md:justify-between md:px-2 py-1 gap-2 md:gap-6">
+                    {renderFilterContent()}
+                </div>
             </div>
         </div>
     );
