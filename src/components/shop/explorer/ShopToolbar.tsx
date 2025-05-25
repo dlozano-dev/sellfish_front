@@ -88,11 +88,9 @@ export const ShopToolbar = ({
 
                 {/* Price Range Dropdown */}
                 <div className="relative">
-                    <Button
-                        label={t("Price")}
-                        onClick={(e) => op.current?.toggle(e)}
-                        className="px-3 price-filter hover:opacity-80"
-                    />
+                    <button onClick={(e) => op.current?.toggle(e)} className="px-3 price-filter hover:opacity-80 no-bg-button cursor-pointer">
+                        {t("Price")}
+                    </button>
 
                     <OverlayPanel ref={op}>
                         <div className="flex flex-col items-center justify-center w-[70vw] md:w-[20vw] p-2">

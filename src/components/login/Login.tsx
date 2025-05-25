@@ -1,5 +1,5 @@
 import { useState, useContext } from 'react';
-import { EmailContext, GlobalContext, ProfilePictureContext } from '../../Navigation';
+import {EmailContext, GlobalContext, LoadingContext, ProfilePictureContext} from '../../Navigation';
 import { UserContext } from '../../Navigation';
 import { UserIdContext } from '../../Navigation';
 import { useTranslation } from "react-i18next";
@@ -8,6 +8,7 @@ import sf_icon from "../../assets/brand_logos/sf-logo.svg"
 import {EMPTY, HOSTNAME, LOG_IN, SHOP, SIGN_UP} from "../../utils/Constants";
 import Cookies from 'js-cookie';
 import axios from "axios";
+import {Button} from "primereact/button";
 
 export const Login = ({
     navigationAction
@@ -25,9 +26,11 @@ export const Login = ({
     const [snackBar, setSnackBar] = useState<string>(EMPTY);
     const [action, setAction] = useState(navigationAction) // Login or Sign Up
     const { t } = useTranslation();
+    const {isLoading, setIsLoading} = useContext(LoadingContext)!;
 
     // Register user if not already exists
     function register() {
+        setIsLoading(true);
         axios.get(`${HOSTNAME}/userExists/${emailInput}/${userInput}`)
             .then(res => {
                 if (res.data) {
@@ -45,11 +48,13 @@ export const Login = ({
                     });
                 }
             })
-            .catch(() => setSnackBar(t("error_checking_user_existence")));
+            .catch(() => setSnackBar(t("error_checking_user_existence")))
+            .finally(() => {setIsLoading(false)});
     }
 
     // Log user in and retrieve token + user info
     function login() {
+        setIsLoading(true);
         axios.post(`${HOSTNAME}/login`, {
             username: userInput,
             password: passwordInput
@@ -72,7 +77,8 @@ export const Login = ({
             })
             .catch(() => {
                 setSnackBar(t("error_invalid_credentials"));
-            });
+            })
+            .finally(() => {setIsLoading(false)});
     }
 
     // Get user email
@@ -146,9 +152,16 @@ export const Login = ({
                 {action === LOG_IN ? t('Click here to create an account!') : t('Log in if you already have an account')}
             </div>
 
-            <div onClick={() => action === LOG_IN ? login() : register()} className='bg-black text-white w-full max-w-xs h-12 sm:h-14 md:h-16 flex justify-center items-center text-base sm:text-lg md:text-xl rounded-md cursor-pointer mb-4'>
-                {action === LOG_IN ? t('Log in') : t('Sign Up')}
-            </div>
+            <Button
+                label={action === LOG_IN ? t('Log in') : t('Sign Up')}
+                onClick={() => action === LOG_IN ? login() : register()}
+                loading={isLoading}
+                className='bg-black text-white w-full max-w-xs h-12 sm:h-14 md:h-16 flex justify-center items-center text-base sm:text-lg md:text-xl rounded-md cursor-pointer mb-4'
+            />
+
+            {/*<div onClick={() => action === LOG_IN ? login() : register()} className='bg-black text-white w-full max-w-xs h-12 sm:h-14 md:h-16 flex justify-center items-center text-base sm:text-lg md:text-xl rounded-md cursor-pointer mb-4'>*/}
+            {/*    {action === LOG_IN ? t('Log in') : t('Sign Up')}*/}
+            {/*</div>*/}
 
             <Snackbar
                 open={!!snackBar}

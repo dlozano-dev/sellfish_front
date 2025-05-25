@@ -3,12 +3,12 @@ import {GlobalContext, ProfileIdContext, UserContext} from '../../../Navigation'
 import { UserIdContext } from '../../../Navigation'
 import {CHATS, EMPTY, HOSTNAME, PROFILE, PUT, SALE_STATES} from "../../../utils/Constants.js";
 import {Clothe} from "../data/Clothe.ts";
-import GalleriaComponent from "../../core/items/Carrousel.tsx";
 import {Button} from "primereact/button";
 import {Toast} from "primereact/toast";
 import {Dropdown} from "primereact/dropdown";
 import {Dialog} from "primereact/dialog";
 import {AutoComplete, AutoCompleteCompleteEvent} from "primereact/autocomplete";
+import { Image } from 'primereact/image';
 import axios from "axios";
 import {FloatLabel} from "primereact/floatlabel";
 import {InputTextarea} from "primereact/inputtextarea";
@@ -162,7 +162,7 @@ export const ItemDetails = ({
             <div className="flex flex-col lg:flex-row gap-10 w-full">
                 {/* Image section */}
                 <div className="flex flex-col items-center">
-                    <GalleriaComponent pictures={[item!.picture!, item!.picture!]}/>
+                    <Image src={`data:image/png;base64,${item.picture}`} alt="Imagen" width="250" preview/>
                 </div>
 
                 {/* Info section */}

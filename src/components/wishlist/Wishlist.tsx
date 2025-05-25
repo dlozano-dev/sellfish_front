@@ -3,19 +3,21 @@ import {Dialog} from "primereact/dialog";
 import {ItemDetails} from "../shop/itemDetails/ItemDetails.tsx";
 import {useContext, useEffect, useRef, useState} from "react";
 import {Clothe} from "../shop/data/Clothe.ts";
-import {UserIdContext} from "../../Navigation.tsx";
+import {LoadingContext, UserIdContext} from "../../Navigation.tsx";
 import axios from "axios";
 import {HOSTNAME} from "../../utils/Constants.tsx";
 import {Toast} from "primereact/toast";
 import {Header} from "../core/Header.tsx";
 import dagger_icon from "../../assets/Icons/dagger.svg";
 import {useTranslation} from "react-i18next";
+import {ProgressSpinner} from "primereact/progressspinner";
 
 export const Wishlist = () => {
     const { userId } = useContext(UserIdContext)!;
     const [clothes, setClothes] = useState<Clothe[]>([]);
     const [item, setItem] = useState<Clothe | undefined>(undefined);
     const toast = useRef<Toast>(null);
+    const {isLoading, setIsLoading} = useContext(LoadingContext)!;
     const { t } = useTranslation();
 
     const showError = (message: string) => {
@@ -25,8 +27,10 @@ export const Wishlist = () => {
 
     const fetchFavorites = async () => {
         try {
+            setIsLoading(true);
             const response = await axios.get(`${HOSTNAME}/wishlist/${userId}`);
             setClothes(response.data);
+            setIsLoading(false);
         } catch {
             showError("Error loading profile");
         }
@@ -75,7 +79,19 @@ export const Wishlist = () => {
                         </Dialog>
                     </div>
                 ) : (
-                    <p className='py-5'>{t('No Items Found')}</p>
+                    isLoading ? (
+                        <div className="card items-center w-full flex pt-10">
+                            <ProgressSpinner
+                                style={{width: '50px', height: '50px'}}
+                                strokeWidth="6"
+                                aria-label="Loading"
+                                animationDuration=".8s"
+                                className='p-progress-spinner-color'
+                            />
+                        </div>
+                    ) : (
+                        <p className='py-5'>{t('No Items Found')}</p>
+                    )
                 )}
             </div>
         </div>

@@ -119,7 +119,6 @@ export const Header = () => {
                     { label: t('Wishlist'), state: WISHLIST },
                     { label: t('Chats'), state: CHATS },
                     { label: t('Contact Us'), state: CONTACT_US },
-                    { label: t('Profile'), state: PROFILE },
                 ].map((item, index) => (
                     <div key={index} className='hover:bg-gray-100 overflow-x-hidden'>
                         <div

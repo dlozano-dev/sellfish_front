@@ -148,7 +148,6 @@ export const Shop = () => {
                 }}
             />
 
-            {/* Render clothes list or any other UI components */}
             {clothes?.length ? (
                 <div className="flex flex-col justify-center items-center gap-10 pb-20">
                     <div className="flex flex-wrap justify-center gap-4">
@@ -194,7 +193,7 @@ export const Shop = () => {
                         />
                     </div>
                 ) : (
-                    <p className='text-center'>No clothes available.</p>
+                    <p className='text-center'>{t('No Items Found')}</p>
                 )
             )}
         </div>

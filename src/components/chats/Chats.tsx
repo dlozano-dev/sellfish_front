@@ -1,5 +1,5 @@
 import React, {useState, useContext, useEffect, useRef} from 'react'
-import {GlobalContext, ProfileIdContext, UserIdContext} from '../../Navigation'
+import {GlobalContext, LoadingContext, ProfileIdContext, UserIdContext} from '../../Navigation'
 import {EMPTY, ENTER, GET, HOSTNAME, JSON, PROFILE} from "../../utils/Constants.tsx";
 import {Header} from "../core/Header.tsx";
 import {Clothe} from "../shop/data/Clothe.ts";
@@ -12,6 +12,7 @@ import {Rating} from 'primereact/rating';
 import {InputTextarea} from 'primereact/inputtextarea';
 import {Button} from 'primereact/button';
 import {useTranslation} from "react-i18next";
+import {ProgressSpinner} from "primereact/progressspinner";
 
 type Message = {
     id: number;                 // Unique identifier for the message
@@ -69,6 +70,7 @@ export const Chats = () => {
     const [rateValue, setRateValue] = useState<number | null>(null);
     const [reviewText, setReviewText] = useState(EMPTY);
     const { t } = useTranslation();
+    const {isLoading, setIsLoading} = useContext(LoadingContext)!;
 
     const showError = (message: string) => {
         toast.current?.clear()
@@ -98,12 +100,14 @@ export const Chats = () => {
     }
 
     async function fetchChats() {
+        setIsLoading(true);
         const response = await fetch(`${HOSTNAME}/chats/${userId}`);
         if (!response.ok) {
             throw new Error('Network response was not ok');
         }
         const data = await response.json();
         setChats(data);  // Set the fetched chats
+        setIsLoading(false);
     }
 
     function getChat(id: string, publisher: string) {
@@ -226,7 +230,19 @@ export const Chats = () => {
                                         </div>
                                     ))
                                 ) : (
-                                    <p className='text-center mt-5'>{t('No chats opened')}</p>
+                                    isLoading ? (
+                                        <div className="card items-center w-full flex pt-10">
+                                            <ProgressSpinner
+                                                style={{width: '50px', height: '50px'}}
+                                                strokeWidth="6"
+                                                aria-label="Loading"
+                                                animationDuration=".8s"
+                                                className='p-progress-spinner-color'
+                                            />
+                                        </div>
+                                    ) : (
+                                        <p className='text-center mt-5'>{t('No chats opened')}</p>
+                                    )
                                 )}
                             </div>
                         </TabPanel>
