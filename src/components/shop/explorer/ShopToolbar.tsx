@@ -174,6 +174,7 @@ export const ShopToolbar = ({
     return (
         <div className="bg-white w-[90vw] h-auto flex flex-wrap items-center justify-between px-4 py-3 md:gap-2 mb-5 shadow-xl mx-auto rounded-md">
             <button onClick={() => setShowFilters(!showFilters)} className="md:hidden">
+                {showFilters ? <i className="pi pi-times mr-2"/> : <i className="pi pi-filter mr-2"/>}
                 {t(showFilters ? 'Hide filters' : 'Show filters')}
             </button>
 
