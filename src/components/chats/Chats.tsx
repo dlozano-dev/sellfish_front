@@ -411,7 +411,7 @@ export const Chats = () => {
                 <Dialog
                     header="Leave a Review"
                     visible={visibleDialog}
-                    style={{width: '30vw'}}
+                    style={{width: '90vw', maxWidth: '600px'}}
                     onHide={() => setVisibleDialog(false)}
                 >
                     {selectedReview && (

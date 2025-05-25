@@ -216,7 +216,7 @@ export const ItemDetails = ({
             <Dialog header={t("complete_your_sale")} visible={showSaleDialog} modal
                     style={{width: '90vw', maxWidth: '600px'}} onHide={() => setShowSaleDialog(false)}>
 
-                <label htmlFor="username">{t('select_user_bought_product')}</label>
+                <label htmlFor="username">{t('select_user_bought_product')}</label><br/>
                 <AutoComplete
                     value={search}
                     placeholder={t('search')}
@@ -229,7 +229,7 @@ export const ItemDetails = ({
                             finishSale().then();
                         }
                     }}
-                    className="me-3"
+                    className="me-3 my-2"
                 />
 
                 <Button label={t('submit')} onClick={() => finishSale()} />
