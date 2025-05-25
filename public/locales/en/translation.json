@@ -116,5 +116,6 @@
    "post_success": "Product posted successfully!",
    "error_pending_reviews": "Error loading pending reviews",
    "error_fetching_chats": "Error fetching chats",
-   "review_submit_fail": "Failed to submit review"
+   "review_submit_fail": "Failed to submit review",
+   "hero_section": "Welcome to Sellfish! The ultimate buying and selling platform for fashion and designer clothing enthusiasts."
 }

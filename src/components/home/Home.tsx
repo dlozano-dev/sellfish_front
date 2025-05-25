@@ -7,6 +7,7 @@ import {EmailContext, GlobalContext, ProfilePictureContext, UserContext, UserIdC
 import Cookies from 'js-cookie';
 import axios from "axios";
 import {HOSTNAME, SHOP} from "../../utils/Constants.tsx";
+import {useTranslation} from "react-i18next";
 
 export const Home = () => {
     const { userId } = useContext(UserIdContext)!;
@@ -15,44 +16,47 @@ export const Home = () => {
     const { setEmail } = useContext(EmailContext)!;
     const { setProfilePicture } = useContext(ProfilePictureContext)!;
     const { setUserId } = useContext(UserIdContext)!;
+    const { t } = useTranslation();
 
     useEffect(() => {
-        const token = Cookies.get('jwt');
+        if (userId === null) {
+            const token = Cookies.get('jwt');
 
-        // If token exists, try to auto-login
-        if (token) {
-            axios.get(`${HOSTNAME}/me`, {
-                headers: { Authorization: `Bearer ${token}` }
-            }).then(async res => {
-                const userId = res.data.id;
-                setGlobalState(SHOP);
-                setUser(res.data.username);
-                setUserId(userId);
+            // If token exists, try to auto-login
+            if (token) {
+                axios.get(`${HOSTNAME}/me`, {
+                    headers: { Authorization: `Bearer ${token}` }
+                }).then(async res => {
+                    const userId = res.data.id;
+                    setGlobalState(SHOP);
+                    setUser(res.data.username);
+                    setUserId(userId);
 
-                try {
-                    const emailRes = await axios.get(`${HOSTNAME}/getEmail/${userId}`, {
-                        headers: { Authorization: `Bearer ${token}` }
-                    });
-                    setEmail(emailRes.data);
-                } catch {
-                    setEmail('');
-                }
+                    try {
+                        const emailRes = await axios.get(`${HOSTNAME}/getEmail/${userId}`, {
+                            headers: { Authorization: `Bearer ${token}` }
+                        });
+                        setEmail(emailRes.data);
+                    } catch {
+                        setEmail('');
+                    }
 
-                try {
-                    const profilePicRes = await axios.get(`${HOSTNAME}/profilePicture/${userId}`, {
-                        headers: { Authorization: `Bearer ${token}` }
-                    });
-                    setProfilePicture(profilePicRes.data);
-                } catch {
-                    setProfilePicture(null);
-                }
+                    try {
+                        const profilePicRes = await axios.get(`${HOSTNAME}/profilePicture/${userId}`, {
+                            headers: { Authorization: `Bearer ${token}` }
+                        });
+                        setProfilePicture(profilePicRes.data);
+                    } catch {
+                        setProfilePicture(null);
+                    }
 
-            }).catch(() => {
-                Cookies.remove('jwt');
-                setUserId(null);
-            });
+                }).catch(() => {
+                    Cookies.remove('jwt');
+                    setUserId(null);
+                });
+            }
         }
-    }, []);
+    }, [userId]);
 
     return (
         <div
@@ -68,8 +72,7 @@ export const Home = () => {
                     className="w-40 sm:w-60 md:w-80 lg:w-96 h-auto"
                 />
                 <p className="max-w-md sm:max-w-lg md:max-w-xl lg:max-w-2xl text-center mt-6 text-sm sm:text-base md:text-lg">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
-                    et dolore magna aliqua. Ut enim ad minim veniam
+                    {t("hero_section")}
                 </p>
             </main>
         </div>

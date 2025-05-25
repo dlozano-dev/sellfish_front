@@ -116,5 +116,6 @@
   "post_success": "¡Producto publicado con éxito!",
   "error_pending_reviews": "Error al cargar las reseñas pendientes",
   "error_fetching_chats": "Error al obtener los chats",
-  "review_submit_fail": "Error al enviar la reseña"
+  "review_submit_fail": "Error al enviar la reseña",
+  "hero_section": "Bienvenido a Sellfish! la mejor plataforma de compra y venta para entusiasmados de la moda y ropa de diseñador"
 }

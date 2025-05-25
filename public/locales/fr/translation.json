@@ -116,5 +116,6 @@
   "post_success": "Produit publié avec succès !",
   "error_pending_reviews": "Erreur lors du chargement des avis en attente",
   "error_fetching_chats": "Erreur lors de la récupération des discussions",
-  "review_submit_fail": "Échec de l'envoi de l'avis"
+  "review_submit_fail": "Échec de l'envoi de l'avis",
+  "hero_section": "Bienvenue chez Sellfish ! La meilleure plateforme d'achat et de vente pour les passionnés de mode et de vêtements de créateurs"
 }

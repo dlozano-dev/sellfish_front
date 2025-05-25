@@ -116,5 +116,6 @@
   "post_success": "Prodotto pubblicato con successo!",
   "error_pending_reviews": "Errore nel caricamento delle recensioni in sospeso",
   "error_fetching_chats": "Errore nel recupero delle chat",
-  "review_submit_fail": "Impossibile inviare la recensione"
+  "review_submit_fail": "Impossibile inviare la recensione",
+  "hero_section": "Willkommen bei Sellfish! Die beste Kauf- und Verkaufsplattform für Liebhaber von Mode und Designerkleidung"
 }
