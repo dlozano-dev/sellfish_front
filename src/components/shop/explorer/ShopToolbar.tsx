@@ -8,6 +8,7 @@ import { LoadingContext } from "../../../Navigation.tsx";
 import { CATEGORIES, ORDER_OPTIONS, PROVINCES, SIZES } from "../../../utils/Constants.tsx";
 import { OverlayPanel } from "primereact/overlaypanel";
 import {useTranslation} from "react-i18next";
+import {translateOptions} from "../../../utils/GetTranslatedConstants.ts";
 
 export const ShopToolbar = ({
     selectedProvince, setSelectedProvince,
@@ -66,7 +67,7 @@ export const ShopToolbar = ({
                 <div className='flex items-center'>
                     <Dropdown
                         value={selectedProvince}
-                        onChange={(e) => setSelectedProvince(e.value)} options={PROVINCES}
+                        onChange={(e) => setSelectedProvince(e.value)} options={translateOptions(PROVINCES)}
                         optionLabel="name"
                         checkmark={true}
                         placeholder={t("Location")}
@@ -78,7 +79,7 @@ export const ShopToolbar = ({
                 <div className="card flex justify-content-center">
                     <Dropdown
                         value={orderBy}
-                        onChange={(e) => setOrderBy(e.value)} options={ORDER_OPTIONS}
+                        onChange={(e) => setOrderBy(e.value)} options={translateOptions(ORDER_OPTIONS)}
                         optionLabel="name"
                         checkmark={true}
                         placeholder={t("Order by")}
@@ -145,7 +146,7 @@ export const ShopToolbar = ({
                 <MultiSelect
                     value={selectedCategories}
                     onChange={(e) => setSelectedCategories(e.value)}
-                    options={CATEGORIES}
+                    options={translateOptions(CATEGORIES)}
                     optionLabel="name"
                     display="chip"
                     placeholder={t("SELECT CATEGORIES")}
@@ -156,7 +157,7 @@ export const ShopToolbar = ({
                 <MultiSelect
                     value={selectedSizes}
                     onChange={(e) => setSelectedSizes(e.value)}
-                    options={SIZES}
+                    options={translateOptions(SIZES)}
                     optionLabel="name"
                     display="chip"
                     placeholder={t("SELECT SIZES")}

@@ -13,6 +13,7 @@ import { Area } from "react-easy-crop";
 import { ImageCropper } from "../core/ImageCropper/ImageCropper.tsx";
 import {Toast} from "primereact/toast";
 import {useTranslation} from "react-i18next";
+import {translateOptions} from "../../utils/GetTranslatedConstants.ts";
 
 export const Post = () => {
     const {userId} = useContext(UserIdContext)!;
@@ -159,7 +160,7 @@ export const Post = () => {
                             id='category'
                             value={category}
                             onChange={(e) => setCategory(e.value)}
-                            options={CATEGORIES}
+                            options={translateOptions(CATEGORIES)}
                             optionLabel="name"
                             className="w-full"
                         />
@@ -174,7 +175,7 @@ export const Post = () => {
                             id='size'
                             value={size}
                             onChange={(e) => setSize(e.value)}
-                            options={SIZES}
+                            options={translateOptions(SIZES)}
                             optionLabel="name"
                             checkmark={true}
                             className="w-full"
@@ -187,7 +188,7 @@ export const Post = () => {
                             id='state'
                             value={state}
                             onChange={(e) => setState(e.value)}
-                            options={STATES}
+                            options={translateOptions(STATES)}
                             optionLabel="name"
                             className="w-full"
                         />
@@ -202,7 +203,7 @@ export const Post = () => {
                             id='province'
                             value={province}
                             onChange={(e) => setProvince(e.value)}
-                            options={PROVINCES}
+                            options={translateOptions(PROVINCES)}
                             optionLabel="name"
                             checkmark={true}
                             className="w-full"

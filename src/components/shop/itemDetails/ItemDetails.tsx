@@ -13,6 +13,7 @@ import axios from "axios";
 import {FloatLabel} from "primereact/floatlabel";
 import {InputTextarea} from "primereact/inputtextarea";
 import {useTranslation} from "react-i18next";
+import {translateOptions} from "../../../utils/GetTranslatedConstants.ts";
 
 export const ItemDetails = ({
     item, fetchClothes
@@ -188,7 +189,7 @@ export const ItemDetails = ({
                             // Sale states
                             <Dropdown
                                 value={saleState}
-                                onChange={(e) => setChanges(() => setSaleState(e.value))} options={SALE_STATES}
+                                onChange={(e) => setChanges(() => setSaleState(e.value))} options={translateOptions(SALE_STATES)}
                                 optionLabel={t("name")}
                                 checkmark={true}
                                 placeholder={t("sale_state")}
