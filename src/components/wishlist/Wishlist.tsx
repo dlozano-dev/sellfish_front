@@ -13,7 +13,7 @@ import {useTranslation} from "react-i18next";
 import {ProgressSpinner} from "primereact/progressspinner";
 
 export const Wishlist = () => {
-    const { userId } = useContext(UserIdContext)!;
+    const {userId} = useContext(UserIdContext)!;
     const [clothes, setClothes] = useState<Clothe[]>([]);
     const [item, setItem] = useState<Clothe | undefined>(undefined);
     const toast = useRef<Toast>(null);
@@ -39,7 +39,7 @@ export const Wishlist = () => {
 
     useEffect(() => {
         fetchFavorites().then();
-    });
+    }, [userId]);
 
     return (
         <div className='w-full text-center'>
