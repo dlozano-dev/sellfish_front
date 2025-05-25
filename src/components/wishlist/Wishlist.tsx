@@ -26,13 +26,14 @@ export const Wishlist = () => {
     }
 
     const fetchFavorites = async () => {
+        setIsLoading(true);
         try {
-            setIsLoading(true);
             const response = await axios.get(`${HOSTNAME}/wishlist/${userId}`);
             setClothes(response.data);
-            setIsLoading(false);
         } catch {
             showError("Error loading profile");
+        } finally {
+            setIsLoading(false);
         }
     };
 
