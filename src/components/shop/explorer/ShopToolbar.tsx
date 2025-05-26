@@ -82,7 +82,7 @@ export const ShopToolbar = ({
                         optionLabel="name"
                         checkmark={true}
                         placeholder={t("Order by")}
-                        className="w-40 h-12 md:w-14rem items-center"
+                        className="w-full 2xl:w-40 3xl:w-full h-12 md:w-14rem items-center"
                     />
                 </div>
 
@@ -152,7 +152,7 @@ export const ShopToolbar = ({
                     display="chip"
                     placeholder={t("SELECT CATEGORIES")}
                     maxSelectedLabels={3}
-                    className=" w-max-40 md:w-20rem h-12 items-center"
+                    className="w-max-40 md:w-20rem h-12 items-center"
                 />
 
                 <MultiSelect
@@ -173,7 +173,7 @@ export const ShopToolbar = ({
 
     return (
         <div className="bg-white w-[90vw] h-auto flex flex-wrap items-center justify-between px-4 py-3 md:gap-2 mb-5 shadow-xl mx-auto rounded-md">
-            <button onClick={() => setShowFilters(!showFilters)} className="md:hidden">
+            <button onClick={() => setShowFilters(!showFilters)} className="md:hidden cursor-pointer">
                 {showFilters ? <i className="pi pi-times mr-2"/> : <i className="pi pi-filter mr-2"/>}
                 {t(showFilters ? 'Hide filters' : 'Show filters')}
             </button>
