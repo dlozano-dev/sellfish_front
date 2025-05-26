@@ -82,7 +82,7 @@ export const ShopToolbar = ({
                         optionLabel="name"
                         checkmark={true}
                         placeholder={t("Order by")}
-                        className="w-full h-12 md:w-14rem items-center"
+                        className="w-40 h-12 md:w-14rem items-center"
                     />
                 </div>
 
